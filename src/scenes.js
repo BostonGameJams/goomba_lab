@@ -1,9 +1,39 @@
+var level_one = [
+"G_____W_____",
+"WWWWW_W_____",
+"______W_____",
+" WWWWWW_____",
+"_____EW_____",
+"WWWWWWW_____",
+"____________",
+"____________"
+];
+
 // Game scene
 // -------------
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   // Put your game code here...
 
+  // level_rows = level_one.split('\n');
+  level_one.forEach(function(row, y) {
+    // console.log(row, y);
+    row.split('').forEach(function(col, x) {
+      switch (col) {
+         case 'G':
+           Crafty.e('YellowGoomba').at(x, y);
+           break;
+         case 'W':
+           Crafty.e('Wall').at(x, y);
+           break;
+         case 'E':
+           Crafty.e('Exit').at(x, y);
+           break;
+         default:
+           break;
+      }
+    })
+  });
 }, function() {
   // Here is where you can unbind event listeners and other things you
   //  need to do to allow restarting/loading multiple levels to work...

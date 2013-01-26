@@ -28,22 +28,32 @@ Crafty.c('Actor', {
 });
 
 // A Tree is just an Actor with a certain sprite
-Crafty.c('Tree', {
+Crafty.c('Goomba', {
   init: function() {
-    this.requires('Actor, Solid, spr_tree');
+    this.requires('Actor, Solid');
   },
 });
 
 // A Bush is just an Actor with a certain sprite
-Crafty.c('Bush', {
+Crafty.c('YellowGoomba', {
   init: function() {
-    this.requires('Actor, Solid, spr_bush');
+    this.requires('Goomba, Color')
+      .color('yellow');
   },
 });
 
 // A Rock is just an Actor with a certain sprite
-Crafty.c('Rock', {
+Crafty.c('Wall', {
   init: function() {
-    this.requires('Actor, Solid, spr_rock');
+    this.requires('Actor, Solid, Color')
+      .color('gray');
+  },
+});
+
+// A Rock is just an Actor with a certain sprite
+Crafty.c('Exit', {
+  init: function() {
+    this.requires('Actor, Solid, Color')
+      .color('white');
   },
 });
