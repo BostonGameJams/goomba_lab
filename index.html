@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="lib/crafty.js"></script>
+  <script src="lib/underscore.js"></script>
+
+  <script src="src/game.js"></script>
+  <script src="src/components.js"></script>
+  <script src="src/scenes.js"></script>
+
+  <script>
+    window.addEventListener('load', Game.start);
+  </script>
+  <style type="text/css" media="screen">
+    body {
+      background: black;
+      text-align: center;
+      color: #DDD;
+      font-family: Arial;
+    }
+
+    .controls {
+      color: #BBB;
+    }
+
+    #cr-stage { margin: 20px auto 0; }
+
+    .bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 50px;
+    }
+
+    .bottom a {
+      color: #AAA;
+    }
+  </style>
+</head>
+<body>
+  <h2>GAME TITLE HERE</h2>
+
+  <p class="intro">TELL THE PLAYER THEIR GOAL IN TWO SENTENCES OR LESS.</p>
+
+  <p class="controls">EXPLAIN THE CONTROLS OR LINK TO A LONGER DESCRIPTION HERE.</p>
+
+  <div id="cr-stage"></div>
+
+  <p class="bottom">PUT ANY NEEDED ATTRIBUTIONS HERE.</p>
+</body>
+</html>
