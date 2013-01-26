@@ -12,16 +12,15 @@ Game = {
   background: 'rgb(87, 109, 20)',
 
   assets: [
-    'assets/16x16_sample.gif'
   ],
 
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
-      { name: 'loaded',  from: 'loading', to: 'loaded' },
-      { name: 'run',     from: 'loaded',  to: 'running' },
-      { name: 'reset',   from: 'running', to: 'loaded' },
-      { name: 'loading', from: '*',       to: 'loading' }
+      { name: 'loaded',  from: ['loading', 'loaded'], to: 'loaded' },
+      { name: 'run',     from: 'loaded',              to: 'running' },
+      { name: 'reset',   from: 'running',             to: 'loaded' },
+      { name: 'loading', from: '*',                   to: 'loading' }
     ]}),
 
   // The total width of the game screen. Since our grid takes up the entire screen
@@ -56,12 +55,12 @@ Game = {
     // These components' names are prefixed with "spr_"
     //  to remind us that they simply cause the entity
     //  to be drawn with a certain sprite
-    Crafty.sprite(16, 'assets/16x16_sample.gif', {
-      spr_tree:    [0, 0],
-      spr_bush:    [1, 0],
-      spr_village: [0, 1],
-      spr_rock:    [1, 1]
-    });
+    // Crafty.sprite(16, 'assets/16x16_sample.gif', {
+    //   spr_tree:    [0, 0],
+    //   spr_bush:    [1, 0],
+    //   spr_village: [0, 1],
+    //   spr_rock:    [1, 1]
+    // });
   },
 
   loadAudio: function() {

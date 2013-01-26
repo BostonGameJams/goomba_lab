@@ -96,9 +96,9 @@ Editor = {
 			out += '<img id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
 		}
 		if (this.goEnabled) {
-			out += '<img id="stopButton" src="assets/stopButton.png"/>'
+			out += '<img id="stopButton" src="assets/Stop.png"/>'
 		} else {
-			out += '<img id="goButton" src="assets/goButton.png"/>'
+			out += '<img id="goButton" src="assets/Run.png"/>'
 		}
 		
 		$('#editorPanel').append(out);
