@@ -45,6 +45,19 @@ Editor = {
 	selectedId : '',
 	goEnabled : false,
 	
+	stopButtonPushed : function() {
+		console.log('Stop!');
+		Editor.goEnabled = false;
+		Editor.render();
+	},
+	
+	goButtonPushed : function() {
+		console.log('Go!');
+		Editor.goEnabled = true;
+		Editor.selectedId = '';
+		Editor.render();
+	},
+	
 	render : function() {
 		$('#editorPanel').html('');
 		
@@ -54,10 +67,14 @@ Editor = {
 		} else {
 			out += '<img id="upArrow" src="assets/upArrow.png" class="hiddenArrow"/>';
 		}
-		out += '<ul id="tileList">';
+		if (Editor.goEnabled) {
+			out += '<ul id="tileListLocked">';
+		} else {
+			out += '<ul id="tileList">';
+		}
 			var i = this.placeableIndex;
 			for( ; i < this.placeables.length && i < this.placeableIndex + 4; i++) {
-				if (this.placeables[i].id == this.selectedId) {
+				if (this.placeables[i].id == this.selectedId && this.goEnabled == false) {
 					out += '<li class="tile selected">';
 				} else {
 					out += '<li class="tile">';
@@ -86,7 +103,6 @@ Editor = {
 		
 		$('#editorPanel').append(out);
 		
-		
 		//Register the listeners for the buttons
 		$('#editorPanel #tileList li').click(function(event) {
 			var li = $(this);
@@ -101,15 +117,11 @@ Editor = {
 		});
 
 		$('#goButton').click(function(event) {
-			console.log('Go!');
-			Editor.goEnabled= true;
-			Editor.render();
+			Crafty.trigger('goButton');
 		});
 		
 		$('#stopButton').click(function(event) {
-			console.log('Stop!');
-			Editor.goEnabled= false;
-			Editor.render();
+			Crafty.trigger('stopButton');
 		});
 		
 		$('#upArrow').click(function(event) {
@@ -130,5 +142,7 @@ Editor = {
 };
 
 $(document).ready(function() {
+	Crafty.bind('goButton',Editor.goButtonPushed);
+	Crafty.bind('stopButton',Editor.stopButtonPushed);
 	Editor.render();
 });
