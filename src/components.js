@@ -48,11 +48,11 @@ Crafty.c('Goomba', {
 		});
 	},
 	currentGridX : 0,
-	currentGridY : 0,
+	currentGridY : 1,
 	moveDir : DIR_RIGHT,
 	msPerTile : 500,
 	nextGridX : 1,
-	nextGridY : 0,
+	nextGridY : 1,
 	tweenStart : new Date().getTime(),
 
 	// use direction constants as indexes into these
