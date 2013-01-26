@@ -66,6 +66,15 @@ Game = {
     Crafty.bind('pauseSimulation', function() {
       Game.pauseSim();
     });
+
+    Crafty.bind('placeTile', function(event_data) {
+      // console.log('event_data', event_data);
+
+      var tile_x = Math.floor(event_data.x / Game.map_grid.tile.width),
+          tile_y = Math.floor(event_data.y / Game.map_grid.tile.height);
+
+      Crafty.e(event_data.id).at(tile_x, tile_y);
+    });
   },
 
   loadSprites: function() {
