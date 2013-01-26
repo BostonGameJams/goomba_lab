@@ -21,7 +21,7 @@ Editor = {
 		}
 	},
 	placeables : [
-		{
+		/*{
 			id: 'Fire',
 			img: 'assets/Fire.png'
 		},
@@ -32,7 +32,7 @@ Editor = {
 		{
 			id: 'Bug',
 			img: 'assets/Bug.png'
-		},
+		},*/
 		{
 			id: 'Wall',
 			img: 'assets/Wall.png'
