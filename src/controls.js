@@ -9,7 +9,11 @@ Controls = {
             Game.loadLevel(i);
           }
         })
-      } 
+      }
+
+      if (e.key == Crafty.keys['R']) {
+        Game.loadLevel(1);
+      }
     });
   }
 }
