@@ -19,10 +19,12 @@ Game = {
     initial: 'loading',
     events: [
       { name: 'loaded',  from: ['loading', 'loaded'], to: 'loaded' },
-      { name: 'run',     from: 'loaded',              to: 'running' },
-      { name: 'reset',   from: 'running',             to: 'loaded' },
-      { name: 'loading', from: '*',                   to: 'loading' }
-    ]}),
+      { name: 'run',     from: ['loaded', 'paused'],  to: 'running' },
+      { name: 'reset',   from: ['running', 'paused'], to: 'loaded' },
+      { name: 'loading', from: '*',                   to: 'loading' },
+      { name: 'pause',   from: 'running',             to: 'paused' }
+    ]
+  }),
 
   // The total width of the game screen. Since our grid takes up the entire screen
   //  this is just the width of a tile times the width of the grid
@@ -46,8 +48,24 @@ Game = {
 
     Controls.watchKeyPresses();
 
+    Game.watchEvents();
+
     // Simply start the "Loading" scene to get things going
     Crafty.scene('Loading');
+  },
+
+  watchEvents: function() {
+    Crafty.bind('startSimulation', function() {
+      Game.runSim();
+    });
+
+    Crafty.bind('resetLevel', function() {
+      Game.resetLevel();
+    });
+
+    Crafty.bind('pauseSimulation', function() {
+      Game.pauseSim();
+    });
   },
 
   loadSprites: function() {
@@ -124,6 +142,17 @@ Game = {
 
   resetLevel: function() {
     Game.state_machine.reset();
+    console.log('Game [reseting]');
+  },
+
+  runSim: function() {
+    Game.state_machine.run();
+    console.log('Game [running]');
+  },
+
+  pauseSim: function() {
+    Game.state_machine.pause();
+    console.log('Game [pausing]');
   }
 }
 Game.start = Game.start.bind(Game);

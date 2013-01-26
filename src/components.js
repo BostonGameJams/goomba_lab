@@ -127,7 +127,7 @@ Crafty.c('YellowGoomba', {
 					testNextX++;
 					break;
 				case DIR_UP:
-					testNextX--;
+					testNextY--;
 					break;
 				case DIR_LEFT:
 					testNextX--;
@@ -159,16 +159,32 @@ Crafty.c('YellowGoomba', {
 	}
 });
 
-// A Rock is just an Actor with a certain sprite
 Crafty.c('Wall', {
 	init : function() {
 		this.requires('Actor, Solid, Color').color('gray');
 	},
 });
 
-// A Rock is just an Actor with a certain sprite
 Crafty.c('Exit', {
 	init : function() {
 		this.requires('Actor, Solid, Color').color('white');
+	},
+});
+
+Crafty.c('Fire', {
+	init : function() {
+		this.requires('Actor, Solid, Color').color('orange');
+	},
+});
+
+Crafty.c('Water', {
+	init : function() {
+		this.requires('Actor, Solid, Color').color('blue');
+	},
+});
+
+Crafty.c('Bug', {
+	init : function() {
+		this.requires('Actor, Solid, Color').color('brown');
 	},
 });

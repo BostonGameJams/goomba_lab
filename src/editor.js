@@ -123,15 +123,15 @@ Editor = {
 		});
 
 		$('#goButton').click(function(event) {
-			Crafty.trigger('goButton');
+			Crafty.trigger('startSimulation');
 		});
 		
 		$('#pauseButton').click(function(event) {
-			Crafty.trigger('pauseButton');
+			Crafty.trigger('pauseSimulation');
 		});
 		
 		$('#resetButton').click(function(event) {
-			Crafty.trigger('resetButton');
+			Crafty.trigger('resetLevel');
 		});
 		
 		$('#upArrow').click(function(event) {
@@ -152,9 +152,9 @@ Editor = {
 };
 
 $(document).ready(function() {
-	Crafty.bind('goButton',Editor.goButtonPushed);
-	Crafty.bind('pauseButton',Editor.pauseButtonPushed);
-	Crafty.bind('resetButton',Editor.resetButtonPushed);
+	Crafty.bind('startSimulation',Editor.goButtonPushed);
+	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
+	Crafty.bind('resetLevel',Editor.resetButtonPushed);
 	$('#cr-stage').click(function(event) {
 		//Relative ( to its parent) mouse position 
 		var posX = $(this).position().left;
