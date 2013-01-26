@@ -1,4 +1,5 @@
-var level_one = [
+Game.levels = [
+{ id: 1, data: [
 "G_____W_____",
 "WWWWW_W_____",
 "______W_____",
@@ -7,6 +8,17 @@ var level_one = [
 "WWWWWWW_____",
 "____________",
 "____________"
+]},
+{ id: 2, data: [
+"G______W____",
+"WWWWWW_W____",
+"_______W____",
+" WWWWWWW____",
+"______EW____",
+"WWWWWWWW____",
+"____________",
+"____________"
+]}
 ];
 
 // Game scene
@@ -15,25 +27,6 @@ var level_one = [
 Crafty.scene('Game', function() {
   // Put your game code here...
 
-  // level_rows = level_one.split('\n');
-  level_one.forEach(function(row, y) {
-    // console.log(row, y);
-    row.split('').forEach(function(col, x) {
-      switch (col) {
-         case 'G':
-           Crafty.e('YellowGoomba').at(x, y);
-           break;
-         case 'W':
-           Crafty.e('Wall').at(x, y);
-           break;
-         case 'E':
-           Crafty.e('Exit').at(x, y);
-           break;
-         default:
-           break;
-      }
-    })
-  });
 }, function() {
   // Here is where you can unbind event listeners and other things you
   //  need to do to allow restarting/loading multiple levels to work...
@@ -58,5 +51,6 @@ Crafty.scene('Loading', function(){
 
     // Now that our sprites are ready to draw, start the game
     Crafty.scene('Game');
+    Game.loadLevel();
   })
 });
