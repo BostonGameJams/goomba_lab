@@ -42,6 +42,12 @@ Crafty.c('Goomba', {
 		this.requires('Actor').bind("pauseSimulation", function() {
 			this.unbind("EnterFrame");
 		}).bind("startSimulation", function() {
+			var at = this.at();
+			this.currentGridX = at.x;
+			this.currentGridY = at.y;
+			this.nextGridX = at.x + 1;
+			this.nextGridY = at.y;
+			this.tweenStart = new Date().getTime();
 			this.bind("EnterFrame", this.enterFrame);
 		});
 	},
