@@ -33,6 +33,10 @@ Game = {
     Crafty.init(this.width(), this.height());
     Crafty.background(this.background);
 
+    Game.current_level = 1;
+
+    Controls.watchKeyPresses();
+
     // Simply start the "Loading" scene to get things going
     Crafty.scene('Loading');
   },
@@ -54,6 +58,59 @@ Game = {
   loadAudio: function() {
     // Define our sounds and muic here for later use...
 
+  },
+
+  getLevel: function(level_id) {
+    return _.find(Game.levels, function(level) {
+      if (level.id == level_id) {
+        return level;
+      }
+    }) || { data: null };
+  },
+
+  // Load the specified level, or load/reload the current level if no level
+  //  is specified
+  loadLevel: function(level) {
+    // If no level was specified, default to loading/reloading the current level
+    if (!level) {
+      level = Game.current_level;
+    }
+
+    // Look up a level by its id
+    if (!(level instanceof Object)) {
+      level = Game.getLevel(level);
+      level_data = level.data;
+    }
+
+    // Return if for whatever reason we have not located level data
+    if (!level_data) {
+      return;
+    }
+
+    Crafty.scene('Game');
+
+    level_data.forEach(function(row, y) {
+      // console.log(row, y);
+      row.split('').forEach(function(col, x) {
+        switch (col) {
+          case 'G':
+            Crafty.e('YellowGoomba').at(x, y);
+            break;
+          case 'W':
+            Crafty.e('Wall').at(x, y);
+            break;
+          case 'E':
+            Crafty.e('Exit').at(x, y);
+            break;
+          default:
+            break;
+        }
+      })
+    });
+
+    Game.current_level = level;
+
+    console.log('Loaded level ' + level.id)
   }
 }
 Game.start = Game.start.bind(Game);
