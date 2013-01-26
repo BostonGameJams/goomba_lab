@@ -144,5 +144,18 @@ Editor = {
 $(document).ready(function() {
 	Crafty.bind('goButton',Editor.goButtonPushed);
 	Crafty.bind('stopButton',Editor.stopButtonPushed);
+	$('#cr-stage').click(function(event) {
+		//Relative ( to its parent) mouse position 
+		var posX = $(this).position().left;
+		var posY = $(this).position().top;
+		var x = event.pageX - posX;
+		var y = event.pageY - posY;
+		Crafty.trigger('gameClick', {x:x,y:y});
+	});
+	
+	Crafty.bind('gameClick', function(params) {
+		console.log('gameClick: x:' + params.x + ' y:' + params.y);
+	});
+	
 	Editor.render();
 });
