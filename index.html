@@ -9,34 +9,12 @@
   <script src="src/game.js"></script>
   <script src="src/components.js"></script>
   <script src="src/scenes.js"></script>
+  <script src="src/editor.js"></script>
 
   <script>
     window.addEventListener('load', Game.start);
   </script>
-  <style type="text/css" media="screen">
-    body {
-      background: black;
-      text-align: center;
-      color: #DDD;
-      font-family: Arial;
-    }
-
-    .controls {
-      color: #BBB;
-    }
-
-    #cr-stage { margin: 20px auto 0; }
-
-    .bottom {
-      font-size: 12px;
-      color: #888;
-      margin-top: 50px;
-    }
-
-    .bottom a {
-      color: #AAA;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style/style.css"/>
 
   <title>Goomba Lab</title>
 </head>
@@ -45,8 +23,32 @@
 
   <p class="intro">TELL THE PLAYER THEIR GOAL IN TWO SENTENCES OR LESS.</p>
 
-  <div id="cr-stage"></div>
-
+  <div id="editorFrame">
+    <ul>
+      <li id="editorPanel">
+        <img id="upArrow" src="upArrow.png" class="hiddenArrow"/>
+        <ul id="tileList">
+          <li>
+            <img id="Wall" src="wall.png" class="icon"/>
+            <span>Wall</span>
+          </li>
+          <li>
+            <img id="Food" src="food.png" class="icon"/>
+            <span>Food</span>
+          </li>
+          <li>
+          </li>
+          <li>
+          </li>
+        </ul>
+        <img id="downArrow" src="downArrow.png" class="hiddenArrow"/>
+        <img id="goButton" src="goButton.png"/>
+      </li>
+      <li>
+  	    <div id="cr-stage"></div>
+      </li>
+    </ul>
+  </div>
   <p class="controls">EXPLAIN THE CONTROLS OR LINK TO A LONGER DESCRIPTION HERE.</p>
 
   <p class="bottom">PUT ANY NEEDED ATTRIBUTIONS HERE.</p>
