@@ -42,8 +42,7 @@ Crafty.c('Goomba', {
 	init : function() {
 		this.requires('Actor').bind("pauseSimulation", function() {
 			this.unbind("EnterFrame");
-		})
-		.bind("startSimulation", function () {
+		}).bind("startSimulation", function() {
 			this.bind("EnterFrame", this.enterFrame);
 		});
 	},
@@ -59,12 +58,7 @@ Crafty.c('Goomba', {
 	leftTurn : [DIR_UP, DIR_LEFT, DIR_DOWN, DIR_RIGHT],
 	rightTurn : [DIR_DOWN, DIR_RIGHT, DIR_UP, DIR_LEFT],
 	reverseDir : [DIR_LEFT, DIR_DOWN, DIR_RIGHT, DIR_UP],
-/*
-	getNextDir : function() {
-		// each flavor of Goomba *MUST* implement its own getNextDir!
-		return DIR_RIGHT;
-	},
-*/
+	
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
 		if(tweenDiff < this.msPerTile) {
@@ -122,6 +116,42 @@ Crafty.c('YellowGoomba', {
 		var fires = Crafty("Fire");
 		var waters = Crafty("Water");
 
+// incomplete
+/*
+		// check for attractions overriding normal movement
+		var attractor;
+		// WATER
+		if(attractor = _.find(waters, function(water) {
+				var at = Crafty(water).at();
+				// this is kind of a bitch. we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
+				if(this.currentGridX == at.x && this.currentGridY == at.y)
+				{
+					// collision, so eat the entity and continue
+					attractor.destroy();
+				}
+				else if(this.currentGridX == at.x) {
+					// same column, check for line of sight
+					;
+				}
+				else if(this.currentGridY == at.y) {
+					// same row, check for line of sight
+					;
+				}
+				return true;
+			})) {
+			// attract towards attractor!
+		}
+		// BUGS
+		else if(_.find(fires, function(fire) {
+				var at = Crafty(fire).at();
+				// iterator func returns true if there's a fire being a 3x3 wall
+				return testNextX <= at.x + 1 && testNextX >= at.x - 1 && testNextY <= at.y + 1 && testNextY >= at.y - 1;
+			})) {
+			;
+		}
+*/
+
+		// no attraction, so move normally, checking for obstacles
 		var testMoveDir = this.moveDir;
 		do {
 			// get the next X,Y and direction to test
@@ -145,13 +175,21 @@ Crafty.c('YellowGoomba', {
 			// check bounds of grid
 			if(testNextX >= Game.map_grid.width || testNextX < 0 || testNextY >= Game.map_grid.height || testNextY < 0) {
 				// fail because of bounds
-				;
-			} else if(_.find(walls, function(wall) {
+			}
+			// WALLS
+			else if(_.find(walls, function(wall) {
 				var at = Crafty(wall).at();
 				return at.x == testNextX && at.y == testNextY;
 			})) {
 				// fail because there's a wall in our way
-				;
+			}
+			// FIRE
+			else if(_.find(fires, function(fire) {
+				var at = Crafty(fire).at();
+				// iterator func returns true if there's a fire being a 3x3 wall
+				return testNextX <= at.x + 1 && testNextX >= at.x - 1 && testNextY <= at.y + 1 && testNextY >= at.y - 1;
+			})) {
+				// fail because there's a fire in the way
 			} else {
 				// looks like we're good to go!
 				return testMoveDir;
