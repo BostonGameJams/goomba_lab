@@ -24,11 +24,14 @@ body {
     }
     
     #editorFrame {
-      
     }
     
     #editorFrame ul {
       list-style-type: none;
+    }
+
+    #editorFrame > ul {
+      width: 896px;
     }
     
       #editorPanel {
