@@ -49,7 +49,7 @@ Crafty.scene('Loading', function(){
   // Load our assets then initialize the game
   Crafty.load(Game.assets, function(){
     Game.loadSprites();
-    Game.loadAudio();    
+    Game.loadAudio();
 
     // Now that our sprites are ready to draw, start the game
     Game.loadLevel();

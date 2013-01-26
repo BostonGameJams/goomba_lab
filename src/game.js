@@ -12,6 +12,7 @@ Game = {
   background: 'rgb(87, 109, 20)',
 
   assets: [
+    'assets/16x16_sample.gif'
   ],
 
   state_machine: StateMachine.create({
@@ -55,12 +56,12 @@ Game = {
     // These components' names are prefixed with "spr_"
     //  to remind us that they simply cause the entity
     //  to be drawn with a certain sprite
-    // Crafty.sprite(16, 'assets/16x16_sample.gif', {
-    //   spr_tree:    [0, 0],
-    //   spr_bush:    [1, 0],
-    //   spr_village: [0, 1],
-    //   spr_rock:    [1, 1]
-    // });
+    Crafty.sprite(16, 'assets/16x16_sample.gif', {
+      spr_tree:    [0, 0],
+      spr_bush:    [1, 0],
+      spr_village: [0, 1],
+      spr_rock:    [1, 1]
+    });
   },
 
   loadAudio: function() {
