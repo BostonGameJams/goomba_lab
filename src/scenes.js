@@ -26,7 +26,7 @@ Game.levels = [
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   // Put your game code here...
-
+  Game.state_machine.loaded();
 }, function() {
   // Here is where you can unbind event listeners and other things you
   //  need to do to allow restarting/loading multiple levels to work...
@@ -37,6 +37,8 @@ Crafty.scene('Game', function() {
 // -------------
 // Handles the loading of binary assets such as images and audio files
 Crafty.scene('Loading', function(){
+  Game.state_machine.loading();
+
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
   Crafty.e('2D, DOM, Text')
@@ -50,7 +52,6 @@ Crafty.scene('Loading', function(){
     Game.loadAudio();    
 
     // Now that our sprites are ready to draw, start the game
-    Crafty.scene('Game');
     Game.loadLevel();
   })
 });

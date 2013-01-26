@@ -23,19 +23,19 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/Wall.png'
-		},
-		{
-			id: 'Water',
-			img: 'assets/Food.png'
-		},
-		{
-			id: 'Bug',
 			img: 'assets/Fire.png'
 		},
 		{
+			id: 'Water',
+			img: 'assets/Water.png'
+		},
+		{
+			id: 'Bug',
+			img: 'assets/Bug.png'
+		},
+		{
 			id: 'Wall',
-			img: 'assets/RedGoomba.png'
+			img: 'assets/Wall.png'
 		}
 	],
 	selectedId : null,
