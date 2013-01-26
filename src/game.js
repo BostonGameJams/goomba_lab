@@ -15,6 +15,15 @@ Game = {
     'assets/16x16_sample.gif'
   ],
 
+  state_machine: StateMachine.create({
+    initial: 'loading',
+    events: [
+      { name: 'loaded',  from: 'loading', to: 'loaded' },
+      { name: 'run',     from: 'loaded',  to: 'running' },
+      { name: 'reset',   from: 'running', to: 'loaded' },
+      { name: 'loading', from: '*',       to: 'loading' }
+    ]}),
+
   // The total width of the game screen. Since our grid takes up the entire screen
   //  this is just the width of a tile times the width of the grid
   width: function() {
@@ -111,6 +120,10 @@ Game = {
     Game.current_level = level;
 
     console.log('Loaded level ' + level.id)
+  },
+
+  resetLevel: function() {
+    Game.state_machine.reset();
   }
 }
 Game.start = Game.start.bind(Game);
