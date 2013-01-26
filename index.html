@@ -13,84 +13,7 @@
   <script>
     window.addEventListener('load', Game.start);
   </script>
-  <style type="text/css" media="screen">
-    body {
-      background: black;
-      text-align: center;
-      color: #DDD;
-      font-family: Arial;
-    }
-
-    .controls {
-      color: #BBB;
-    }
-
-    #cr-stage { 
-      
-      }
-
-    .bottom {
-      font-size: 12px;
-      color: #888;
-      margin-top: 50px;
-    }
-
-    .bottom a {
-      color: #AAA;
-    }
-    
-    #editorFrame {
-      
-    }
-    
-    #editorFrame ul {
-      list-style-type: none;
-    }
-    
-      #editorPanel {
-        background-color: red;
-        float: left;
-        width : 128px;
-        height: 496px;
-        padding-top:16px;
-      }
-    
-        #editorPanel img {
-        
-        }
-        
-        #editorPanel #upArrow {
-          width:64px;
-          height:16px;
-        }
-        
-        #editorPanel #downArrow {
-          width:64px;
-          height:16px;
-        }
-    
-        #editorPanel .hiddenArrow {
-          /*visibility: hidden;*/
-          background-color:white;
-        }
-        
-        #editorPanel #tileList {
-          background-color:blue;
-          padding: 0px;
-        }
-        
-        #editorPanel #tileList li {
-          width:64px;
-          height:96px;
-          background-color:green;
-          margin: 0 auto;
-        }
-        
-        #editorPanel #tileList li img{
-          width:64px;
-          height:64px;
-        }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style/style.css"/>
 
   <title>Goomba Lab</title>
 </head>
@@ -112,8 +35,13 @@
             <img id="Food" src="food.png" class="icon"/>
             <span>Food</span>
           </li>
+          <li>
+          </li>
+          <li>
+          </li>
         </ul>
         <img id="downArrow" src="downArrow.png" class="hiddenArrow"/>
+        <img id="goButton" src="goButton.png"/>
       </li>
       <li>
   	    <div id="cr-stage"></div>

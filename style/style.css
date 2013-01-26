@@ -1,0 +1,87 @@
+body {
+      background: black;
+      text-align: center;
+      color: #DDD;
+      font-family: Arial;
+    }
+
+    .controls {
+      color: #BBB;
+    }
+
+    #cr-stage { 
+      
+      }
+
+    .bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 50px;
+    }
+
+    .bottom a {
+      color: #AAA;
+    }
+    
+    #editorFrame {
+      
+    }
+    
+    #editorFrame ul {
+      list-style-type: none;
+    }
+    
+      #editorPanel {
+        background-color: #BBB;
+        float: left;
+        width : 128px;
+        height: 496px;
+        padding-top:16px;
+      }
+    
+        #editorPanel img {
+        
+        }
+        
+        #editorPanel #upArrow {
+          width:64px;
+          height:16px;
+        }
+        
+        #editorPanel #downArrow {
+          width:64px;
+          height:16px;
+        }
+        
+        #editorPanel #goButton {
+          width:128px;
+          height:64px;
+        }
+    
+        #editorPanel .hiddenArrow {
+          visibility: hidden;
+          /*background-color:white;*/
+        }
+        
+        #editorPanel #tileList {
+          background-color: #DDD;
+          padding: 0px;
+        }
+        
+        #editorPanel #tileList li {
+          width:64px;
+          height:96px;
+          margin: 0 auto;
+          color: black;
+          padding: 0 16px;
+        }
+        
+        #editorPanel #tileList li:hover {
+          background-color:yellow;
+        }
+        
+        #editorPanel #tileList li img{
+          width:64px;
+          height:64px;
+          padding-top:8px;
+        }
