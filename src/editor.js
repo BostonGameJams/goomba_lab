@@ -22,39 +22,44 @@ Editor = {
 	},
 	placeables : [
 		{
-			id: 'Wall',
+			id: 'Fire',
 			img: 'assets/Wall.png'
 		},
 		{
-			id: 'Food',
+			id: 'Water',
 			img: 'assets/Food.png'
 		},
 		{
-			id: 'Fire',
+			id: 'Bug',
 			img: 'assets/Fire.png'
 		},
 		{
-			id: 'Red Goomba',
+			id: 'Wall',
 			img: 'assets/RedGoomba.png'
-		},
-		{
-			id: 'Blue Goomba',
-			img: 'assets/BlueGoomba.png'
 		}
 	],
-	selectedId : '',
-	goEnabled : false,
+	selectedId : null,
+	simulationStarted : false,
+	pauseEnabled : true,
 	
-	stopButtonPushed : function() {
-		console.log('Stop!');
-		Editor.goEnabled = false;
+	resetButtonPushed : function() {
+		console.log('Reset!');
+		Editor.simulationStarted = false;
+		Editor.pauseEnabled = true;
+		Editor.render();
+	},
+	
+	pauseButtonPushed : function() {
+		console.log('Pause!');
+		Editor.pauseEnabled = true;
 		Editor.render();
 	},
 	
 	goButtonPushed : function() {
 		console.log('Go!');
-		Editor.goEnabled = true;
-		Editor.selectedId = '';
+		Editor.simulationStarted = true;
+		Editor.pauseEnabled = false;
+		Editor.selectedId = null;
 		Editor.render();
 	},
 	
@@ -67,14 +72,14 @@ Editor = {
 		} else {
 			out += '<img id="upArrow" src="assets/upArrow.png" class="hiddenArrow"/>';
 		}
-		if (Editor.goEnabled) {
+		if (Editor.simulationStarted) {
 			out += '<ul id="tileListLocked">';
 		} else {
 			out += '<ul id="tileList">';
 		}
 			var i = this.placeableIndex;
 			for( ; i < this.placeables.length && i < this.placeableIndex + 4; i++) {
-				if (this.placeables[i].id == this.selectedId && this.goEnabled == false) {
+				if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
 					out += '<li class="tile selected">';
 				} else {
 					out += '<li class="tile">';
@@ -95,10 +100,11 @@ Editor = {
 		} else {
 			out += '<img id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
 		}
-		if (this.goEnabled) {
-			out += '<img id="stopButton" src="assets/stopButton.png"/>'
-		} else {
+		out += '<img id="resetButton" src="assets/resetButton.png" />';
+		if (this.pauseEnabled) {
 			out += '<img id="goButton" src="assets/goButton.png"/>'
+		} else {
+			out += '<img id="pauseButton" src="assets/pauseButton.png"/>'
 		}
 		
 		$('#editorPanel').append(out);
@@ -120,8 +126,12 @@ Editor = {
 			Crafty.trigger('goButton');
 		});
 		
-		$('#stopButton').click(function(event) {
-			Crafty.trigger('stopButton');
+		$('#pauseButton').click(function(event) {
+			Crafty.trigger('pauseButton');
+		});
+		
+		$('#resetButton').click(function(event) {
+			Crafty.trigger('resetButton');
 		});
 		
 		$('#upArrow').click(function(event) {
@@ -143,15 +153,34 @@ Editor = {
 
 $(document).ready(function() {
 	Crafty.bind('goButton',Editor.goButtonPushed);
-	Crafty.bind('stopButton',Editor.stopButtonPushed);
+	Crafty.bind('pauseButton',Editor.pauseButtonPushed);
+	Crafty.bind('resetButton',Editor.resetButtonPushed);
 	$('#cr-stage').click(function(event) {
 		//Relative ( to its parent) mouse position 
 		var posX = $(this).position().left;
 		var posY = $(this).position().top;
 		var x = event.pageX - posX;
 		var y = event.pageY - posY;
-		Crafty.trigger('gameClick', {x:x,y:y});
+		
+		if (Editor.selectedId != null && !Editor.simulationStarted) {
+			//place tile
+			Crafty.trigger('placeTile', {
+				x:x,
+				y:y,
+				id:Editor.selectedId,
+				editorMode: Editor.editorMode
+			});
+		} else {
+			Crafty.trigger('gameClick', {
+				x:x,
+				y:y
+			});
+		}
 	});
+	
+	Crafty.bind('placeTile', function(params) {
+		console.log('placeTile: ' + params.id);
+	})
 	
 	Crafty.bind('gameClick', function(params) {
 		console.log('gameClick: x:' + params.x + ' y:' + params.y);

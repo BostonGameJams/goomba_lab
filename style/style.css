@@ -58,19 +58,25 @@ body {
 		  background-color:white;
           width:64px;
           height:16px;
+		  padding: 0px 16px;
         }
         
         #editorPanel #goButton,
- 		#editorPanel #stopButton{
-          width:128px;
+ 		#editorPanel #pauseButton,
+		#editorPanel #resetButton{
+          width:64px;
           height:64px;
         }
 
-		#editorPanel #goButton:hover {
+		#editorPanel #goButton {
 			background-color:green;
 		}
 		
-		#editorPanel #stopButton:hover {
+		#editorPanel #pauseButton {
+			background-color:yellow;
+		}
+		
+		#editorPanel #resetButton {
 			background-color:red;
 		}
     
