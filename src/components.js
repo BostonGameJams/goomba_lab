@@ -58,7 +58,7 @@ Crafty.c('Goomba', {
 	leftTurn : [DIR_UP, DIR_LEFT, DIR_DOWN, DIR_RIGHT],
 	rightTurn : [DIR_DOWN, DIR_RIGHT, DIR_UP, DIR_LEFT],
 	reverseDir : [DIR_LEFT, DIR_DOWN, DIR_RIGHT, DIR_UP],
-	
+
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
 		if(tweenDiff < this.msPerTile) {
@@ -103,6 +103,67 @@ Crafty.c('Goomba', {
 			this.tweenStart = new Date().getTime();
 		}
 	},
+	checkAttractor : function(attractor) {
+		var attractionDir;
+		var at = Crafty(attractor).at();
+		// we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
+		if(this.currentGridX == at.x && this.currentGridY == at.y) {
+			// collision, so eat the entity and continue looking for additional attractors
+			attractor.destroy();
+		} else if(this.currentGridX == at.x) {
+			// same column, check for pathing
+			var reachable = true;
+			if(this.currentGridY > at.y)// attractor is above goomba
+			{
+				attractionDir = DIR_UP;
+				for(var i = at.y; i <= this.currentGridY; i++) {
+					if(!pathingGrid[at.x][i]) {
+						reachable = false;
+						break;
+					}
+				}
+			} else// attractor is below goomba
+			{
+				attractionDir = DIR_DOWN;
+				for(var i = this.currentGridY; i <= at.y; i++) {
+					if(!pathingGrid[at.x][i]) {
+						reachable = false;
+						break;
+					}
+				}
+			}
+			if(reachable) {
+				return true;
+			}
+		} else if(this.currentGridY == at.y) {
+			// same row, check for pathing
+			var reachable = true;
+			if(this.currentGridX > at.x)// attractor is left of goomba
+			{
+				attractionDir = DIR_LEFT;
+				for(var i = at.x; i <= this.currentGridX; i++) {
+					if(!pathingGrid[i][at.y]) {
+						reachable = false;
+						break;
+					}
+				}
+			} else// attractor is right of goomba
+			{
+				attractionDir = DIR_RIGHT;
+				for(var i = this.currentGridX; i <= at.x; i++) {
+					if(!pathingGrid[i][at.y]) {
+						reachable = false;
+						break;
+					}
+				}
+			}
+			if(reachable) {
+				this.moveDir = attractionDir;
+				return true;
+			}
+		}
+		return false;
+	}
 });
 
 // A Bush is just an Actor with a certain sprite
@@ -116,40 +177,44 @@ Crafty.c('YellowGoomba', {
 		var fires = Crafty("Fire");
 		var waters = Crafty("Water");
 
-// incomplete
-/*
+		// true if tile is walkable for this variety of Goomba
+		var pathingGrid = new Array();
+
+		// grid is walkable by default
+		for(var x = 0; x < Game.map_grid.width; x++) {
+			pathingGrid[x] = new Array();
+			for(var y = 0; y < Game.map_grid.width; y++) {
+				pathingGrid[x][y] = true;
+			}
+		}
+
+		// walls are 1-tile obstacles
+		_.each(walls, function(wall) {
+			var at = Crafty(wall).at();
+			pathingGrid[at.x][at.y] = false;
+		});
+		// fires are 3x3 obstacles for yellows
+		_.each(fires, function(fire) {
+			var at = Crafty(wall).at();
+			for(var x = at.x - 1; x <= at.x + 1; x++) {
+				for(var y = at.y - 1; y <= at.y + 1; y++) {
+					pathingGrid[x][y] = false;
+				}
+			}
+		});
 		// check for attractions overriding normal movement
 		var attractor;
+		var attractionDir;
 		// WATER
-		if(attractor = _.find(waters, function(water) {
-				var at = Crafty(water).at();
-				// this is kind of a bitch. we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
-				if(this.currentGridX == at.x && this.currentGridY == at.y)
-				{
-					// collision, so eat the entity and continue
-					attractor.destroy();
-				}
-				else if(this.currentGridX == at.x) {
-					// same column, check for line of sight
-					;
-				}
-				else if(this.currentGridY == at.y) {
-					// same row, check for line of sight
-					;
-				}
-				return true;
-			})) {
+		if( attractor = _.find(waters, this.checkAttractor)) {
 			// attract towards attractor!
+			return this.moveDir;
 		}
 		// BUGS
-		else if(_.find(fires, function(fire) {
-				var at = Crafty(fire).at();
-				// iterator func returns true if there's a fire being a 3x3 wall
-				return testNextX <= at.x + 1 && testNextX >= at.x - 1 && testNextY <= at.y + 1 && testNextY >= at.y - 1;
-			})) {
-			;
+		if( attractor = _.find(bugs, this.checkAttractor)) {
+			// attract towards attractor!
+			return this.moveDir;
 		}
-*/
 
 		// no attraction, so move normally, checking for obstacles
 		var testMoveDir = this.moveDir;
@@ -176,20 +241,9 @@ Crafty.c('YellowGoomba', {
 			if(testNextX >= Game.map_grid.width || testNextX < 0 || testNextY >= Game.map_grid.height || testNextY < 0) {
 				// fail because of bounds
 			}
-			// WALLS
-			else if(_.find(walls, function(wall) {
-				var at = Crafty(wall).at();
-				return at.x == testNextX && at.y == testNextY;
-			})) {
-				// fail because there's a wall in our way
-			}
-			// FIRE
-			else if(_.find(fires, function(fire) {
-				var at = Crafty(fire).at();
-				// iterator func returns true if there's a fire being a 3x3 wall
-				return testNextX <= at.x + 1 && testNextX >= at.x - 1 && testNextY <= at.y + 1 && testNextY >= at.y - 1;
-			})) {
-				// fail because there's a fire in the way
+			// OBSTACLES
+			else if(!pathingGrid[testNextX][testNextY]) {
+				// fail because there's an obstacle in the way
 			} else {
 				// looks like we're good to go!
 				return testMoveDir;
