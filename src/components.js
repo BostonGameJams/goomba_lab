@@ -40,7 +40,12 @@ Crafty.c('Actor', {
 // A Tree is just an Actor with a certain sprite
 Crafty.c('Goomba', {
 	init : function() {
-		this.requires('Actor').bind("EnterFrame", this.enterFrame);
+		this.requires('Actor').bind("pauseSimulation", function() {
+			this.unbind("EnterFrame");
+		})
+		.bind("startSimulation", function () {
+			this.bind("EnterFrame", this.enterFrame);
+		});
 	},
 	currentGridX : 0,
 	currentGridY : 0,
@@ -113,9 +118,9 @@ Crafty.c('YellowGoomba', {
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
-		//var bugs = Crafty("Bug");
-		//var fires = Crafty("Fire");
-		//var waters = Crafty("Water");
+		var bugs = Crafty("Bug");
+		var fires = Crafty("Fire");
+		var waters = Crafty("Water");
 
 		var testMoveDir = this.moveDir;
 		do {
