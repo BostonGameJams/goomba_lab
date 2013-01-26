@@ -49,11 +49,13 @@ body {
         }
         
         #editorPanel #upArrow {
+		  background-color:white;
           width:64px;
           height:16px;
         }
         
         #editorPanel #downArrow {
+		  background-color:white;
           width:64px;
           height:16px;
         }
@@ -77,12 +79,14 @@ body {
           /*background-color:white;*/
         }
         
-        #editorPanel #tileList {
+        #editorPanel #tileList,
+ 		#editorPanel #tileListLocked {
           background-color: #DDD;
           padding: 0px;
         }
         
-        #editorPanel #tileList .tile {
+        #editorPanel #tileList .tile,
+ 		#editorPanel #tileListLocked .tile {
           width:64px;
           height:96px;
           margin: 0 auto;
@@ -98,7 +102,8 @@ body {
           background-color:yellow;
         }
         
-        #editorPanel #tileList li img{
+        #editorPanel #tileList li img,
+		#editorPanel #tileListLocked li img{
           width:64px;
           height:64px;
           padding-top:8px;
