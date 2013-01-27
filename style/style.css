@@ -114,6 +114,14 @@ body {
 		  font-size: 12px;
         }
 
+		#editorPanel #tileList .emptyTile,
+		#editorPanel #tileListLocked .emptyTile {
+			padding: 0 16px;
+			margin: 0 auto;
+			width:64px;
+	        height:96px;
+		}
+
 		#editorPanel #tileList .selected {
           /*background: url('../assets/border.png') no-repeat 0 0;*/
         }

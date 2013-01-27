@@ -24,26 +24,26 @@ Editor = {
 		{
 			id: 'Fire',
 			img: 'assets/t_env_fireB.png',
-			numberRemaining : 5,
-			numberInitial : 5
+			numberRemaining : 0,
+			numberInitial : 0
 		},
 		{
 			id: 'Water',
 			img: 'assets/t_env_waterB.png',
-			numberRemaining : 5,
-			numberInitial : 5
+			numberRemaining : 0,
+			numberInitial : 0
 		},
 		{
 			id: 'Bug',
 			img: 'assets/t_env_bugB.png',
-			numberRemaining : 5,
-			numberInitial : 5
+			numberRemaining : 0,
+			numberInitial : 0
 		},
 		{
 			id: 'Wall',
 			img: 'assets/env_wallB.png',
-			numberRemaining : 5,
-			numberInitial : 5
+			numberRemaining : 0,
+			numberInitial : 0
 		}
 	],
 	selectedId : null,
@@ -89,6 +89,7 @@ Editor = {
 			out += '<ul id="tileList">';
 		}
 			var i = this.placeableIndex;
+			var count = 0;
 			for( ; i < this.placeables.length && i < this.placeableIndex + 4; i++) {
 				if (this.placeables[i].numberInitial > 0) {
 					if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
@@ -96,6 +97,8 @@ Editor = {
 					} else {
 						out += '<li class="tile">';
 					}
+						count++;
+						
 						out += '<img id="' + this.placeables[i].id + '" ';
 						out += 'src="' + this.placeables[i].img + '" class="icon"/>';
 						
@@ -110,10 +113,10 @@ Editor = {
 					out += '</li>';
 				}
 			}
-			while (i < this.placeableIndex + 4) {
+			while (count < 4) {
 				//Generate empty rows
-				out += '<li></li>';
-				i++;
+				out += '<li class="emptyTile"></li>';
+				count++;
 			}
 		out += '</ul>';
 		if(this.simulationStarted) {
@@ -199,15 +202,22 @@ var enableDragNDrop = function(){
       var x = e.originalEvent.clientX - stageX;
       var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
 
-      //If there is a drag ID then we can drop
+      //If there is a drag ID, and we're not out, then we can drop
       if(dragId){
-        Editor.selectedId = dragId;
-        Crafty.trigger('placeTile', {
-          x:x,
-          y:y,
-          id:dragId,
-          editorMode: Editor.editorMode
-        });
+		for (var i = 0; i < Editor.placeables.length; i++) {
+			if (dragId == Editor.placeables[i].id) {
+				if (Editor.placeables[i].numberRemaining > 0) {
+					Editor.selectedId = dragId;
+			        Crafty.trigger('placeTile', {
+			          x:x,
+			          y:y,
+			          id:dragId,
+			          editorMode: Editor.editorMode
+			        });
+					break;
+				}
+			}
+		}
       }
     }
   });
@@ -227,18 +237,30 @@ $(document).ready(function() {
 		console.log('[Editor] placeTile: ' + params.id);
 	});
 	
-	//Get the data on the placables, then render the sidebar
-	Crafty.bind('reloadLevel', function(params) {
+	//Get the data on the placeables, then render the sidebar
+	var updateLevels = function(params) {
 		var inventory = Game.getRemainingInventory();
-		//if (inventory.fire)
-		//TODO
-	});
+		for (var i = 0; i < Editor.placeables.length; i++) {
+			var initial = inventory[Editor.placeables[i].id];
+			Editor.placeables[i].numberInitial = initial;
+			Editor.placeables[i].numberRemaining = initial;
+		}
+		Editor.render();
+	};
+	
+	Crafty.bind('LevelLoaded', updateLevels);
 	
 	Crafty.bind('InventoryUpdated', function(inventory) {
-		//TODO
+		var inventory = Game.getRemainingInventory();
+		for (var i = 0; i < Editor.placeables.length; i++) {
+			var remaining = inventory[Editor.placeables[i].id];
+			Editor.placeables[i].numberRemaining = remaining;
+		}
+		Editor.render();
 	});
 	
 	Editor.render();
+
   enableDragNDrop();
   
 	// Map editor
