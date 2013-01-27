@@ -160,6 +160,9 @@ Crafty.c('Goomba', {
 		}
 	},
 	eatDeliciousAttractor : function(attractor) {
+		if(!Crafty(attractor).at) {
+			return;
+		}
 		var at = Crafty(attractor).at();
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// collision, so eat the entity and continue looking for additional attractors
@@ -267,7 +270,7 @@ Crafty.c('YellowGoomba', {
 		}.bind(this));
 
 		// eat delicious attractors if we're standing on one, then check for attractors to move to
-		var attractors = waters.concat(bugs);
+		var attractors = _.union(waters,bugs);
 		_.each(attractors, this.eatDeliciousAttractor.bind(this));
 		if((this.getYummyTarget.bind(this))(attractors)) {
 			// attract towards attractor!
