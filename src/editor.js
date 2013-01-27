@@ -23,25 +23,25 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/t_env_fireA.png',
+			img: 'assets/t_env_fireB.png',
 			numberRemaining : 5,
 			numberInitial : 5
 		},
 		{
 			id: 'Water',
-			img: 'assets/t_env_waterA.png',
+			img: 'assets/t_env_waterB.png',
 			numberRemaining : 5,
 			numberInitial : 5
 		},
 		{
 			id: 'Bug',
-			img: 'assets/t_env_bugA.png',
+			img: 'assets/t_env_bugB.png',
 			numberRemaining : 5,
 			numberInitial : 5
 		},
 		{
 			id: 'Wall',
-			img: 'assets/env_wallA.png',
+			img: 'assets/env_wallB.png',
 			numberRemaining : 5,
 			numberInitial : 5
 		}
