@@ -9,7 +9,7 @@ Game = {
     }
   },
 
-  background: 'url("assets/background.jpeg") no-repeat 0 0',
+  background: 'url("assets/background.png") no-repeat 0 0',
 
   assets: [
     'assets/t_env_bugB.png',
@@ -52,6 +52,7 @@ Game = {
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(this.width(), this.height());
     Crafty.background(this.background);
+	Crafty.e('Overlay');
 
     Game.current_level = 1;
 
@@ -139,6 +140,8 @@ Game = {
     Crafty.sprite(64, 'assets/t_chr_redA_walk.png', {
       spr_goomba_red: [0, 3]
     });
+
+	Crafty.e('2D', 'DOM', 'Image').image('../assets/background.png').z(100);
   },
 
   loadAudio: function() {

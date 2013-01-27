@@ -38,6 +38,10 @@ Crafty.c('Actor', {
 	},
 });
 
+Crafty.c('Overlay'), {
+	this.requires('2D','Canvas', 'spr_overlay');
+}
+
 Crafty.c('FromEditor', {
 	//Just a trait
 });
