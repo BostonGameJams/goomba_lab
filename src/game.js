@@ -163,6 +163,30 @@ Game = {
       spr_goomba_red: [0, 3]
     });
 
+    Crafty.sprite(64, 'assets/t_chr_yellowA_eat.png', {
+      spr_goomba_yellow_eat: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_blueA_eat.png', {
+      spr_goomba_blue_eat: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_redA_eat.png', {
+      spr_goomba_red_eat: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_yellowA_scare.png', {
+      spr_goomba_yellow_scare: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_blueA_scare.png', {
+      spr_goomba_blue_scare: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_redA_scare.png', {
+      spr_goomba_red_scare: [0, 3]
+    });
+
     Crafty.sprite(64, 'assets/t_env_bugA.png', {
       spr_bug: [0, 0]
     });
