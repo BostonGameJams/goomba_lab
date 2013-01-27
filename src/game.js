@@ -9,7 +9,7 @@ Game = {
     }
   },
 
-  background: 'rgb(87, 109, 20)',
+  background: 'url("assets/background.jpeg") no-repeat 0 0',
 
   assets: [
     'assets/16x16_sample.gif'
