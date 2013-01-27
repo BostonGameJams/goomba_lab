@@ -108,11 +108,11 @@ body {
         }
 
 		#editorPanel #tileList .selected {
-          background-color:purple;
+          background: url('../assets/border.png') no-repeat 0 0;
         }
         
         #editorPanel #tileList li:hover {
-          background-color: rgba(256, 256, 256, 0.8);
+          background: url('../assets/border.png') no-repeat 0 0;
         }
         
         #editorPanel #tileList li img,
