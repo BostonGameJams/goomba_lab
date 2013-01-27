@@ -117,9 +117,10 @@ Crafty.c('Goomba', {
 			this.y = Game.map_grid.tile.height * this.nextGridY;
 			// check for win
 			var exits = Crafty("Exit");
+			var self = this;
 			if(_.find(exits, function(exit) {
 				var at = Crafty(exit).at();
-				return at.x == this.currentGridX && at.y == this.currentGridY;
+				return at.x == self.currentGridX && at.y == self.currentGridY;
 			})) {
 				Crafty.trigger("ReachedExit");
 			}
