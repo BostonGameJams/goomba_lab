@@ -239,7 +239,7 @@ Crafty.scene('Victory', function(){
   // After a short delay, watch for the player to press a key, then restart
   // the game when a key is pressed
   var delay = true;
-  setTimeout(function() { delay = false; }, 1000);
+  setTimeout(function() { delay = false; }, 500);
   this.watch_for_next_level_click = Crafty.bind('gameClick', function(params) {
     // console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
     if (!delay) {
