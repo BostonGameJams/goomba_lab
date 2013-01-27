@@ -74,11 +74,6 @@ Editor = {
 		$('#editorPanel').html('');
 		
 		var out = '';
-		// if (this.placeables.length > 4) {
-		// 	out += '<img id="upArrow" src="assets/upArrow.png"/>';
-		// } else {
-		// 	out += '<img id="upArrow" src="assets/upArrow.png" class="hiddenArrow"/>';
-		// }
 		if (Editor.simulationStarted) {
 			out += '<ul id="tileListLocked">';
 		} else {
@@ -101,11 +96,6 @@ Editor = {
 				i++;
 			}
 		out += '</ul>';
-		if (this.placeables.length > 4) {
-			out += '<div id="downArrow" src="assets/downArrow.png"/>';
-		} else {
-			out += '<div id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
-		}
 		if(this.simulationStarted) {
 			out += '<div id="resetSimulationButton"/>';
 		} else {
