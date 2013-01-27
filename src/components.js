@@ -165,13 +165,15 @@ Crafty.c('Goomba', {
 		}
 		var at = Crafty(attractor).at();
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
-			// collision, so eat the entity and continue looking for additional attractors
+			// same tile, so eat the entity and continue looking for additional attractors
 			Crafty(attractor).eat();
 		}
 	},
 	getYummyTarget : function(attractors) {
+		// store some things in function scope to avoid constantly binding
 		var cgx = this.currentGridX;
 		var cgy = this.currentGridY;
+		// get attractors visible horizontally (i.e. in goombavision!) 
 		var attractor_objects = _.map(attractors, function(a) {
 			return Crafty(a);
 		});
@@ -181,47 +183,117 @@ Crafty.c('Goomba', {
 			}
 			return a.at().x == cgx || a.at().y == cgy;
 		});
+		if(attractors_in_line.length == 0) {
+			return false;
+		}
+		// get some distance and direction information going
 		var attractors_by_dist = _.sortBy(attractors_in_line, function(a) {
 			return Math.abs(a.at().x - cgx) + Math.abs(a.at().y - cgy);
 		});
-		if(attractors_by_dist.length == 0) {
-			return false;
-		}
-		var min_dist = Math.abs(attractors_by_dist[0].at().x - cgx) + Math.abs(attractors_by_dist[0].at().y - cgy);
-		var closest_attractors = _.filter(attractors_by_dist, function(a) {
-			return (Math.abs(a.at().x - cgx) + Math.abs(a.at().y - cgy)) == min_dist;
-		});
-		var closest_attractors_with_dir = _.map(closest_attractors, function(a) {
+		var attractors_by_dist_with_dir = _.map(attractors_by_dist, function(a) {
 			if(a.at().x > cgx)
 				return {
 					dir : DIR_RIGHT,
+					dist : a.at().x - cgx,
 					a : a
 				};
 			else if(a.at().x < cgx)
 				return {
 					dir : DIR_LEFT,
+					dist : -(a.at().x - cgx),
 					a : a
 				};
 			else if(a.at().y > cgy)
 				return {
 					dir : DIR_DOWN,
+					dist : a.at().y - cgy,
 					a : a
 				};
 			else if(a.at().y < cgy)
 				return {
 					dir : DIR_UP,
+					dist : -(a.at().y - cgy),
 					a : a
 				};
 		});
+		
+		// intermission! find the closest obstacle in each direction
+		var dist_right, dist_left, dist_down, dist_up;
+		var count = 1;
+		for(var i = cgx + 1; i < Game.map_grid.width; i++)
+		{
+			if(!this.pathingGrid[i][cgy])
+			{
+				dist_right = count;
+				break;
+			}
+			count++;
+		}
+		count = 1;
+		for(var i = cgx - 1; i >= 0; i--)
+		{
+			if(!this.pathingGrid[i][cgy])
+			{
+				dist_left = count;
+				break;
+			}
+			count++;
+		}
+		count = 1;
+		for(var i = cgy + 1; i < Game.map_grid.height; i++)
+		{
+			if(!this.pathingGrid[cgx][i])
+			{
+				dist_down = count;
+				break;
+			}
+			count++;
+		}
+		count = 1;
+		for(var i = cgy - 1; i <= 0; i--)
+		{
+			if(!this.pathingGrid[cgx][i])
+			{
+				dist_up = count;
+				break;
+			}
+			count++;
+		}
+		
+		// back to attractors...
+		var unoccluded_attractors = _.filter(attractors_by_dist_with_dir, function (a) {
+			switch(a.dir)
+			{
+				case DIR_RIGHT:
+					if(!dist_right || a.dist < dist_right) {return true;} break;
+				case DIR_UP:
+					if(!dist_up || a.dist < dist_up) {return true;} break;
+				case DIR_LEFT:
+					if(!dist_left || a.dist < dist_left) {return true;} break;
+				case DIR_DOWN:
+					if(!dist_down || a.dist < dist_down) {return true;} break;
+			}
+			return false;
+		})
+		
+		if(unoccluded_attractors.length == 0)
+		{
+			return false;
+		}
+		
+		var min_dist = unoccluded_attractors[0].dist;
+		var closest_attractors = _.filter(unoccluded_attractors, function(a) {
+			return a.dist == min_dist;
+		});
 		var chosen_attractor;
-		if(closest_attractors_with_dir.length > 1) {
-			if(!( chosen_attractor = _.find(closest_attractors_with_dir, function(a) {
+		if(closest_attractors.length > 1) {
+			if(!( chosen_attractor = _.find(closest_attractors, function(a) {
 				return a.dir == this.moveDir;
 			}.bind(this)))) {
-				chosen_attractor = _.sortBy(closest_attractors_with_dir, "dir")[0];
+				chosen_attractor = _.sortBy(closest_attractors, "dir")[0];
 			}
 		} else {
-			chosen_attractor = closest_attractors_with_dir[0];
+			chosen_attractor = closest_attractors[0];
 		}
 
 		if(chosen_attractor) {
@@ -270,7 +342,7 @@ Crafty.c('YellowGoomba', {
 		}.bind(this));
 
 		// eat delicious attractors if we're standing on one, then check for attractors to move to
-		var attractors = _.union(waters,bugs);
+		var attractors = _.union(waters.toArray(),bugs.toArray());
 		_.each(attractors, this.eatDeliciousAttractor.bind(this));
 		if((this.getYummyTarget.bind(this))(attractors)) {
 			// attract towards attractor!
