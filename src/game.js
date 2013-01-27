@@ -21,6 +21,7 @@ Game = {
       { name: 'loaded',  from: ['loading', 'loaded'], to: 'loaded' },
       { name: 'run',     from: ['loaded', 'paused'],  to: 'running' },
       { name: 'reset',   from: ['running', 'paused'], to: 'loaded' },
+      { name: 'reload',  from: ['loaded'],            to: 'loaded' },
       { name: 'loading', from: '*',                   to: 'loading' },
       { name: 'pause',   from: 'running',             to: 'paused' }
     ]
@@ -56,15 +57,20 @@ Game = {
 
   watchEvents: function() {
     Crafty.bind('startSimulation', function() {
-      Game.runSim();
+      Game.runSimulation();
     });
 
-    Crafty.bind('resetLevel', function() {
-      Game.resetLevel();
+    Crafty.bind('reloadLevel', function() {
+      if (Game.state_machine.current == 'loaded') {
+        Game.reloadLevel();
+      } else {
+        Crafty.trigger('resetSimulation');
+        Game.resetSimulation();
+      }
     });
 
     Crafty.bind('pauseSimulation', function() {
-      Game.pauseSim();
+      Game.pauseSimulation();
     });
 
     Crafty.bind('placeTile', function(event_data) {
@@ -144,22 +150,33 @@ Game = {
       })
     });
 
+    // Init metadata for Goombas, etc.
+    Crafty('Goomba').each(function() {
+      this.startPosition = { x: this.at().x, y: this.at().y };
+    });
+
     Game.current_level = level;
 
     console.log('Loaded level ' + level.id)
   },
 
-  resetLevel: function() {
-    Game.state_machine.reset();
-    console.log('Game [reseting]');
+  reloadLevel: function() {
+    Game.state_machine.reload();
+    console.log('Game [reloading level]');
+    Game.loadLevel();
   },
 
-  runSim: function() {
+  resetSimulation: function() {
+    Game.state_machine.reset();
+    console.log('Game [reseting simulation]');
+  },
+
+  runSimulation: function() {
     Game.state_machine.run();
     console.log('Game [running]');
   },
 
-  pauseSim: function() {
+  pauseSimulation: function() {
     Game.state_machine.pause();
     console.log('Game [pausing]');
   }

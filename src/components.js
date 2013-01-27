@@ -37,7 +37,6 @@ Crafty.c('Actor', {
 	},
 });
 
-// A Tree is just an Actor with a certain sprite
 Crafty.c('Goomba', {
 	init : function() {
 		this.requires('Actor').bind("pauseSimulation", function() {
@@ -111,7 +110,6 @@ Crafty.c('Goomba', {
 	},
 });
 
-// A Bush is just an Actor with a certain sprite
 Crafty.c('YellowGoomba', {
 	init : function() {
 		this.requires('Goomba, Color').color('yellow');

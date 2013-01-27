@@ -131,7 +131,7 @@ Editor = {
 		});
 		
 		$('#resetButton').click(function(event) {
-			Crafty.trigger('resetLevel');
+			Crafty.trigger('reloadLevel');
 		});
 		
 		$('#upArrow').click(function(event) {
@@ -154,7 +154,7 @@ Editor = {
 $(document).ready(function() {
 	Crafty.bind('startSimulation',Editor.goButtonPushed);
 	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
-	Crafty.bind('resetLevel',Editor.resetButtonPushed);
+	Crafty.bind('reloadLevel',Editor.resetButtonPushed);
 	$('#cr-stage').click(function(event) {
 		//Relative ( to its parent) mouse position 
 		var posX = $(this).position().left;
