@@ -16,6 +16,7 @@ Game = {
     'assets/t_env_bugB.png',
     'assets/t_env_fireB.png',
     'assets/t_env_waterB.png',
+    'assets/t_env_waterA.png',
     'assets/env_wallA.png',
     'assets/t_chr_redA_walk.png',
     'assets/t_chr_yellowA_walk.png',
@@ -135,10 +136,10 @@ Game = {
       var sprite_name = 'spr_' + unit
       var sprite_map_obj = {}
       sprite_map_obj[sprite_name] = [0, 0];
-      Crafty.sprite(64, 'assets/t_env_' + unit + 'B.png', sprite_map_obj);
+      Crafty.sprite(64, 'assets/t_env_' + unit + 'A.png', sprite_map_obj);
     });
 
-    Crafty.sprite(64, 'assets/env_wallA.png', {
+    Crafty.sprite(64, 'assets/t_env_pitA.png', {
       spr_wall: [0, 0]
     });
 
@@ -154,7 +155,7 @@ Game = {
       spr_goomba_red: [0, 3]
     });
 
-    Crafty.sprite(64, 'assets/t_env_bugB.png', {
+    Crafty.sprite(64, 'assets/t_env_bugA.png', {
       spr_bug: [0, 0]
     });
 

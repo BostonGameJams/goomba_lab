@@ -33,6 +33,8 @@ Crafty.c('Grid', {
 // An "Actor" is an entity that is drawn in 2D on canvas
 //  via our logical coordinate grid
 Crafty.c('Actor', {
+	animation_speed : 16,
+
 	init : function() {
 		this.created_at = (new Date()).getTime();
 
@@ -613,21 +615,30 @@ Crafty.c('Yummy', {
 
 Crafty.c('Fire', {
 	init : function() {
-		this.requires('Yummy, Actor, Solid, spr_fire');
-		this.yummy('Fire');
+		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_fire')
+			.yummy('Fire')
+			.animate('Rotate', 0, 0, 15)
+			.animate('Rotate', 8, -1);
 	},
 });
 
 Crafty.c('Water', {
+	animation_speed: 4,
 	init : function() {
-		this.requires('Yummy, Actor, Solid, spr_water');
-		this.yummy('Water');
+		this.animation_speed = 2;
+		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_water')
+			.yummy('Water')
+			.animate('Rotate', 0, 0, 3)
+			.animate('Rotate', 32, -1);
 	},
 });
 
 Crafty.c('Bug', {
 	animation_speed : 16,
 	init : function() {
-		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_bug').animate('MovingUp', 0, 0, 7).animate('MovingDown', 0, 1, 7).animate('MovingLeft', 0, 2, 7).animate('MovingRight', 0, 3, 7).yummy('Bug').animate('MovingRight', this.animation_speed, -1);
+		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_bug')
+			.animate('Rotate', 0, 0, 31)
+			.yummy('Bug')
+			.animate('Rotate', this.animation_speed, -1);
 	},
 });
