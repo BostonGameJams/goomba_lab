@@ -16,6 +16,7 @@ Game = {
     'assets/t_env_bugB.png',
     'assets/t_env_fireB.png',
     'assets/t_env_waterB.png',
+    'assets/t_env_waterA.png',
     'assets/env_wallA.png',
     'assets/t_chr_redA_walk.png',
     'assets/t_chr_yellowA_walk.png',
@@ -25,17 +26,21 @@ Game = {
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
-      { name: 'loaded',  from: ['victory', 'loading', 'loaded'], to: 'loaded' },
-      { name: 'run',     from: ['loaded', 'paused'],             to: 'running' },
-      { name: 'reset',   from: ['running', 'paused'],            to: 'loaded' },
-      { name: 'reload',  from: ['loaded'],                       to: 'loaded' },
-      { name: 'loading', from: '*',                              to: 'loading' },
-      { name: 'pause',   from: 'running',                        to: 'paused' },
-      { name: 'win',     from: 'running',                        to: 'victory' }
+      { name: 'game_scene_loaded', from: '*',                           to: 'loaded' },
+      { name: 'becomeReady',       from: 'loaded',                      to: 'ready' },
+      { name: 'run',               from: ['loaded', 'paused', 'ready'], to: 'running' },
+      { name: 'reset',             from: ['running', 'paused'],         to: 'ready' },
+      { name: 'reload',            from: ['ready'],                     to: 'loaded' },
+      { name: 'loading',           from: '*',                           to: 'loading' },
+      { name: 'pause',             from: 'running',                     to: 'paused' },
+      { name: 'win',               from: 'running',                     to: 'victory' }
     ],
     callbacks: {
       onloaded:  function(event, from, to, msg) {
         Crafty.trigger('LevelLoaded', Game.current_level.inventory);
+        Game.state_machine.becomeReady();
+      },
+      onbecomeReady: function() {
         Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
       }
     }
@@ -128,6 +133,10 @@ Game = {
 
       Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
     }); //end bound function
+
+    jQuery('#cr-stage').click(function() {
+      Crafty.trigger('gameClick');
+    });
   },
 
   loadSprites: function() {
@@ -135,10 +144,10 @@ Game = {
       var sprite_name = 'spr_' + unit
       var sprite_map_obj = {}
       sprite_map_obj[sprite_name] = [0, 0];
-      Crafty.sprite(64, 'assets/t_env_' + unit + 'B.png', sprite_map_obj);
+      Crafty.sprite(64, 'assets/t_env_' + unit + 'A.png', sprite_map_obj);
     });
 
-    Crafty.sprite(64, 'assets/env_wallA.png', {
+    Crafty.sprite(64, 'assets/t_env_pitA.png', {
       spr_wall: [0, 0]
     });
 
@@ -154,7 +163,7 @@ Game = {
       spr_goomba_red: [0, 3]
     });
 
-    Crafty.sprite(64, 'assets/t_env_bugB.png', {
+    Crafty.sprite(64, 'assets/t_env_bugA.png', {
       spr_bug: [0, 0]
     });
 

@@ -193,7 +193,7 @@ Game.levels = [
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   // Put your game code here...
-  Game.state_machine.loaded();
+  Game.state_machine.game_scene_loaded();
 }, function() {
   // Here is where you can unbind event listeners and other things you
   //  need to do to allow restarting/loading multiple levels to work...

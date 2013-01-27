@@ -23,25 +23,25 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/t_env_fireA.png',
+			img: 'assets/t_env_fireB.png',
 			numberRemaining : 0,
 			numberInitial : 0
 		},
 		{
 			id: 'Water',
-			img: 'assets/t_env_waterA.png',
+			img: 'assets/t_env_waterB.png',
 			numberRemaining : 0,
 			numberInitial : 0
 		},
 		{
 			id: 'Bug',
-			img: 'assets/t_env_bugA.png',
+			img: 'assets/t_env_bugB.png',
 			numberRemaining : 0,
 			numberInitial : 0
 		},
 		{
 			id: 'Wall',
-			img: 'assets/env_wallA.png',
+			img: 'assets/env_wallB.png',
 			numberRemaining : 0,
 			numberInitial : 0
 		}
@@ -235,10 +235,6 @@ $(document).ready(function() {
 
 	Crafty.bind('placeTile', function(params) {
 		console.log('[Editor] placeTile: ' + params.id);
-	})
-	
-	Crafty.bind('gameClick', function(params) {
-		console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
 	});
 	
 	//Get the data on the placeables, then render the sidebar
@@ -276,6 +272,6 @@ $(document).ready(function() {
 		console.log($('.live_map_editor textarea').val());
 		var data = $('.live_map_editor textarea').val().split('\n');
 		console.log('data', data);
-		Game.loadLevel({ id: 'new', data: data });
+		Game.loadLevel({ id: 'new', data: data, inventory: { Fire: 10, Water: 10, Wall: 10, Bug: 10 }});
 	});
 });
