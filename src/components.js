@@ -37,6 +37,10 @@ Crafty.c('Actor', {
 	},
 });
 
+Crafty.c('FromEditor', {
+	//Just a trait
+});
+
 Crafty.c('Goomba', {
 	init : function() {
 		this.requires('Actor').bind("pauseSimulation", function() {
