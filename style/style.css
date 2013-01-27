@@ -43,10 +43,6 @@ body {
 		font-family: arial;
 		font-size: 10px;
       }
-    
-        #editorPanel img {
-        
-        }
         
         #editorPanel #upArrow {
 		  background-color:white;
@@ -63,26 +59,43 @@ body {
         
         #editorPanel #goButton,
  		#editorPanel #pauseButton,
-		#editorPanel #resetButton,
+		#editorPanel #resetSimulationButton,
 		#editorPanel #reloadLevelButton {
           width:64px;
           height:64px;
+		  float:left;
         }
 
 		#editorPanel #goButton {
-			background-color:green;
+			background:url('../assets/t_gui_goA_normal.png') no-repeat 0 0 ;
+		}
+		
+		#editorPanel #goButton:hover {
+			background:url('../assets/t_gui_goA_hover.png') no-repeat 0 0 ;
 		}
 		
 		#editorPanel #pauseButton {
-			background-color:yellow;
+			background:url('../assets/t_gui_pauseA_normal.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #resetButton {
-			background-color:red;
+		#editorPanel #pauseButton:hover {
+			background:url('../assets/t_gui_pauseA_hover.png') no-repeat 0 0 ;
+		}
+		
+		#editorPanel #resetSimulationButton {
+			background:url('../assets/t_gui_rewindA_normal.png') no-repeat 0 0 ;
+		}
+		
+		#editorPanel #resetSimulationButton:hover {
+			background:url('../assets/t_gui_rewindA_hover.png') no-repeat 0 0 ;
 		}
 		
 		#editorPanel #reloadLevelButton {
-			background-color:red;
+			background:url('../assets/t_gui_restartA_normal.png') no-repeat 0 0 ;
+		}
+		
+		#editorPanel #reloadLevelButton:hover {
+			background:url('../assets/t_gui_restartA_hover.png') no-repeat 0 0 ;
 		}
     
         #editorPanel .hiddenArrow {
