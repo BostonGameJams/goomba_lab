@@ -32,7 +32,14 @@ Game = {
       { name: 'loading', from: '*',                              to: 'loading' },
       { name: 'pause',   from: 'running',                        to: 'paused' },
       { name: 'win',     from: 'running',                        to: 'victory' }
-    ]
+    ],
+    callbacks: {
+      onloaded:  function(event, from, to, msg) {
+        console.log('Loaded!', Game.current_level);
+        Crafty.trigger('LevelLoaded', Game.current_level);
+        Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
+      }
+    }
   }),
 
   yummiesEaten : [],
@@ -57,7 +64,7 @@ Game = {
 
 	//Crafty.e('Overlay').image('assets/overlay.png').at(1,1).z(100);
 
-    Game.current_level = 1;
+    Game.current_level = Game.levels[0];
 
     Controls.watchKeyPresses();
 
@@ -119,6 +126,8 @@ Game = {
         //Do this if false
         Crafty.e(event_data.id).at(tile_x, tile_y);
       }
+
+      Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
     }); //end bound function
   },
 
@@ -263,7 +272,7 @@ Game = {
   reloadLevel: function() {
     Game.state_machine.reload();
     console.log('Game [reloading level]');
-  Game.yummiesEaten = [];
+    Game.yummiesEaten = [];
     Game.loadLevel();
   },
 
@@ -309,6 +318,19 @@ Game = {
     if (prev_level) {
       this.loadLevel(prev_level);
     }
+  },
+
+  getNumUserPlaced: function(unit_type) {
+    return Crafty(unit_type).length - Crafty(unit_type + ' FromEditor').length;
+  },
+
+  getRemainingInventory: function() {
+    var remaining = {};
+    var self = this;
+    _.each('Fire Water Wall Bug'.split(' '), function(unit) {
+      remaining[unit] = (Game.current_level.inventory[unit] || 0) - self.getNumUserPlaced(unit);
+    });
+    return remaining;
   }
 }
 Game.start = Game.start.bind(Game);
