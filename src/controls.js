@@ -8,7 +8,13 @@ Controls = {
           if (e.key == Crafty.keys[i]) {
             Game.loadLevel(i);
           }
-        })
+        });
+
+        if (e.key == Crafty.keys['LEFT_ARROW']) {
+          Game.loadPrevLevel();
+        } else if (e.key == Crafty.keys['RIGHT_ARROW']) {
+          Game.loadNextLevel();
+        }
       }
 
       if (e.key == Crafty.keys['R']) {
