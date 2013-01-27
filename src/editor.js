@@ -23,19 +23,27 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/t_env_fireA.png'
+			img: 'assets/t_env_fireA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Water',
-			img: 'assets/t_env_waterA.png'
+			img: 'assets/t_env_waterA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Bug',
-			img: 'assets/t_env_bugA.png'
+			img: 'assets/t_env_bugA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Wall',
-			img: 'assets/env_wallA.png'
+			img: 'assets/env_wallA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		}
 	],
 	selectedId : null,
@@ -53,6 +61,7 @@ Editor = {
 		console.log('Reload level!');
 		Editor.simulationStarted = false;
 		Editor.pauseEnabled = true;
+		//Get the initial and final data
 		Editor.render();
 	},
 	
@@ -81,14 +90,25 @@ Editor = {
 		}
 			var i = this.placeableIndex;
 			for( ; i < this.placeables.length && i < this.placeableIndex + 4; i++) {
-				if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
-					out += '<li class="tile selected">';
-				} else {
-					out += '<li class="tile">';
+				if (this.placeables[i].numberInitial > 0) {
+					if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
+						out += '<li class="tile selected">';
+					} else {
+						out += '<li class="tile">';
+					}
+						out += '<img id="' + this.placeables[i].id + '" ';
+						out += 'src="' + this.placeables[i].img + '" class="icon"/>';
+						
+						out += '<span>';
+							out += this.placeables[i].numberRemaining;
+						out += '</span>';
+						out += '<span>  /  </span>';
+						out += '<span>';
+							out += this.placeables[i].numberInitial;
+						out += '</span>';
+					
+					out += '</li>';
 				}
-					out += '<img id="' + this.placeables[i].id + '" ';
-					out += 'src="' + this.placeables[i].img + '" class="icon"/>';
-				out += '</li>';
 			}
 			while (i < this.placeableIndex + 4) {
 				//Generate empty rows
@@ -192,6 +212,8 @@ $(document).ready(function() {
 		console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
 	});
 	
+	//Get the data on the placables, then render the sidebar
+	//Game.
 	Editor.render();
 
 

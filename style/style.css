@@ -102,9 +102,10 @@ body {
  		#editorPanel #tileListLocked .tile {
           width:64px;
           height:96px;
-          margin: 0 auto;
           color: black;
           padding: 0 16px;
+		  margin: 0 auto;
+		  font-size: 12px;
         }
 
 		#editorPanel #tileList .selected {
@@ -115,8 +116,8 @@ body {
           background: url('../assets/border.png') no-repeat 0 0;
         }
         
-        #editorPanel #tileList li img,
-		#editorPanel #tileListLocked li img{
+        #editorPanel #tileList li .icon,
+		#editorPanel #tileListLocked li .icon{
           width:64px;
           height:64px;
           padding-top: 15px;
