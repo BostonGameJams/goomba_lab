@@ -123,9 +123,10 @@ Crafty.c('Goomba', {
 			this.y = Game.map_grid.tile.height * this.nextGridY;
 			// check for win
 			var exits = Crafty("Exit");
+			var self = this;
 			if(_.find(exits, function(exit) {
 				var at = Crafty(exit).at();
-				return at.x == this.currentGridX && at.y == this.currentGridY;
+				return at.x == self.currentGridX && at.y == self.currentGridY;
 			})) {
 				Crafty.trigger("ReachedExit");
 			}
@@ -165,64 +166,146 @@ Crafty.c('Goomba', {
 			this.tweenStart = new Date().getTime();
 		}
 	},
-	checkAttractor : function(attractor) {
+	eatDeliciousAttractor : function(attractor) {
+		if(!Crafty(attractor).at) {
+			return;
+		}
 		var at = Crafty(attractor).at();
-		// we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
-			// collision, so eat the entity and continue looking for additional attractors
+			// same tile, so eat the entity and continue looking for additional attractors
 			Crafty(attractor).eat();
-		} else if(this.currentGridX == at.x) {
-			// same column, check for pathing
-			var reachable = true;
-			if(this.currentGridY > at.y)// attractor is above goomba
-			{
-				attractionDir = DIR_UP;
-				for(var i = at.y; i <= this.currentGridY; i++) {
-					if(!this.pathingGrid[at.x][i]) {
-						reachable = false;
-						break;
-					}
-				}
-			} else// attractor is below goomba
-			{
-				attractionDir = DIR_DOWN;
-				for(var i = this.currentGridY; i <= at.y; i++) {
-					if(!this.pathingGrid[at.x][i]) {
-						reachable = false;
-						break;
-					}
-				}
+		}
+	},
+	getYummyTarget : function(attractors) {
+		// store some things in function scope to avoid constantly binding
+		var cgx = this.currentGridX;
+		var cgy = this.currentGridY;
+		// get attractors visible horizontally (i.e. in goombavision!) 
+		var attractor_objects = _.map(attractors, function(a) {
+			return Crafty(a);
+		});
+		var attractors_in_line = _.filter(attractor_objects, function(a) {
+			if(!a.at) {
+				return false;
 			}
-			if(reachable) {
-				this.moveDir = attractionDir;
-				return true;
-			}
-		} else if(this.currentGridY == at.y) {
-			// same row, check for pathing
-			var reachable = true;
-			if(this.currentGridX > at.x)// attractor is left of goomba
+			return a.at().x == cgx || a.at().y == cgy;
+		});
+		if(attractors_in_line.length == 0) {
+			return false;
+		}
+		// get some distance and direction information going
+		var attractors_by_dist = _.sortBy(attractors_in_line, function(a) {
+			return Math.abs(a.at().x - cgx) + Math.abs(a.at().y - cgy);
+		});
+		var attractors_by_dist_with_dir = _.map(attractors_by_dist, function(a) {
+			if(a.at().x > cgx)
+				return {
+					dir : DIR_RIGHT,
+					dist : a.at().x - cgx,
+					a : a
+				};
+			else if(a.at().x < cgx)
+				return {
+					dir : DIR_LEFT,
+					dist : -(a.at().x - cgx),
+					a : a
+				};
+			else if(a.at().y > cgy)
+				return {
+					dir : DIR_DOWN,
+					dist : a.at().y - cgy,
+					a : a
+				};
+			else if(a.at().y < cgy)
+				return {
+					dir : DIR_UP,
+					dist : -(a.at().y - cgy),
+					a : a
+				};
+		});
+		
+		// intermission! find the closest obstacle in each direction
+		var dist_right, dist_left, dist_down, dist_up;
+		var count = 1;
+		for(var i = cgx + 1; i < Game.map_grid.width; i++)
+		{
+			if(!this.pathingGrid[i][cgy])
 			{
-				attractionDir = DIR_LEFT;
-				for(var i = at.x; i <= this.currentGridX; i++) {
-					if(!this.pathingGrid[i][at.y]) {
-						reachable = false;
-						break;
-					}
-				}
-			} else// attractor is right of goomba
+				dist_right = count;
+				break;
+			}
+			count++;
+		}
+		count = 1;
+		for(var i = cgx - 1; i >= 0; i--)
+		{
+			if(!this.pathingGrid[i][cgy])
 			{
-				attractionDir = DIR_RIGHT;
-				for(var i = this.currentGridX; i <= at.x; i++) {
-					if(!this.pathingGrid[i][at.y]) {
-						reachable = false;
-						break;
-					}
-				}
+				dist_left = count;
+				break;
 			}
-			if(reachable) {
-				this.moveDir = attractionDir;
-				return true;
+			count++;
+		}
+		count = 1;
+		for(var i = cgy + 1; i < Game.map_grid.height; i++)
+		{
+			if(!this.pathingGrid[cgx][i])
+			{
+				dist_down = count;
+				break;
 			}
+			count++;
+		}
+		count = 1;
+		for(var i = cgy - 1; i <= 0; i--)
+		{
+			if(!this.pathingGrid[cgx][i])
+			{
+				dist_up = count;
+				break;
+			}
+			count++;
+		}
+		
+		// back to attractors...
+		var unoccluded_attractors = _.filter(attractors_by_dist_with_dir, function (a) {
+			switch(a.dir)
+			{
+				case DIR_RIGHT:
+					if(!dist_right || a.dist < dist_right) {return true;} break;
+				case DIR_UP:
+					if(!dist_up || a.dist < dist_up) {return true;} break;
+				case DIR_LEFT:
+					if(!dist_left || a.dist < dist_left) {return true;} break;
+				case DIR_DOWN:
+					if(!dist_down || a.dist < dist_down) {return true;} break;
+			}
+			return false;
+		})
+		
+		if(unoccluded_attractors.length == 0)
+		{
+			return false;
+		}
+		
+		var min_dist = unoccluded_attractors[0].dist;
+		var closest_attractors = _.filter(unoccluded_attractors, function(a) {
+			return a.dist == min_dist;
+		});
+		var chosen_attractor;
+		if(closest_attractors.length > 1) {
+			if(!( chosen_attractor = _.find(closest_attractors, function(a) {
+				return a.dir == this.moveDir;
+			}.bind(this)))) {
+				chosen_attractor = _.sortBy(closest_attractors, "dir")[0];
+			}
+		} else {
+			chosen_attractor = closest_attractors[0];
+		}
+
+		if(chosen_attractor) {
+			this.moveDir = chosen_attractor.dir;
+			return true;
 		}
 		return false;
 	},
@@ -264,16 +347,11 @@ Crafty.c('YellowGoomba', {
 				}
 			}
 		}.bind(this));
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// WATER
-		if(_.find(waters, this.checkAttractor.bind(this))) {
-			// attract towards attractor!
-			return this.moveDir;
-		}
-		// BUGS
-		if(_.find(bugs, this.checkAttractor.bind(this))) {
+
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = _.union(waters.toArray(),bugs.toArray());
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if((this.getYummyTarget.bind(this))(attractors)) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -347,11 +425,10 @@ Crafty.c('BlueGoomba', {
 			this.pathingGrid[at.x][at.y] = false;
 		}.bind(this));
 
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// BUGS
-		if(_.find(bugs, this.checkAttractor.bind(this))) {
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = bugs;
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if(this.getYummyTarget(attractors.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -442,11 +519,10 @@ Crafty.c('RedGoomba', {
 			}
 		}.bind(this));
 
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// FIRE
-		if(_.find(fires, this.checkAttractor.bind(this))) {
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = fires;
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if(this.getYummyTarget(attractors.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -501,7 +577,7 @@ Crafty.c('Wall', {
 
 Crafty.c('Exit', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('white');
+		this.requires('Actor, Solid, spr_exit');
 	},
 });
 
@@ -522,6 +598,7 @@ Crafty.c('Yummy', {
 	
 	yummy : function(yummyType) {
 		this.yummyType = yummyType;
+		return this;
 	}
 });
 
@@ -540,8 +617,14 @@ Crafty.c('Water', {
 });
 
 Crafty.c('Bug', {
+	animation_speed: 16,
 	init : function() {
-		this.requires('Yummy, Actor, Solid, spr_bug');
-		this.yummy('Bug');
+		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_bug')
+			.animate('MovingUp',    0, 0, 7)
+			.animate('MovingDown',  0, 1, 7)
+			.animate('MovingLeft',  0, 2, 7)
+			.animate('MovingRight', 0, 3, 7)
+			.yummy('Bug')
+			.animate('MovingRight', this.animation_speed, -1);
 	},
 });

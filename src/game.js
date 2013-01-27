@@ -12,6 +12,7 @@ Game = {
   background: 'url("assets/background.png") no-repeat 0 0',
 
   assets: [
+    'assets/t_env_bugA.png',
     'assets/t_env_bugB.png',
     'assets/t_env_fireB.png',
     'assets/t_env_waterB.png',
@@ -24,12 +25,13 @@ Game = {
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
-      { name: 'loaded',  from: ['loading', 'loaded'], to: 'loaded' },
-      { name: 'run',     from: ['loaded', 'paused'],  to: 'running' },
-      { name: 'reset',   from: ['running', 'paused'], to: 'loaded' },
-      { name: 'reload',  from: ['loaded'],            to: 'loaded' },
-      { name: 'loading', from: '*',                   to: 'loading' },
-      { name: 'pause',   from: 'running',             to: 'paused' }
+      { name: 'loaded',  from: ['victory', 'loading', 'loaded'], to: 'loaded' },
+      { name: 'run',     from: ['loaded', 'paused'],             to: 'running' },
+      { name: 'reset',   from: ['running', 'paused'],            to: 'loaded' },
+      { name: 'reload',  from: ['loaded'],                       to: 'loaded' },
+      { name: 'loading', from: '*',                              to: 'loading' },
+      { name: 'pause',   from: 'running',                        to: 'paused' },
+      { name: 'win',     from: 'running',                        to: 'victory' }
     ]
   }),
 
@@ -74,52 +76,54 @@ Game = {
       Game.pauseSimulation();
     });
 
-	Crafty.bind('reloadLevel', function() {
-		Game.reloadLevel();
-	});
-	
-	Crafty.bind('resetSimulation', function() {
-		Game.resetSimulation();
-	});
+    Crafty.bind('reloadLevel', function() {
+      Game.reloadLevel();
+    });
+
+    Crafty.bind('resetSimulation', function() {
+      Game.resetSimulation();
+    });
+
+    Crafty.bind('ReachedExit', function() {
+      Game.state_machine.win();
+      Crafty.scene('Victory');
+    });
 
     Crafty.bind('placeTile', function(event_data) {
-
       var tile_x = Math.floor(event_data.x / Game.map_grid.tile.width),
           tile_y = Math.floor(event_data.y / Game.map_grid.tile.height);
-	
-	
-	var foundSomething = false;
-	var tiles = Crafty('Actor');
-	
-	if(_.find(tiles, function(tile) {
-		var at = Crafty(tile).at();
-		var fromEd = Crafty(tile).has('FromEditor');
-		var sameLocation = (at.x == tile_x && at.y == tile_y);
-		if (sameLocation) {
-			if(fromEd) {
-				//Don't add item
-				return true;
-			} else {
-				//Add item
-				Crafty.e(event_data.id).at(tile_x, tile_y);
-				Crafty(tile).destroy();
-				return true;
-			}
-		}
-		return false;
-		
-	}))	{
-		//Do this if true
-		//No-op
-	} else {
-		//Do this if false
-		Crafty.e(event_data.id).at(tile_x, tile_y);
-	}
-	});	//end bound function
+
+      var foundSomething = false;
+      var tiles = Crafty('Actor');
+
+      if(_.find(tiles, function(tile) {
+        var at = Crafty(tile).at();
+        var fromEd = Crafty(tile).has('FromEditor');
+        var sameLocation = (at.x == tile_x && at.y == tile_y);
+        if (sameLocation) {
+          if(fromEd) {
+            //Don't add item
+            return true;
+          } else {
+            //Add item
+            Crafty.e(event_data.id).at(tile_x, tile_y);
+            Crafty(tile).destroy();
+            return true;
+          }
+        }
+        return false;
+      })) {
+        //Do this if true
+        //No-op
+      } else {
+        //Do this if false
+        Crafty.e(event_data.id).at(tile_x, tile_y);
+      }
+    }); //end bound function
   },
 
   loadSprites: function() {
-    _.each('bug fire water'.split(' '), function(unit) {
+    _.each('fire water'.split(' '), function(unit) {
       var sprite_name = 'spr_' + unit
       var sprite_map_obj = {}
       sprite_map_obj[sprite_name] = [0, 0];
@@ -141,6 +145,14 @@ Game = {
     Crafty.sprite(64, 'assets/t_chr_redA_walk.png', {
       spr_goomba_red: [0, 3]
     });
+
+    Crafty.sprite(64, 'assets/t_env_bugB.png', {
+      spr_bug: [0, 0]
+    });
+
+    Crafty.sprite(64, 'assets/t_env_exitA.png', {
+      spr_exit: [0, 0]
+    });
   },
 
   loadAudio: function() {
@@ -156,6 +168,18 @@ Game = {
     }) || { data: null };
   },
 
+  // Gets the next level, if there is one; else returns false
+  getNextLevel: function(level_id) {
+    var current_index = _.indexOf(Game.levels, Game.current_level),
+        next_level    = this.getLevel(current_index + 2);
+
+    if (next_level.data) {
+      return next_level;
+    } else {
+      return null;
+    }
+  },
+
   // Load the specified level, or load/reload the current level if no level
   //  is specified
   loadLevel: function(level) {
@@ -169,10 +193,8 @@ Game = {
       console.log('Looking up level');
       level = Game.getLevel(level);
       level_data = level.data;
-    } else {
-      level_data = level.data;
     }
-    console.log('level_data', level_data);
+    level_data = level.data;
 
     // Return if for whatever reason we have not located level data
     if (!level_data) {
@@ -189,24 +211,24 @@ Game = {
           case 'Y':
             Crafty.e('YellowGoomba').at(x, y).addComponent('FromEditor');
             break;
-		case 'B':
+    case 'B':
            Crafty.e('BlueGoomba').at(x, y).addComponent('FromEditor');
            break;
-		case 'R':
+    case 'R':
             Crafty.e('RedGoomba').at(x, y).addComponent('FromEditor')
             break;
         case 'W':
             Crafty.e('Wall').at(x, y).addComponent('FromEditor')
             break;
-		case 'F':
-			Crafty.e('Fire').at(x, y).addComponent('FromEditor')
-			break;
-		case 'T':
-			Crafty.e('Water').at(x, y).addComponent('FromEditor')
-			break;
-		case 'U':
-			Crafty.e('Bug').at(x, y).addComponent('FromEditor')
-			break;
+    case 'F':
+      Crafty.e('Fire').at(x, y).addComponent('FromEditor')
+      break;
+    case 'T':
+      Crafty.e('Water').at(x, y).addComponent('FromEditor')
+      break;
+    case 'U':
+      Crafty.e('Bug').at(x, y).addComponent('FromEditor')
+      break;
         case 'E':
             Crafty.e('Exit').at(x, y).addComponent('FromEditor')
             break;
@@ -229,23 +251,23 @@ Game = {
   reloadLevel: function() {
     Game.state_machine.reload();
     console.log('Game [reloading level]');
-	Game.yummiesEaten = [];
+  Game.yummiesEaten = [];
     Game.loadLevel();
   },
 
   resetSimulation: function() {
     Game.state_machine.reset();
 
-	//replace eaten yummies
-	for (var i = 0; i < Game.yummiesEaten.length; i++) {
-		var state = Game.yummiesEaten[i];
-		var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
-		if (state.fromEditor) {
-			yummy.addComponent('FromEditor');
-		}
-	}
-	Game.yummiesEaten = [];
-	
+  //replace eaten yummies
+  for (var i = 0; i < Game.yummiesEaten.length; i++) {
+    var state = Game.yummiesEaten[i];
+    var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
+    if (state.fromEditor) {
+      yummy.addComponent('FromEditor');
+    }
+  }
+  Game.yummiesEaten = [];
+  
     console.log('Game [reseting simulation]');
   },
 
@@ -257,6 +279,16 @@ Game = {
   pauseSimulation: function() {
     Game.state_machine.pause();
     console.log('Game [pausing]');
+  },
+
+  // Move on to the next level
+  loadNextLevel: function() {
+    var next_level = this.getNextLevel();
+    if (next_level) {
+      this.loadLevel(next_level);
+    } else {
+      Crafty.scene('Final');
+    }
   }
 }
 Game.start = Game.start.bind(Game);
