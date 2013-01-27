@@ -42,8 +42,15 @@ Editor = {
 	simulationStarted : false,
 	pauseEnabled : true,
 	
-	resetButtonPushed : function() {
-		console.log('Reset!');
+	resetSimulationPushed : function() {
+		console.log('Reset simulation!');
+		Editor.simulationStarted = false;
+		Editor.pauseEnabled = true;
+		Editor.render();
+	},
+	
+	reloadLevelPushed : function() {
+		console.log('Reload level!');
 		Editor.simulationStarted = false;
 		Editor.pauseEnabled = true;
 		Editor.render();
@@ -100,7 +107,11 @@ Editor = {
 		} else {
 			out += '<img id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
 		}
-		out += '<img id="resetButton" src="assets/resetButton.png" />';
+		if(this.simulationStarted) {
+			out += '<img id="resetSimulationButton" src="assets/resetButton.png" />';
+		} else {
+			out += '<img id="reloadLevelButton" src="assets/reloadLevelButton.png" />';
+		}
 		if (this.pauseEnabled) {
 			out += '<img id="goButton" src="assets/goButton.png"/>'
 		} else {
@@ -130,8 +141,12 @@ Editor = {
 			Crafty.trigger('pauseSimulation');
 		});
 		
-		$('#resetButton').click(function(event) {
-			Crafty.trigger('reloadLevel');
+		$('#resetSimulationButton').click(function(event) {
+			Crafty.trigger('resetSimulation');
+		});
+		
+		$('#reloadLevelButton').click(function(event) {
+			Crafty.trigger('reloadLevel')
 		});
 		
 		$('#upArrow').click(function(event) {
@@ -154,7 +169,8 @@ Editor = {
 $(document).ready(function() {
 	Crafty.bind('startSimulation',Editor.goButtonPushed);
 	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
-	Crafty.bind('reloadLevel',Editor.resetButtonPushed);
+	Crafty.bind('reloadLevel',Editor.reloadLevelPushed);
+	Crafty.bind('resetSimulation',Editor.resetSimulationPushed);
 	$('#cr-stage').click(function(event) {
 		//Relative ( to its parent) mouse position 
 		var posX = $(this).position().left;

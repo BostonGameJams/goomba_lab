@@ -63,7 +63,8 @@ body {
         
         #editorPanel #goButton,
  		#editorPanel #pauseButton,
-		#editorPanel #resetButton{
+		#editorPanel #resetButton,
+		#editorPanel #reloadLevelButton {
           width:64px;
           height:64px;
         }
@@ -77,6 +78,10 @@ body {
 		}
 		
 		#editorPanel #resetButton {
+			background-color:red;
+		}
+		
+		#editorPanel #reloadLevelButton {
 			background-color:red;
 		}
     

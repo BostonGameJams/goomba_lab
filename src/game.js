@@ -62,18 +62,26 @@ Game = {
       Game.runSimulation();
     });
 
-    Crafty.bind('reloadLevel', function() {
+    /*Crafty.bind('reloadLevel', function() {
       if (Game.state_machine.current == 'loaded') {
         Game.reloadLevel();
       } else {
         Crafty.trigger('resetSimulation');
         Game.resetSimulation();
       }
-    });
+    });*/
 
     Crafty.bind('pauseSimulation', function() {
       Game.pauseSimulation();
     });
+
+	Crafty.bind('reloadLevel', function() {
+		Game.reloadLevel();
+	});
+	
+	Crafty.bind('resetSimulation', function() {
+		Game.resetSimulation();
+	});
 
     Crafty.bind('placeTile', function(event_data) {
       // console.log('event_data', event_data);
