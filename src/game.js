@@ -22,7 +22,21 @@ Game = {
     'assets/t_chr_yellowA_walk.png',
     'assets/t_chr_blueA_walk.png',
     'assets/GGJ13-GoombaLab-BGM.mp3',
-    'assets/GGJ13-GoombaLab-BGM.ogg'
+    'assets/GGJ13-GoombaLab-BGM.ogg',
+    'assets/GGJ13-GoombaLab-SFX-Colliding.mp3',
+    'assets/GGJ13-GoombaLab-SFX-Colliding.ogg',
+    'assets/GGJ13-GoombaLab-SFX-Eating.mp3',
+    'assets/GGJ13-GoombaLab-SFX-Eating.ogg',
+    'assets/GGJ13-GoombaLab-SFX-Exit&Win.mp3',
+    'assets/GGJ13-GoombaLab-SFX-Exit&Win.ogg',
+    'assets/GGJ13-GoombaLab-SFX-Fear.mp3',
+    'assets/GGJ13-GoombaLab-SFX-Fear.ogg',
+    'assets/GGJ13-GoombaLab-SFX-Footsteps.mp3',
+    'assets/GGJ13-GoombaLab-SFX-Footsteps.ogg',
+    'assets/GGJ13-GoombaLab-SFX-HappyNoise1.mp3',
+    'assets/GGJ13-GoombaLab-SFX-HappyNoise1.ogg',
+    'assets/GGJ13-GoombaLab-SFX-HappyNoise2.mp3',
+    'assets/GGJ13-GoombaLab-SFX-HappyNoise2.ogg'
   ],
 
   state_machine: StateMachine.create({
@@ -203,6 +217,34 @@ Game = {
         'assets/GGJ13-GoombaLab-BGM.mp3',
         'assets/GGJ13-GoombaLab-BGM.ogg',
       ],
+      colliding: [
+        'assets/GGJ13-GoombaLab-SFX-Colliding.mp3',
+        'assets/GGJ13-GoombaLab-SFX-Colliding.ogg',
+      ],
+      eating: [
+        'assets/GGJ13-GoombaLab-SFX-Eating.mp3',
+        'assets/GGJ13-GoombaLab-SFX-Eating.ogg',
+      ],
+      exit_win: [
+        'assets/GGJ13-GoombaLab-SFX-Exit&Win.mp3',
+        'assets/GGJ13-GoombaLab-SFX-Exit&Win.ogg',
+      ],
+      fear: [
+        'assets/GGJ13-GoombaLab-SFX-Fear.mp3',
+        'assets/GGJ13-GoombaLab-SFX-Fear.ogg',
+      ],
+      footsteps: [
+        'assets/GGJ13-GoombaLab-SFX-Footsteps.mp3',
+        'assets/GGJ13-GoombaLab-SFX-Footsteps.ogg',
+      ],
+      happy_1: [
+        'assets/GGJ13-GoombaLab-SFX-HappyNoise1.mp3',
+        'assets/GGJ13-GoombaLab-SFX-HappyNoise1.ogg',
+      ],
+      happy_2: [
+        'assets/GGJ13-GoombaLab-SFX-HappyNoise2.mp3',
+        'assets/GGJ13-GoombaLab-SFX-HappyNoise2.ogg',
+      ]
     });
   },
 

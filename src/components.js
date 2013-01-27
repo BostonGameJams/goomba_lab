@@ -129,17 +129,17 @@ Crafty.c('Goomba', {
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
 		// if we're doing a squeal, handle that
-		if(squealState != SQUEAL_WALKING) {
+		if(this.squealState != SQUEAL_WALKING) {
 			if(tweenDiff < this.msPerSqueal) {
 				// squeal in progress; do nothing
 			} else {
 				// squeal done
-				squealState = SQUEAL_WALKING;
+				this.squealState = SQUEAL_WALKING;
 				tweenDiff = this.msPerTile;
 			}
 		}
 
-		if(squealState == SQUEAL_WALKING) {
+		if(this.squealState == SQUEAL_WALKING) {
 			if(tweenDiff < this.msPerTile) {
 				// update tweening
 				this.x = Game.map_grid.tile.width * ((this.nextGridX - this.currentGridX) * tweenDiff / this.msPerTile + this.currentGridX);

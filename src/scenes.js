@@ -227,6 +227,8 @@ Crafty.scene('Loading', function(){
 // -------------
 // Let's you see how you did and allows you to move to the next level
 Crafty.scene('Victory', function(){
+  Crafty.audio.play('exit_win');
+
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
   Helpers.centeredText("You did it! Congratulations!");
