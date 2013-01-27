@@ -180,35 +180,52 @@ Editor = {
 	
 };
 
+var enableDragNDrop = function(){
+  var tiles = $('.tile img');
+  var editorPanel = $('#editorPanel');
+  var dragId = null;
+
+  //On drag start we should set the dragID
+  editorPanel.bind('dragstart','.tile img', function (e) {
+    var $current = $(e.target);
+    dragId = $current.attr('id');
+  });
+
+  var stage = $('#cr-stage');
+  //Add the drop event
+  stage.bind('drop', function (e) {
+    //If we can drop
+    if($('#tileList').length){
+      //Find drop location
+      var stageX = stage.position().left;
+      var stageY = stage.position().top;
+      var x = e.originalEvent.clientX - stageX;
+      var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
+
+      //If there is a drag ID then we can drop
+      if(dragId){
+        Editor.selectedId = dragId;
+        Crafty.trigger('placeTile', {
+          x:x,
+          y:y,
+          id:dragId,
+          editorMode: Editor.editorMode
+        });
+      }
+    }
+  });
+  //This is required to allow the drop event ot fire
+  stage.bind('dragover', function (e) {
+    if (e.preventDefault) e.preventDefault();
+  });
+}
+
 $(document).ready(function() {
 	Crafty.bind('startSimulation',Editor.goButtonPushed);
 	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
 	Crafty.bind('reloadLevel',Editor.reloadLevelPushed);
 	Crafty.bind('resetSimulation',Editor.resetSimulationPushed);
-	$('#cr-stage').click(function(event) {
-		//Relative ( to its parent) mouse position 
-		var posX = $(this).position().left;
-		var posY = $(this).position().top;
-		var x = event.pageX - posX;
-		var y = event.pageY - posY;
-		
-		if (Editor.selectedId != null && !Editor.simulationStarted) {
-			//place tile
-			Crafty.trigger('placeTile', {
-				x:x,
-				y:y,
-				id:Editor.selectedId,
-				editorMode: Editor.editorMode
-			});
-		} else {
-			Crafty.trigger('gameClick', {
-				x:x,
-				y:y
-			});
-		}
-	});
 
-	
 	Crafty.bind('placeTile', function(params) {
 		console.log('[Editor] placeTile: ' + params.id);
 	})
@@ -244,52 +261,8 @@ $(document).ready(function() {
 	
 	Editor.render();
 
-  var enableDragNDrop = function(){
-    var tiles = $('.tile img');
-    var dragId = null;
-    //Make the tiles draggable
-    tiles.attr('draggable',true);
-
-    //On drag start we should set the dragID
-    tiles.bind('dragstart', function (e) {
-      var $current = $(e.currentTarget);
-      dragId = $current.attr('id');
-    });
-
-    var stage = $('#cr-stage');
-    //Add the drop event
-    stage.bind('drop', function (e) {
-      //If we can drop
-      if($('#tileList').length){
-        //Find drop location
-        var stageX = stage.position().left;
-        var stageY = stage.position().top;
-        var x = e.originalEvent.clientX - stageX;
-        var y = e.originalEvent.clientY - stageY;
-        //If there is a drag ID then we can drop
-        if(dragId){
-          console.log('trigger:placeTile', dragId);
-          Editor.selectedId = dragId;
-          Crafty.trigger('placeTile', {
-            x:x,
-            y:y,
-            id:dragId,
-            editorMode: Editor.editorMode
-          });
-        }
-      }
-    });
-    //This is required to allow the drop event ot fire
-    stage.bind('dragover', function (e) {
-      if (e.preventDefault) e.preventDefault();
-    });
-  }
   enableDragNDrop();
-//  Crafty.bind('resetSimulation',function(){
-//    Crafty.bind('')
-//  });
-
-
+  
 	// Map editor
 	$('.live_map_editor button').click(function() {
 		console.log('hi');

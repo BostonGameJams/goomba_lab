@@ -34,7 +34,20 @@ Crafty.c('Grid', {
 //  via our logical coordinate grid
 Crafty.c('Actor', {
 	init : function() {
-		this.requires('2D, Canvas, Grid');
+		this.created_at = (new Date()).getTime();
+
+		this.requires('2D, Canvas, Grid, Mouse');
+		this.bind('Click', function() {
+			// Wait n milliseconds after placing a unit before
+			//  letting the player remove it with a click
+			var click_to_remove_delay = 500;
+
+			var elapsed = ((new Date()).getTime()) - this.created_at;
+			if (!this.has('FromEditor') && elapsed > click_to_remove_delay) {
+				this.destroy();
+				Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
+			}
+		});
 	},
 });
 
