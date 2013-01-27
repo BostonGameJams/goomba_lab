@@ -182,30 +182,7 @@ $(document).ready(function() {
 	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
 	Crafty.bind('reloadLevel',Editor.reloadLevelPushed);
 	Crafty.bind('resetSimulation',Editor.resetSimulationPushed);
-	$('#cr-stage').click(function(event) {
-		//Relative ( to its parent) mouse position 
-		var posX = $(this).position().left;
-		var posY = $(this).position().top;
-		var x = event.pageX - posX;
-		var y = event.pageY - posY;
-		
-		if (Editor.selectedId != null && !Editor.simulationStarted) {
-			//place tile
-			Crafty.trigger('placeTile', {
-				x:x,
-				y:y,
-				id:Editor.selectedId,
-				editorMode: Editor.editorMode
-			});
-		} else {
-			Crafty.trigger('gameClick', {
-				x:x,
-				y:y
-			});
-		}
-	});
 
-	
 	Crafty.bind('placeTile', function(params) {
 		console.log('[Editor] placeTile: ' + params.id);
 	})

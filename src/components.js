@@ -38,10 +38,12 @@ Crafty.c('Actor', {
 
 		this.requires('2D, Canvas, Grid, Mouse');
 		this.bind('Click', function() {
-			// console.log('FromEd', this.has('FromEditor'));
-			// console.log('made on', this.created_at);
+			// Wait n milliseconds after placing a unit before
+			//  letting the player remove it with a click
+			var click_to_remove_delay = 500;
+
 			var elapsed = ((new Date()).getTime()) - this.created_at;
-			if (!this.has('FromEditor') && elapsed > 1000) {
+			if (!this.has('FromEditor') && elapsed > click_to_remove_delay) {
 				this.destroy();
 				Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
 			}
