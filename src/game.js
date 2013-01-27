@@ -140,13 +140,28 @@ Game = {
       // console.log(row, y);
       row.split('').forEach(function(col, x) {
         switch (col) {
-          case 'G':
+          case 'Y':
             Crafty.e('YellowGoomba').at(x, y);
             break;
-          case 'W':
+		case 'B':
+           Crafty.e('BlueGoomba').at(x, y);
+           break;
+		case 'R':
+            Crafty.e('RedGoomba').at(x, y);
+            break;
+        case 'W':
             Crafty.e('Wall').at(x, y);
             break;
-          case 'E':
+		case 'F':
+			Crafty.e('Fire').at(x, y);
+			break;
+		case 'T':
+			Crafty.e('Water').at(x, y);
+			break;
+		case 'U':
+			Crafty.e('Bug').at(x, y);
+			break;
+        case 'E':
             Crafty.e('Exit').at(x, y);
             break;
           default:
