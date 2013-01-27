@@ -80,9 +80,36 @@ Game = {
 
       var tile_x = Math.floor(event_data.x / Game.map_grid.tile.width),
           tile_y = Math.floor(event_data.y / Game.map_grid.tile.height);
-
-      Crafty.e(event_data.id).at(tile_x, tile_y);
-    });
+	
+	
+	var foundSomething = false;
+	var tiles = Crafty('Actor');
+	
+	if(_.find(tiles, function(tile) {
+		var at = Crafty(tile).at();
+		var fromEd = Crafty(tile).has('FromEditor');
+		var sameLocation = (at.x == tile_x && at.y == tile_y);
+		if (sameLocation) {
+			if(fromEd) {
+				//Don't add item
+				return true;
+			} else {
+				//Add item
+				Crafty.e(event_data.id).at(tile_x, tile_y);
+				Crafty(tile).destroy();
+				return true;
+			}
+		}
+		return false;
+		
+	}))	{
+		//Do this if true
+		//No-op
+	} else {
+		//Do this if false
+		Crafty.e(event_data.id).at(tile_x, tile_y);
+	}
+	});	//end bound function
   },
 
   loadSprites: function() {
@@ -141,28 +168,28 @@ Game = {
       row.split('').forEach(function(col, x) {
         switch (col) {
           case 'Y':
-            Crafty.e('YellowGoomba').at(x, y);
+            Crafty.e('YellowGoomba').at(x, y).addComponent('FromEditor');
             break;
 		case 'B':
-           Crafty.e('BlueGoomba').at(x, y);
+           Crafty.e('BlueGoomba').at(x, y).addComponent('FromEditor');
            break;
 		case 'R':
-            Crafty.e('RedGoomba').at(x, y);
+            Crafty.e('RedGoomba').at(x, y).addComponent('FromEditor')
             break;
         case 'W':
-            Crafty.e('Wall').at(x, y);
+            Crafty.e('Wall').at(x, y).addComponent('FromEditor')
             break;
 		case 'F':
-			Crafty.e('Fire').at(x, y);
+			Crafty.e('Fire').at(x, y).addComponent('FromEditor')
 			break;
 		case 'T':
-			Crafty.e('Water').at(x, y);
+			Crafty.e('Water').at(x, y).addComponent('FromEditor')
 			break;
 		case 'U':
-			Crafty.e('Bug').at(x, y);
+			Crafty.e('Bug').at(x, y).addComponent('FromEditor')
 			break;
         case 'E':
-            Crafty.e('Exit').at(x, y);
+            Crafty.e('Exit').at(x, y).addComponent('FromEditor')
             break;
           default:
             break;
