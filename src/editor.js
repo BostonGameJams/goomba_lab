@@ -129,7 +129,7 @@ Editor = {
 		if (this.pauseEnabled) {
 			out += '<div id="goButton"/>'
 		} else {
-			out += '<div id="pauseButton"/>'
+			out += '<div id="pauseButton"/>' 
 		}
 		
 		$('#editorPanel').append(out);
