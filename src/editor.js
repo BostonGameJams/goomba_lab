@@ -177,6 +177,46 @@ Editor = {
 	
 };
 
+var enableDragNDrop = function(){
+  var tiles = $('.tile img');
+  var editorPanel = $('#editorPanel');
+  var dragId = null;
+
+  //On drag start we should set the dragID
+  editorPanel.bind('dragstart','.tile img', function (e) {
+    var $current = $(e.target);
+    dragId = $current.attr('id');
+  });
+
+  var stage = $('#cr-stage');
+  //Add the drop event
+  stage.bind('drop', function (e) {
+    //If we can drop
+    if($('#tileList').length){
+      //Find drop location
+      var stageX = stage.position().left;
+      var stageY = stage.position().top;
+      var x = e.originalEvent.clientX - stageX;
+      var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
+
+      //If there is a drag ID then we can drop
+      if(dragId){
+        Editor.selectedId = dragId;
+        Crafty.trigger('placeTile', {
+          x:x,
+          y:y,
+          id:dragId,
+          editorMode: Editor.editorMode
+        });
+      }
+    }
+  });
+  //This is required to allow the drop event ot fire
+  stage.bind('dragover', function (e) {
+    if (e.preventDefault) e.preventDefault();
+  });
+}
+
 $(document).ready(function() {
 	Crafty.bind('startSimulation',Editor.goButtonPushed);
 	Crafty.bind('pauseSimulation',Editor.pauseButtonPushed);
@@ -226,51 +266,8 @@ $(document).ready(function() {
 	});
 	
 	Editor.render();
-
-
-
-  var enableDragNDrop = function(){
-    var tiles = $('.tile img');
-    var editorPanel = $('#editorPanel');
-    var dragId = null;
-
-    //On drag start we should set the dragID
-    editorPanel.bind('dragstart','.tile img', function (e) {
-      var $current = $(e.target);
-      dragId = $current.attr('id');
-    });
-
-    var stage = $('#cr-stage');
-    //Add the drop event
-    stage.bind('drop', function (e) {
-      //If we can drop
-      if($('#tileList').length){
-        //Find drop location
-        var stageX = stage.position().left;
-        var stageY = stage.position().top;
-        var x = e.originalEvent.clientX - stageX;
-        var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
-
-        //If there is a drag ID then we can drop
-        if(dragId){
-          Editor.selectedId = dragId;
-          Crafty.trigger('placeTile', {
-            x:x,
-            y:y,
-            id:dragId,
-            editorMode: Editor.editorMode
-          });
-        }
-      }
-    });
-    //This is required to allow the drop event ot fire
-    stage.bind('dragover', function (e) {
-      if (e.preventDefault) e.preventDefault();
-    });
-  }
   enableDragNDrop();
-
-
+  
 	// Map editor
 	$('.live_map_editor button').click(function() {
 		console.log('hi');
