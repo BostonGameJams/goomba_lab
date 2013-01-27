@@ -48,19 +48,29 @@ Crafty.c('Goomba', {
 			this.unbind("EnterFrame");
 			this.tweenPausedIncrement = new Date().getTime() - this.tweenStart;
 		}).bind("startSimulation", function() {
+			console.log("startSim");
 			var at = this.at();
-			this.currentGridX = at.x;
-			this.currentGridY = at.y;
+			if(this.startedOnce) {
+				;
+			} else// first start
+			{
+				this.moveDir = DIR_RIGHT;
+				this.currentGridX = this.startPosition.x;
+				this.currentGridY = this.startPosition.y;
+				this.nextGridX = at.x + 1;
+				this.nextGridY = at.y;
+			}
+			//this.currentGridX = at.x;
+			//this.currentGridY = at.y;
 			this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
+			this.startedOnce = true;
 			this.bind("EnterFrame", this.enterFrame);
 		}).bind("resetSimulation", function() {
-			this.moveDir = DIR_RIGHT;
-			this.currentGridX = this.startPosition.x;
-			this.currentGridY = this.startPosition.y;
-			this.nextGridX = at.x + 1;
-			this.nextGridY = at.y;
+			console.log("resetSim");
+			this.startedOnce = false;
 		});
 	},
+	startedOnce : false,
 	startPosition : {
 		x : 0,
 		y : 1
@@ -100,7 +110,7 @@ Crafty.c('Goomba', {
 				Crafty.trigger("ReachedExit");
 			}
 			// we'll be moving to another tile, so set it up
-			this.moveDir = this.getNextDir();
+			this.moveDir = this.getNextDir.bind(this)();
 
 			// we trust getNextDir implicitly to give us a valid direction
 			var animation_speed = 4;
@@ -191,17 +201,12 @@ Crafty.c('Goomba', {
 		}
 		return false;
 	},
-	
 	pathingGrid : null,
 });
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation')
-			.animate('MovingUp',    0, 0, 2)
-			.animate('MovingRight', 0, 1, 2)
-			.animate('MovingDown',  0, 2, 2)
-			.animate('MovingLeft',  0, 3, 2);
+		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation').animate('MovingUp', 0, 0, 2).animate('MovingRight', 0, 1, 2).animate('MovingDown', 0, 2, 2).animate('MovingLeft', 0, 3, 2);
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -316,7 +321,7 @@ Crafty.c('BlueGoomba', {
 			var at = Crafty(wall).at();
 			this.pathingGrid[at.x][at.y] = false;
 		}.bind(this));
-		
+
 		// check for attractions overriding normal movement
 		var attractor;
 		var attractionDir;
@@ -411,7 +416,7 @@ Crafty.c('RedGoomba', {
 				}
 			}
 		}.bind(this));
-		
+
 		// check for attractions overriding normal movement
 		var attractor;
 		var attractionDir;
