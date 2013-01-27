@@ -427,6 +427,7 @@ Crafty.c('YellowGoomba', {
 			// OBSTACLES
 			else if(!this.pathingGrid[testNextX][testNextY]) {
 				// fail because there's an obstacle in the way
+				Crafty.audio.play('colliding');
 			} else {
 				// looks like we're good to go!
 				return testMoveDir;
