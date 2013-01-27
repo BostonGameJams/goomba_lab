@@ -46,10 +46,10 @@ Crafty.c('Goomba', {
 	init : function() {
 		this.animation_speed = 16;
 		this.requires('Actor, SpriteAnimation')
-			.animate('MovingUp',    0, 0, 2)
-			.animate('MovingDown',  0, 1, 2)
-			.animate('MovingLeft',  0, 2, 2)
-			.animate('MovingRight', 0, 3, 2)
+			.animate('MovingUp',    0, 0, 7)
+			.animate('MovingDown',  0, 1, 7)
+			.animate('MovingLeft',  0, 2, 7)
+			.animate('MovingRight', 0, 3, 7)
 		.bind("pauseSimulation", function() {
 			this.unbind("EnterFrame");
 			this.tweenPausedIncrement = new Date().getTime() - this.tweenStart;
