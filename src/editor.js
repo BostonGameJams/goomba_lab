@@ -220,6 +220,8 @@ $(document).ready(function() {
 
   var enableDragNDrop = function(){
     var tiles = $('.tile img');
+    var editorPanel = $('#editorPanel');
+
     var dragId = null;
     //Make the tiles draggable
     tiles.attr('draggable',true);
@@ -239,7 +241,8 @@ $(document).ready(function() {
         var stageX = stage.position().left;
         var stageY = stage.position().top;
         var x = e.originalEvent.clientX - stageX;
-        var y = e.originalEvent.clientY - stageY;
+        var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
+
         //If there is a drag ID then we can drop
         if(dragId){
           console.log('trigger:placeTile', dragId);
