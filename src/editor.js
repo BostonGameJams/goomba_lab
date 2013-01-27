@@ -103,19 +103,19 @@ Editor = {
 			}
 		out += '</ul>';
 		if (this.placeables.length > 4) {
-			out += '<img id="downArrow" src="assets/downArrow.png"/>';
+			out += '<div id="downArrow" src="assets/downArrow.png"/>';
 		} else {
-			out += '<img id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
+			out += '<div id="downArrow" src="assets/downArrow.png" class="hiddenArrow"/>';
 		}
 		if(this.simulationStarted) {
-			out += '<img id="resetSimulationButton" src="assets/t_gui_rewindA_normal.png" />';
+			out += '<div id="resetSimulationButton"/>';
 		} else {
-			out += '<img id="reloadLevelButton" src="assets/t_gui_restartA_normal.png" />';
+			out += '<div id="reloadLevelButton"/>';
 		}
 		if (this.pauseEnabled) {
-			out += '<img id="goButton" src="assets/t_gui_goA_normal.png"/>'
+			out += '<div id="goButton"/>'
 		} else {
-			out += '<img id="pauseButton" src="assets/t_gui_pauseA_normal.png"/>'
+			out += '<div id="pauseButton"/>'
 		}
 		
 		$('#editorPanel').append(out);
