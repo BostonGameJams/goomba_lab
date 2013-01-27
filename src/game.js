@@ -129,15 +129,15 @@ Game = {
     });
 
     Crafty.sprite(64, 'assets/t_chr_yellowA_walk.png', {
-      spr_goomba_yellow: [0, 1]
+      spr_goomba_yellow: [0, 3]
     });
 
     Crafty.sprite(64, 'assets/t_chr_blueA_walk.png', {
-      spr_goomba_blue: [0, 1]
+      spr_goomba_blue: [0, 3]
     });
 
     Crafty.sprite(64, 'assets/t_chr_redA_walk.png', {
-      spr_goomba_red: [0, 1]
+      spr_goomba_red: [0, 3]
     });
   },
 
