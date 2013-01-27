@@ -2,6 +2,7 @@ const DIR_RIGHT = 0;
 const DIR_UP = 1;
 const DIR_LEFT = 2;
 const DIR_DOWN = 3;
+const DIR_TRAPPED = 4;
 
 // The Grid component allows an element to be located
 //  on a grid of tiles
@@ -45,15 +46,34 @@ Crafty.c('Goomba', {
 	init : function() {
 		this.requires('Actor').bind("pauseSimulation", function() {
 			this.unbind("EnterFrame");
+			this.tweenPausedIncrement = new Date().getTime() - this.tweenStart;
 		}).bind("startSimulation", function() {
+			console.log("startSim");
 			var at = this.at();
-			this.currentGridX = at.x;
-			this.currentGridY = at.y;
-			this.nextGridX = at.x + 1;
-			this.nextGridY = at.y;
-			this.tweenStart = new Date().getTime();
+			if(this.startedOnce) {
+				;
+			} else// first start
+			{
+				this.moveDir = DIR_RIGHT;
+				this.currentGridX = this.startPosition.x;
+				this.currentGridY = this.startPosition.y;
+				this.nextGridX = at.x + 1;
+				this.nextGridY = at.y;
+			}
+			//this.currentGridX = at.x;
+			//this.currentGridY = at.y;
+			this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
+			this.startedOnce = true;
 			this.bind("EnterFrame", this.enterFrame);
+		}).bind("resetSimulation", function() {
+			console.log("resetSim");
+			this.startedOnce = false;
 		});
+	},
+	startedOnce : false,
+	startPosition : {
+		x : 0,
+		y : 1
 	},
 	currentGridX : 0,
 	currentGridY : 1,
@@ -62,6 +82,7 @@ Crafty.c('Goomba', {
 	nextGridX : 1,
 	nextGridY : 1,
 	tweenStart : new Date().getTime(),
+	tweenPausedIncrement : 0,
 
 	// use direction constants as indexes into these
 	leftTurn : [DIR_UP, DIR_LEFT, DIR_DOWN, DIR_RIGHT],
@@ -89,7 +110,7 @@ Crafty.c('Goomba', {
 				Crafty.trigger("ReachedExit");
 			}
 			// we'll be moving to another tile, so set it up
-			this.moveDir = this.getNextDir();
+			this.moveDir = this.getNextDir.bind(this)();
 
 			// we trust getNextDir implicitly to give us a valid direction
 			var animation_speed = 4;
@@ -111,17 +132,20 @@ Crafty.c('Goomba', {
 					this.nextGridX = this.currentGridX;
 					this.nextGridY = this.currentGridY + 1;
 					break;
+				case DIR_TRAPPED:
+					this.nextGridX = this.currentGridX;
+					this.nextGridY = this.currentGridY;
+					return;
 			}
 			this.tweenStart = new Date().getTime();
 		}
 	},
 	checkAttractor : function(attractor) {
-		var attractionDir;
 		var at = Crafty(attractor).at();
 		// we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// collision, so eat the entity and continue looking for additional attractors
-			attractor.destroy();
+			Crafty(attractor).destroy();
 		} else if(this.currentGridX == at.x) {
 			// same column, check for pathing
 			var reachable = true;
@@ -129,7 +153,7 @@ Crafty.c('Goomba', {
 			{
 				attractionDir = DIR_UP;
 				for(var i = at.y; i <= this.currentGridY; i++) {
-					if(!pathingGrid[at.x][i]) {
+					if(!this.pathingGrid[at.x][i]) {
 						reachable = false;
 						break;
 					}
@@ -138,13 +162,14 @@ Crafty.c('Goomba', {
 			{
 				attractionDir = DIR_DOWN;
 				for(var i = this.currentGridY; i <= at.y; i++) {
-					if(!pathingGrid[at.x][i]) {
+					if(!this.pathingGrid[at.x][i]) {
 						reachable = false;
 						break;
 					}
 				}
 			}
 			if(reachable) {
+				this.moveDir = attractionDir;
 				return true;
 			}
 		} else if(this.currentGridY == at.y) {
@@ -154,7 +179,7 @@ Crafty.c('Goomba', {
 			{
 				attractionDir = DIR_LEFT;
 				for(var i = at.x; i <= this.currentGridX; i++) {
-					if(!pathingGrid[i][at.y]) {
+					if(!this.pathingGrid[i][at.y]) {
 						reachable = false;
 						break;
 					}
@@ -163,7 +188,7 @@ Crafty.c('Goomba', {
 			{
 				attractionDir = DIR_RIGHT;
 				for(var i = this.currentGridX; i <= at.x; i++) {
-					if(!pathingGrid[i][at.y]) {
+					if(!this.pathingGrid[i][at.y]) {
 						reachable = false;
 						break;
 					}
@@ -175,16 +200,13 @@ Crafty.c('Goomba', {
 			}
 		}
 		return false;
-	}
+	},
+	pathingGrid : null,
 });
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation')
-			.animate('MovingUp',    0, 0, 2)
-			.animate('MovingRight', 0, 1, 2)
-			.animate('MovingDown',  0, 2, 2)
-			.animate('MovingLeft',  0, 3, 2);
+		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation').animate('MovingUp', 0, 0, 2).animate('MovingRight', 0, 1, 2).animate('MovingDown', 0, 2, 2).animate('MovingLeft', 0, 3, 2);
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -193,52 +215,54 @@ Crafty.c('YellowGoomba', {
 		var waters = Crafty("Water");
 
 		// true if tile is walkable for this variety of Goomba
-		var pathingGrid = new Array();
+		this.pathingGrid = new Array();
 
 		// grid is walkable by default
 		for(var x = 0; x < Game.map_grid.width; x++) {
-			pathingGrid[x] = new Array();
+			this.pathingGrid[x] = new Array();
 			for(var y = 0; y < Game.map_grid.width; y++) {
-				pathingGrid[x][y] = true;
+				this.pathingGrid[x][y] = true;
 			}
 		}
 
 		// walls are 1-tile obstacles
 		_.each(walls, function(wall) {
 			var at = Crafty(wall).at();
-			pathingGrid[at.x][at.y] = false;
-		});
+			this.pathingGrid[at.x][at.y] = false;
+		}.bind(this));
 		// fires are 3x3 obstacles for yellows
 		_.each(fires, function(fire) {
 			var at = Crafty(fire).at();
 			for(var x = at.x - 1; x <= at.x + 1; x++) {
 				for(var y = at.y - 1; y <= at.y + 1; y++) {
-					pathingGrid[x][y] = false;
+					this.pathingGrid[x][y] = false;
 				}
 			}
-		});
+		}.bind(this));
 		// check for attractions overriding normal movement
 		var attractor;
 		var attractionDir;
 		// WATER
-		if( attractor = _.find(waters, this.checkAttractor)) {
+		if(_.find(waters, this.checkAttractor.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
 		// BUGS
-		if( attractor = _.find(bugs, this.checkAttractor)) {
+		if(_.find(bugs, this.checkAttractor.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
 
 		// no attraction, so move normally, checking for obstacles
 		var testMoveDir = this.moveDir;
+		var tries = 0;
 		do {
 			// get the next X,Y and direction to test
 			var testNextX = this.currentGridX;
 			var testNextY = this.currentGridY;
 			switch(testMoveDir) {
 				case DIR_RIGHT:
+				case DIR_TRAPPED:
 					testNextX++;
 					break;
 				case DIR_UP:
@@ -257,7 +281,7 @@ Crafty.c('YellowGoomba', {
 				// fail because of bounds
 			}
 			// OBSTACLES
-			else if(!pathingGrid[testNextX][testNextY]) {
+			else if(!this.pathingGrid[testNextX][testNextY]) {
 				// fail because there's an obstacle in the way
 			} else {
 				// looks like we're good to go!
@@ -266,8 +290,8 @@ Crafty.c('YellowGoomba', {
 
 			// if fail, make right turn
 			testMoveDir = this.rightTurn[testMoveDir];
-			// TODO: handle case where no movement is possible rather than looping forever (or just smack the designer responsible)
-		} while(true)
+			// handle case where no movement is possible
+		} while(tries++ < 4)
 	}
 });
 
@@ -282,39 +306,41 @@ Crafty.c('BlueGoomba', {
 		var waters = Crafty("Water");
 
 		// true if tile is walkable for this variety of Goomba
-		var pathingGrid = new Array();
+		this.pathingGrid = new Array();
 
 		// grid is walkable by default
 		for(var x = 0; x < Game.map_grid.width; x++) {
-			pathingGrid[x] = new Array();
+			this.pathingGrid[x] = new Array();
 			for(var y = 0; y < Game.map_grid.width; y++) {
-				pathingGrid[x][y] = true;
+				this.pathingGrid[x][y] = true;
 			}
 		}
 
 		// walls are 1-tile obstacles
 		_.each(walls, function(wall) {
 			var at = Crafty(wall).at();
-			pathingGrid[at.x][at.y] = false;
-		});
-		
+			this.pathingGrid[at.x][at.y] = false;
+		}.bind(this));
+
 		// check for attractions overriding normal movement
 		var attractor;
 		var attractionDir;
 		// BUGS
-		if( attractor = _.find(bugs, this.checkAttractor)) {
+		if(_.find(bugs, this.checkAttractor.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
 
 		// no attraction, so move normally, checking for obstacles
 		var testMoveDir = this.moveDir;
+		var tries = 0;
 		do {
 			// get the next X,Y and direction to test
 			var testNextX = this.currentGridX;
 			var testNextY = this.currentGridY;
 			switch(testMoveDir) {
 				case DIR_RIGHT:
+				case DIR_TRAPPED:
 					testNextX++;
 					break;
 				case DIR_UP:
@@ -333,7 +359,7 @@ Crafty.c('BlueGoomba', {
 				// fail because of bounds
 			}
 			// OBSTACLES
-			else if(!pathingGrid[testNextX][testNextY]) {
+			else if(!this.pathingGrid[testNextX][testNextY]) {
 				// fail because there's an obstacle in the way
 			} else {
 				// looks like we're good to go!
@@ -342,8 +368,8 @@ Crafty.c('BlueGoomba', {
 
 			// if fail, make right turn
 			testMoveDir = this.leftTurn[testMoveDir];
-			// TODO: handle case where no movement is possible rather than looping forever (or just smack the designer responsible)
-		} while(true)
+			// handle case where no movement is possible
+		} while(tries++ < 4)
 	}
 });
 
@@ -358,55 +384,58 @@ Crafty.c('RedGoomba', {
 		var waters = Crafty("Water");
 
 		// true if tile is walkable for this variety of Goomba
-		var pathingGrid = new Array();
+		this.pathingGrid = new Array();
 
 		// grid is walkable by default
 		for(var x = 0; x < Game.map_grid.width; x++) {
-			pathingGrid[x] = new Array();
+			this.pathingGrid[x] = new Array();
 			for(var y = 0; y < Game.map_grid.width; y++) {
-				pathingGrid[x][y] = true;
+				this.pathingGrid[x][y] = true;
 			}
 		}
 
 		// walls are 1-tile obstacles
 		_.each(walls, function(wall) {
 			var at = Crafty(wall).at();
-			pathingGrid[at.x][at.y] = false;
-		});
+			this.pathingGrid[at.x][at.y] = false;
+		}.bind(this));
 		// water and bugs are 3x3 obstacles for reds
 		_.each(waters, function(water) {
 			var at = Crafty(water).at();
 			for(var x = at.x - 1; x <= at.x + 1; x++) {
 				for(var y = at.y - 1; y <= at.y + 1; y++) {
-					pathingGrid[x][y] = false;
+					this.pathingGrid[x][y] = false;
 				}
 			}
-		});
+		}.bind(this));
 		_.each(bugs, function(bug) {
 			var at = Crafty(bug).at();
 			for(var x = at.x - 1; x <= at.x + 1; x++) {
 				for(var y = at.y - 1; y <= at.y + 1; y++) {
-					pathingGrid[x][y] = false;
+					this.pathingGrid[x][y] = false;
 				}
 			}
-		});
+		}.bind(this));
+
 		// check for attractions overriding normal movement
 		var attractor;
 		var attractionDir;
-		// FIRES
-		if( attractor = _.find(fires, this.checkAttractor)) {
+		// FIRE
+		if(_.find(fires, this.checkAttractor.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
 
 		// no attraction, so move normally, checking for obstacles
 		var testMoveDir = this.moveDir;
+		var tries = 0;
 		do {
 			// get the next X,Y and direction to test
 			var testNextX = this.currentGridX;
 			var testNextY = this.currentGridY;
 			switch(testMoveDir) {
 				case DIR_RIGHT:
+				case DIR_TRAPPED:
 					testNextX++;
 					break;
 				case DIR_UP:
@@ -425,7 +454,7 @@ Crafty.c('RedGoomba', {
 				// fail because of bounds
 			}
 			// OBSTACLES
-			else if(!pathingGrid[testNextX][testNextY]) {
+			else if(!this.pathingGrid[testNextX][testNextY]) {
 				// fail because there's an obstacle in the way
 			} else {
 				// looks like we're good to go!
@@ -434,8 +463,8 @@ Crafty.c('RedGoomba', {
 
 			// if fail, make right turn
 			testMoveDir = this.reverseDir[testMoveDir];
-			// TODO: handle case where no movement is possible rather than looping forever (or just smack the designer responsible)
-		} while(true)
+			// handle case where no movement is possible
+		} while(tries++ < 4)
 	}
 });
 
