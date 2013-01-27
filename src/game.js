@@ -15,6 +15,10 @@ Game = {
     'assets/t_env_bugB.png',
     'assets/t_env_fireB.png',
     'assets/t_env_waterB.png',
+    'assets/env_wallA.png',
+    'assets/t_chr_redA_walk.png',
+    'assets/t_chr_yellowA_walk.png',
+    'assets/t_chr_blueA_walk.png'
   ],
 
   state_machine: StateMachine.create({
@@ -134,6 +138,14 @@ Game = {
 
     Crafty.sprite(64, 'assets/t_chr_yellowA_walk.png', {
       spr_goomba_yellow: [0, 1]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_blueA_walk.png', {
+      spr_goomba_blue: [0, 1]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_redA_walk.png', {
+      spr_goomba_red: [0, 1]
     });
   },
 
