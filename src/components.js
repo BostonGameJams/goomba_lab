@@ -44,11 +44,20 @@ Crafty.c('FromEditor', {
 
 Crafty.c('Goomba', {
 	init : function() {
-		this.requires('Actor').bind("pauseSimulation", function() {
+		this.animation_speed = 16;
+		this.requires('Actor, SpriteAnimation')
+			.animate('MovingUp',    0, 0, 7)
+			.animate('MovingDown',  0, 1, 7)
+			.animate('MovingLeft',  0, 2, 7)
+			.animate('MovingRight', 0, 3, 7)
+		.bind("pauseSimulation", function() {
 			this.unbind("EnterFrame");
 			this.tweenPausedIncrement = new Date().getTime() - this.tweenStart;
 		}).bind("startSimulation", function() {
-			console.log("startSim");
+			console.log('[Goomba] startSim');
+
+			this.animate('MovingRight', this.animation_speed, -1);
+
 			var at = this.at();
 			if(this.startedOnce) {
 				this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
@@ -71,6 +80,7 @@ Crafty.c('Goomba', {
 			this.currentGridY = this.startPosition.y;
 			this.x = Game.map_grid.tile.width * this.currentGridX;
 			this.y = Game.map_grid.tile.width * this.currentGridY;
+			
 			this.startedOnce = false;
 		});
 	},
@@ -116,25 +126,30 @@ Crafty.c('Goomba', {
 			// we'll be moving to another tile, so set it up
 			this.moveDir = this.getNextDir.bind(this)();
 
+			// Stop the existing animation
+			this.stop();
+
 			// we trust getNextDir implicitly to give us a valid direction
-			var animation_speed = 4;
 			switch(this.moveDir) {
 				case DIR_RIGHT:
 					this.nextGridX = this.currentGridX + 1;
 					this.nextGridY = this.currentGridY;
-					// this.animate('MovingRight', animation_speed, -1);
+					this.animate('MovingRight', this.animation_speed, -1);
 					break;
 				case DIR_UP:
 					this.nextGridX = this.currentGridX;
 					this.nextGridY = this.currentGridY - 1;
+					this.animate('MovingUp', this.animation_speed, -1);
 					break;
 				case DIR_LEFT:
 					this.nextGridX = this.currentGridX - 1;
 					this.nextGridY = this.currentGridY;
+					this.animate('MovingLeft', this.animation_speed, -1);
 					break;
 				case DIR_DOWN:
 					this.nextGridX = this.currentGridX;
 					this.nextGridY = this.currentGridY + 1;
+					this.animate('MovingDown', this.animation_speed, -1);
 					break;
 				case DIR_TRAPPED:
 					this.nextGridX = this.currentGridX;
@@ -148,7 +163,7 @@ Crafty.c('Goomba', {
 		var at = Crafty(attractor).at();
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// collision, so eat the entity and continue looking for additional attractors
-			Crafty(attractor).destroy();
+			Crafty(attractor).eat();
 		}
 	},
 	getYummyTarget : function(attractors) {
@@ -217,7 +232,7 @@ Crafty.c('Goomba', {
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation').animate('MovingUp', 0, 0, 2).animate('MovingRight', 0, 1, 2).animate('MovingDown', 0, 2, 2).animate('MovingLeft', 0, 3, 2);
+		this.requires('spr_goomba_yellow, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -303,7 +318,7 @@ Crafty.c('YellowGoomba', {
 
 Crafty.c('BlueGoomba', {
 	init : function() {
-		this.requires('Goomba, Color').color('blue');
+		this.requires('spr_goomba_blue, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -380,7 +395,7 @@ Crafty.c('BlueGoomba', {
 
 Crafty.c('RedGoomba', {
 	init : function() {
-		this.requires('Goomba, Color').color('red');
+		this.requires('spr_goomba_red, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -484,20 +499,43 @@ Crafty.c('Exit', {
 	},
 });
 
+//Things that can be eaten
+Crafty.c('Yummy', {
+	yummyType : null,
+	eat : function() {
+		var state = {
+			x : this.at().x,
+			y : this.at().y,
+			yummyType : this.yummyType,
+			fromEditor : this.has('FromEditor')
+		};
+		
+		Game.yummiesEaten.push(state);
+		this.destroy();
+	},
+	
+	yummy : function(yummyType) {
+		this.yummyType = yummyType;
+	}
+});
+
 Crafty.c('Fire', {
 	init : function() {
-		this.requires('Actor, Solid, spr_fire');
+		this.requires('Yummy, Actor, Solid, spr_fire');
+		this.yummy('Fire');
 	},
 });
 
 Crafty.c('Water', {
 	init : function() {
-		this.requires('Actor, Solid, spr_water');
+		this.requires('Yummy, Actor, Solid, spr_water');
+		this.yummy('Water');
 	},
 });
 
 Crafty.c('Bug', {
 	init : function() {
-		this.requires('Actor, Solid, spr_bug');
+		this.requires('Yummy, Actor, Solid, spr_bug');
+		this.yummy('Bug');
 	},
 });
