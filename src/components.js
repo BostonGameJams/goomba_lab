@@ -38,9 +38,11 @@ Crafty.c('Actor', {
 	},
 });
 
-Crafty.c('Overlay'), {
-	this.requires('2D','Canvas', 'spr_overlay');
-}
+Crafty.c('Overlay', {
+	init : function() {
+		this.requires('2D', 'Image');
+	}
+});
 
 Crafty.c('FromEditor', {
 	//Just a trait

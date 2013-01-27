@@ -37,7 +37,7 @@ body {
     }
     
       #editorPanel {
-        background-color: #BBB;
+        background: url('../assets/sidebar.png') no-repeat 0 0;
         float: left;
         width : 128px;
         height: 496px;
@@ -50,13 +50,15 @@ body {
 		  background-color:white;
           width:64px;
           height:16px;
+		  padding: 0px 32px;
+		  margin-top:48px;
         }
         
         #editorPanel #downArrow {
 		  background-color:white;
           width:64px;
           height:16px;
-		  padding: 0px 16px;
+		  padding: 0px 32px;
         }
         
         #editorPanel #goButton,
@@ -107,7 +109,6 @@ body {
         
         #editorPanel #tileList,
  		#editorPanel #tileListLocked {
-          background-color: #DDD;
           padding: 0px;
         }
         
