@@ -231,6 +231,8 @@ Game = {
       return;
     }
 
+    Game.current_level = level;
+
     Crafty.scene('Game');
 
     level_data.forEach(function(row, y) {
@@ -271,8 +273,6 @@ Game = {
     Crafty('Goomba').each(function() {
       this.startPosition = { x: this.at().x, y: this.at().y };
     });
-
-    Game.current_level = level;
 
     console.log('Loaded level ' + level.id)
   },
