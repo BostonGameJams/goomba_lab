@@ -218,6 +218,8 @@ Crafty.scene('Loading', function(){
     Game.loadSprites();
     Game.loadAudio();
 
+    Crafty.audio.play('background', -1, 0.8);
+
     // Now that our sprites are ready to draw, start the game
     Game.loadLevel();
   })
