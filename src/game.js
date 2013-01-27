@@ -129,6 +129,10 @@ Game = {
 
       Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
     }); //end bound function
+
+    jQuery('#cr-stage').click(function() {
+      Crafty.trigger('gameClick');
+    });
   },
 
   loadSprites: function() {

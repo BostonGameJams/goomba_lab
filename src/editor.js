@@ -225,10 +225,6 @@ $(document).ready(function() {
 
 	Crafty.bind('placeTile', function(params) {
 		console.log('[Editor] placeTile: ' + params.id);
-	})
-	
-	Crafty.bind('gameClick', function(params) {
-		console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
 	});
 	
 	//Get the data on the placables, then render the sidebar
@@ -251,6 +247,6 @@ $(document).ready(function() {
 		console.log($('.live_map_editor textarea').val());
 		var data = $('.live_map_editor textarea').val().split('\n');
 		console.log('data', data);
-		Game.loadLevel({ id: 'new', data: data });
+		Game.loadLevel({ id: 'new', data: data, inventory: { Fire: 10, Water: 10, Wall: 10, Bug: 10 }});
 	});
 });
