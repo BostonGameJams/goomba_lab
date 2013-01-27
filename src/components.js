@@ -80,6 +80,7 @@ Crafty.c('Goomba', {
 			this.currentGridY = this.startPosition.y;
 			this.x = Game.map_grid.tile.width * this.currentGridX;
 			this.y = Game.map_grid.tile.width * this.currentGridY;
+			
 			this.startedOnce = false;
 		});
 	},
@@ -163,7 +164,7 @@ Crafty.c('Goomba', {
 		// we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// collision, so eat the entity and continue looking for additional attractors
-			Crafty(attractor).destroy();
+			Crafty(attractor).eat();
 		} else if(this.currentGridX == at.x) {
 			// same column, check for pathing
 			var reachable = true;
@@ -498,20 +499,43 @@ Crafty.c('Exit', {
 	},
 });
 
+//Things that can be eaten
+Crafty.c('Yummy', {
+	yummyType : null,
+	eat : function() {
+		var state = {
+			x : this.at().x,
+			y : this.at().y,
+			yummyType : this.yummyType,
+			fromEditor : this.has('FromEditor')
+		};
+		
+		Game.yummiesEaten.push(state);
+		this.destroy();
+	},
+	
+	yummy : function(yummyType) {
+		this.yummyType = yummyType;
+	}
+});
+
 Crafty.c('Fire', {
 	init : function() {
-		this.requires('Actor, Solid, spr_fire');
+		this.requires('Yummy, Actor, Solid, spr_fire');
+		this.yummy('Fire');
 	},
 });
 
 Crafty.c('Water', {
 	init : function() {
-		this.requires('Actor, Solid, spr_water');
+		this.requires('Yummy, Actor, Solid, spr_water');
+		this.yummy('Water');
 	},
 });
 
 Crafty.c('Bug', {
 	init : function() {
-		this.requires('Actor, Solid, spr_bug');
+		this.requires('Yummy, Actor, Solid, spr_bug');
+		this.yummy('Bug');
 	},
 });
