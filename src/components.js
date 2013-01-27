@@ -50,7 +50,7 @@ Crafty.c('Actor', {
 			var click_to_remove_delay = 500;
 
 			var elapsed = ((new Date()).getTime()) - this.created_at;
-			if (!this.has('FromEditor') && elapsed > click_to_remove_delay) {
+			if ((Game.state_machine.current == 'ready') && !this.has('FromEditor') && elapsed > click_to_remove_delay) {
 				this.destroy();
 				Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
 			}
