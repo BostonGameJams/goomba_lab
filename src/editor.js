@@ -232,14 +232,11 @@ $(document).ready(function() {
   var enableDragNDrop = function(){
     var tiles = $('.tile img');
     var editorPanel = $('#editorPanel');
-
     var dragId = null;
-    //Make the tiles draggable
-    tiles.attr('draggable',true);
 
     //On drag start we should set the dragID
-    tiles.bind('dragstart', function (e) {
-      var $current = $(e.currentTarget);
+    editorPanel.bind('dragstart','.tile img', function (e) {
+      var $current = $(e.target);
       dragId = $current.attr('id');
     });
 
@@ -256,7 +253,6 @@ $(document).ready(function() {
 
         //If there is a drag ID then we can drop
         if(dragId){
-          console.log('trigger:placeTile', dragId);
           Editor.selectedId = dragId;
           Crafty.trigger('placeTile', {
             x:x,
@@ -273,9 +269,6 @@ $(document).ready(function() {
     });
   }
   enableDragNDrop();
-//  Crafty.bind('resetSimulation',function(){
-//    Crafty.bind('')
-//  });
 
 
 	// Map editor
