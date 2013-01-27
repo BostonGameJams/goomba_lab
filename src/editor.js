@@ -187,4 +187,13 @@ $(document).ready(function() {
 	});
 	
 	Editor.render();
+
+	// Map editor
+	$('.live_map_editor button').click(function() {
+		console.log('hi');
+		console.log($('.live_map_editor textarea').val());
+		var data = $('.live_map_editor textarea').val().split('\n');
+		console.log('data', data);
+		Game.loadLevel({ id: 'new', data: data });
+	});
 });

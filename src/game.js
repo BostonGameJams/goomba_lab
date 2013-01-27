@@ -152,12 +152,17 @@ Game = {
 
     // Look up a level by its id
     if (!(level instanceof Object)) {
+      console.log('Looking up level');
       level = Game.getLevel(level);
       level_data = level.data;
+    } else {
+      level_data = level.data;
     }
+    console.log('level_data', level_data);
 
     // Return if for whatever reason we have not located level data
     if (!level_data) {
+      console.log('Level data not found!');
       return;
     }
 

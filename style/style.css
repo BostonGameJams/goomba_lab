@@ -114,3 +114,19 @@ body {
           height:64px;
           padding-top:8px;
         }
+
+.live_map_editor textarea {
+  /*width: 400px;*/
+  font-size: 28px;
+  font-family: monospace;
+  width: 8em;
+  height: 260px;
+}
+
+.level_editor_legend ul {
+  list-style-type: none;
+}
+
+.level_editor_legend ul li {
+  list-style-type: none;
+}

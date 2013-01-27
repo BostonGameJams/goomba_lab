@@ -97,7 +97,7 @@ Crafty.c('Goomba', {
 				case DIR_RIGHT:
 					this.nextGridX = this.currentGridX + 1;
 					this.nextGridY = this.currentGridY;
-					this.animate('MovingRight', animation_speed, -1);
+					// this.animate('MovingRight', animation_speed, -1);
 					break;
 				case DIR_UP:
 					this.nextGridX = this.currentGridX;
