@@ -617,7 +617,7 @@ Crafty.c('Fire', {
 	init : function() {
 		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_fire')
 			.yummy('Fire')
-			.animate('Rotate', 0, 0, 15)
+			.animate('Rotate', 0, 0, 31)
 			.animate('Rotate', 8, -1);
 	},
 });

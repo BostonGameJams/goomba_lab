@@ -20,7 +20,9 @@ Game = {
     'assets/env_wallA.png',
     'assets/t_chr_redA_walk.png',
     'assets/t_chr_yellowA_walk.png',
-    'assets/t_chr_blueA_walk.png'
+    'assets/t_chr_blueA_walk.png',
+    'assets/GGJ13-GoombaLab-BGM.mp3',
+    'assets/GGJ13-GoombaLab-BGM.ogg'
   ],
 
   state_machine: StateMachine.create({
@@ -169,6 +171,14 @@ Game = {
 
     Crafty.sprite(64, 'assets/t_env_exitA.png', {
       spr_exit: [0, 0]
+    });
+
+    // Define our sounds for later use
+    Crafty.audio.add({
+      background: [
+        'assets/GGJ13-GoombaLab-BGM.mp3',
+        'assets/GGJ13-GoombaLab-BGM.ogg',
+      ],
     });
   },
 
