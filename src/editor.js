@@ -23,19 +23,27 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/t_env_fireA.png'
+			img: 'assets/t_env_fireA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Water',
-			img: 'assets/t_env_waterA.png'
+			img: 'assets/t_env_waterA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Bug',
-			img: 'assets/t_env_bugA.png'
+			img: 'assets/t_env_bugA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		},
 		{
 			id: 'Wall',
-			img: 'assets/env_wallA.png'
+			img: 'assets/env_wallA.png',
+			numberRemaining : 5,
+			numberInitial : 5
 		}
 	],
 	selectedId : null,
@@ -53,6 +61,7 @@ Editor = {
 		console.log('Reload level!');
 		Editor.simulationStarted = false;
 		Editor.pauseEnabled = true;
+		//Get the initial and final data
 		Editor.render();
 	},
 	
@@ -81,14 +90,25 @@ Editor = {
 		}
 			var i = this.placeableIndex;
 			for( ; i < this.placeables.length && i < this.placeableIndex + 4; i++) {
-				if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
-					out += '<li class="tile selected">';
-				} else {
-					out += '<li class="tile">';
+				if (this.placeables[i].numberInitial > 0) {
+					if (this.placeables[i].id == this.selectedId && this.simulationStarted == false) {
+						out += '<li class="tile selected">';
+					} else {
+						out += '<li class="tile">';
+					}
+						out += '<img id="' + this.placeables[i].id + '" ';
+						out += 'src="' + this.placeables[i].img + '" class="icon"/>';
+						
+						out += '<span>';
+							out += this.placeables[i].numberRemaining;
+						out += '</span>';
+						out += '<span>  /  </span>';
+						out += '<span>';
+							out += this.placeables[i].numberInitial;
+						out += '</span>';
+					
+					out += '</li>';
 				}
-					out += '<img id="' + this.placeables[i].id + '" ';
-					out += 'src="' + this.placeables[i].img + '" class="icon"/>';
-				out += '</li>';
 			}
 			while (i < this.placeableIndex + 4) {
 				//Generate empty rows
@@ -182,6 +202,7 @@ $(document).ready(function() {
 			});
 		}
 	});
+
 	
 	Crafty.bind('placeTile', function(params) {
 		console.log('[Editor] placeTile: ' + params.id);
@@ -191,7 +212,57 @@ $(document).ready(function() {
 		console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
 	});
 	
+	//Get the data on the placables, then render the sidebar
+	//Game.
 	Editor.render();
+
+
+
+  var enableDragNDrop = function(){
+    var tiles = $('.tile img');
+    var dragId = null;
+    //Make the tiles draggable
+    tiles.attr('draggable',true);
+
+    //On drag start we should set the dragID
+    tiles.bind('dragstart', function (e) {
+      var $current = $(e.currentTarget);
+      dragId = $current.attr('id');
+    });
+
+    var stage = $('#cr-stage');
+    //Add the drop event
+    stage.bind('drop', function (e) {
+      //If we can drop
+      if($('#tileList').length){
+        //Find drop location
+        var stageX = stage.position().left;
+        var stageY = stage.position().top;
+        var x = e.originalEvent.clientX - stageX;
+        var y = e.originalEvent.clientY - stageY;
+        //If there is a drag ID then we can drop
+        if(dragId){
+          console.log('trigger:placeTile', dragId);
+          Editor.selectedId = dragId;
+          Crafty.trigger('placeTile', {
+            x:x,
+            y:y,
+            id:dragId,
+            editorMode: Editor.editorMode
+          });
+        }
+      }
+    });
+    //This is required to allow the drop event ot fire
+    stage.bind('dragover', function (e) {
+      if (e.preventDefault) e.preventDefault();
+    });
+  }
+  enableDragNDrop();
+//  Crafty.bind('resetSimulation',function(){
+//    Crafty.bind('')
+//  });
+
 
 	// Map editor
 	$('.live_map_editor button').click(function() {
