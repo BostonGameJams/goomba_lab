@@ -4,6 +4,11 @@ const DIR_LEFT = 2;
 const DIR_DOWN = 3;
 const DIR_TRAPPED = 4;
 
+const SQUEAL_WALKING = 0;
+const SQUEAL_SCARY = 1;
+const SQUEAL_HAPPY = 2;
+const SQUEAL_OMNOMNOM = 3;
+
 // The Grid component allows an element to be located
 //  on a grid of tiles
 Crafty.c('Grid', {
@@ -108,7 +113,9 @@ Crafty.c('Goomba', {
 	currentGridX : 0,
 	currentGridY : 1,
 	moveDir : DIR_RIGHT,
+	squealState : SQUEAL_WALKING,
 	msPerTile : 500,
+	msPerSqueal : 500,
 	nextGridX : 1,
 	nextGridY : 1,
 	tweenStart : new Date().getTime(),
@@ -121,59 +128,77 @@ Crafty.c('Goomba', {
 
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
-		if(tweenDiff < this.msPerTile) {
-			// update tweening
-			this.x = Game.map_grid.tile.width * ((this.nextGridX - this.currentGridX) * tweenDiff / this.msPerTile + this.currentGridX);
-			this.y = Game.map_grid.tile.height * ((this.nextGridY - this.currentGridY) * tweenDiff / this.msPerTile + this.currentGridY);
-		} else {
-			// finalize destination, process game logic, and set new one
-			this.currentGridX = this.nextGridX;
-			this.currentGridY = this.nextGridY;
-			this.x = Game.map_grid.tile.width * this.nextGridX;
-			this.y = Game.map_grid.tile.height * this.nextGridY;
-			// check for win
-			var exits = Crafty("Exit");
-			var self = this;
-			if(_.find(exits, function(exit) {
-				var at = Crafty(exit).at();
-				return at.x == self.currentGridX && at.y == self.currentGridY;
-			})) {
-				Crafty.trigger("ReachedExit");
+		// if we're doing a squeal, handle that
+		if(squealState != SQUEAL_WALKING) {
+			if(tweenDiff < this.msPerSqueal) {
+				// squeal in progress; do nothing
+			} else {
+				// squeal done
+				squealState = SQUEAL_WALKING;
+				tweenDiff = this.msPerTile;
 			}
-			// we'll be moving to another tile, so set it up
-			this.moveDir = this.getNextDir.bind(this)();
+		}
 
-			// Stop the existing animation
-			this.stop();
-
-			// we trust getNextDir implicitly to give us a valid direction
-			switch(this.moveDir) {
-				case DIR_RIGHT:
-					this.nextGridX = this.currentGridX + 1;
-					this.nextGridY = this.currentGridY;
-					this.animate('MovingRight', this.animation_speed, -1);
-					break;
-				case DIR_UP:
-					this.nextGridX = this.currentGridX;
-					this.nextGridY = this.currentGridY - 1;
-					this.animate('MovingUp', this.animation_speed, -1);
-					break;
-				case DIR_LEFT:
-					this.nextGridX = this.currentGridX - 1;
-					this.nextGridY = this.currentGridY;
-					this.animate('MovingLeft', this.animation_speed, -1);
-					break;
-				case DIR_DOWN:
-					this.nextGridX = this.currentGridX;
-					this.nextGridY = this.currentGridY + 1;
-					this.animate('MovingDown', this.animation_speed, -1);
-					break;
-				case DIR_TRAPPED:
-					this.nextGridX = this.currentGridX;
-					this.nextGridY = this.currentGridY;
+		if(squealState == SQUEAL_WALKING) {
+			if(tweenDiff < this.msPerTile) {
+				// update tweening
+				this.x = Game.map_grid.tile.width * ((this.nextGridX - this.currentGridX) * tweenDiff / this.msPerTile + this.currentGridX);
+				this.y = Game.map_grid.tile.height * ((this.nextGridY - this.currentGridY) * tweenDiff / this.msPerTile + this.currentGridY);
+			} else {
+				// finalize destination, process game logic, and set new one
+				this.currentGridX = this.nextGridX;
+				this.currentGridY = this.nextGridY;
+				this.x = Game.map_grid.tile.width * this.nextGridX;
+				this.y = Game.map_grid.tile.height * this.nextGridY;
+				// check for win
+				var exits = Crafty("Exit");
+				var self = this;
+				if(_.find(exits, function(exit) {
+					var at = Crafty(exit).at();
+					return at.x == self.currentGridX && at.y == self.currentGridY;
+				})) {
+					Crafty.trigger("ReachedExit");
+				}
+				// we'll be moving to another tile, so set it up
+				this.moveDir = this.getNextDir.bind(this)();
+				
+				if(this.squealState != SQUEAL_WALKING) {
+					this.tweenStart = new Date().getTime();
 					return;
+				}
+
+				// Stop the existing animation
+				this.stop();
+
+				// we trust getNextDir implicitly to give us a valid direction
+				switch(this.moveDir) {
+					case DIR_RIGHT:
+						this.nextGridX = this.currentGridX + 1;
+						this.nextGridY = this.currentGridY;
+						this.animate('MovingRight', this.animation_speed, -1);
+						break;
+					case DIR_UP:
+						this.nextGridX = this.currentGridX;
+						this.nextGridY = this.currentGridY - 1;
+						this.animate('MovingUp', this.animation_speed, -1);
+						break;
+					case DIR_LEFT:
+						this.nextGridX = this.currentGridX - 1;
+						this.nextGridY = this.currentGridY;
+						this.animate('MovingLeft', this.animation_speed, -1);
+						break;
+					case DIR_DOWN:
+						this.nextGridX = this.currentGridX;
+						this.nextGridY = this.currentGridY + 1;
+						this.animate('MovingDown', this.animation_speed, -1);
+						break;
+					case DIR_TRAPPED:
+						this.nextGridX = this.currentGridX;
+						this.nextGridY = this.currentGridY;
+						return;
+				}
+				this.tweenStart = new Date().getTime();
 			}
-			this.tweenStart = new Date().getTime();
 		}
 	},
 	eatDeliciousAttractor : function(attractor) {
@@ -184,6 +209,9 @@ Crafty.c('Goomba', {
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// same tile, so eat the entity and continue looking for additional attractors
 			Crafty(attractor).eat();
+			// happy squeal
+			this.squealState = SQUEAL_OMNOMNOM;
+			// TODO: play eating animation
 		}
 	},
 	getYummyTarget : function(attractors) {
@@ -324,7 +352,7 @@ Crafty.c('Goomba', {
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('spr_goomba_yellow, Goomba');
+		this.requires('spr_goomba_yellow, spr_goomba_yellow_eat, spr_goomba_yellow_scare, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -412,7 +440,7 @@ Crafty.c('YellowGoomba', {
 
 Crafty.c('BlueGoomba', {
 	init : function() {
-		this.requires('spr_goomba_blue, Goomba');
+		this.requires('spr_goomba_blue, spr_goomba_blue_eat, spr_goomba_blue_scare, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -437,10 +465,17 @@ Crafty.c('BlueGoomba', {
 			this.pathingGrid[at.x][at.y] = false;
 		}.bind(this));
 
+		var startMoveDir = this.moveDir;
 		// eat delicious attractors if we're standing on one, then check for attractors to move to
 		var attractors = bugs;
 		_.each(attractors, this.eatDeliciousAttractor.bind(this));
 		if(this.getYummyTarget(attractors.bind(this))) {
+			if(startMoveDir != this.moveDir)
+			{
+				// squeal with delight
+				this.squealState = SQUEAL_HAPPY;
+				// TODO: play happy animation
+			}
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -489,7 +524,7 @@ Crafty.c('BlueGoomba', {
 
 Crafty.c('RedGoomba', {
 	init : function() {
-		this.requires('spr_goomba_red, Goomba');
+		this.requires('spr_goomba_red, spr_goomba_red_eat, spr_goomba_red_scare, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -617,7 +652,7 @@ Crafty.c('Fire', {
 	init : function() {
 		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_fire')
 			.yummy('Fire')
-			.animate('Rotate', 0, 0, 15)
+			.animate('Rotate', 0, 0, 31)
 			.animate('Rotate', 8, -1);
 	},
 });
