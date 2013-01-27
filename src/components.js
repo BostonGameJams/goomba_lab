@@ -209,6 +209,7 @@ Crafty.c('Goomba', {
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// same tile, so eat the entity and continue looking for additional attractors
 			Crafty(attractor).eat();
+			Crafty.audio.play('eating');
 			// happy squeal
 			this.squealState = SQUEAL_OMNOMNOM;
 			// TODO: play eating animation
