@@ -109,11 +109,11 @@ body {
         }
 
 		#editorPanel #tileList .selected {
-          background: url('../assets/border.png') no-repeat 0 0;
+          /*background: url('../assets/border.png') no-repeat 0 0;*/
         }
         
         #editorPanel #tileList li:hover {
-          background: url('../assets/border.png') no-repeat 0 0;
+          /*background: url('../assets/border.png') no-repeat 0 0;*/
         }
         
         #editorPanel #tileList li .icon,

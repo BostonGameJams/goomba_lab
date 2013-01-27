@@ -171,6 +171,8 @@ Editor = {
 				Editor.render();
 			}
 		});
+		
+		Crafty.trigger('editorRenderDone');
 	}
 	
 };
@@ -213,7 +215,16 @@ $(document).ready(function() {
 	});
 	
 	//Get the data on the placables, then render the sidebar
-	//Game.
+	Crafty.bind('reloadLevel', function(params) {
+		var inventory = Game.getRemainingInventory();
+		//if (inventory.fire)
+		//TODO
+	});
+	
+	Crafty.bind('InventoryUpdated', function(inventory) {
+		//TODO
+	});
+	
 	Editor.render();
 
 
