@@ -245,11 +245,9 @@ $(document).ready(function() {
 	var updateLevels = function(params) {
 		var inventory = Game.getRemainingInventory();
 		for (var i = 0; i < Editor.placeables.length; i++) {
-			if (inventory[Editor.placeables[i].id]) {
-				var initial = inventory[Editor.placeables[i].id];
-				Editor.placeables[i].numberInitial = initial;
-				Editor.placeables[i].numberRemaining = initial;
-			}
+			var initial = inventory[Editor.placeables[i].id];
+			Editor.placeables[i].numberInitial = initial;
+			Editor.placeables[i].numberRemaining = initial;
 		}
 		Editor.render();
 	};
