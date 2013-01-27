@@ -178,6 +178,18 @@ Game = {
     }
   },
 
+  // Gets the previous level, if there is one; else returns false
+  getPrevLevel: function(level_id) {
+    var current_index = _.indexOf(Game.levels, Game.current_level),
+        prev_level    = this.getLevel(current_index);
+
+    if (prev_level.data) {
+      return prev_level;
+    } else {
+      return null;
+    }
+  },
+
   // Load the specified level, or load/reload the current level if no level
   //  is specified
   loadLevel: function(level) {
@@ -286,6 +298,14 @@ Game = {
       this.loadLevel(next_level);
     } else {
       Crafty.scene('Final');
+    }
+  },
+
+  // Jump back to the previous level
+  loadPrevLevel: function() {
+    var prev_level = this.getPrevLevel();
+    if (prev_level) {
+      this.loadLevel(prev_level);
     }
   }
 }
