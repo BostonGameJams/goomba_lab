@@ -128,6 +128,7 @@ Crafty.c('Goomba', {
 
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
+		this.animation_speed = 32;
 		// if we're doing a squeal, handle that
 		if(this.squealState != SQUEAL_WALKING) {
 			if(tweenDiff < this.msPerSqueal) {
