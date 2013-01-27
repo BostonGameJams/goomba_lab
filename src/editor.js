@@ -83,6 +83,8 @@ Editor = {
 		$('#editorPanel').html('');
 		
 		var out = '';
+		out += '<div id ="noteButton"></div>';
+		
 		if (Editor.simulationStarted) {
 			out += '<ul id="tileListLocked">';
 		} else {
@@ -142,6 +144,18 @@ Editor = {
 				var id = child.id;
 				Editor.selectedId = id;
 				console.log('id = ' + id);
+			}
+		});
+		
+		$('#noteButton').click(function(event) {
+			console.log('noteButton');
+			if($('#notePanel').is(':visible')) {
+				console.log('visible');
+				$('#notePanel').hide();
+				$('#cr-stage').css('visibility','visible');
+			} else {
+				$('#notePanel').show();
+				$('#cr-stage').css('visibility','hidden');
 			}
 		});
 

@@ -41,7 +41,6 @@ body {
         float: left;
         width : 128px;
         height: 496px;
-        padding-top:16px;
         font-family: arial;
         font-size: 10px;
         -webkit-touch-callout: none;
@@ -51,6 +50,11 @@ body {
         -ms-user-select: none;
         user-select: none;
       }
+
+		#editorPanel #noteButton {
+			width: 128px;
+			height: 64px;
+		}
         
         #editorPanel #goButton,
  		#editorPanel #pauseButton,
@@ -101,7 +105,6 @@ body {
         #editorPanel #tileList,
  		#editorPanel #tileListLocked {
           padding: 0px;
-		  margin-top:48px;
         }
         
         #editorPanel #tileList .tile,
@@ -136,6 +139,20 @@ body {
           height:64px;
           padding-top: 15px;
         }
+
+		#notePanel {
+			margin-top:-432px;
+			width : 900px;
+	        height: 432px;
+			display:none;
+			z-index:1000;
+		}
+		
+			#notePanel textarea {
+				width : 900px;
+		        height: 432px;
+				z-index:1001;
+			}
 
 .live_map_editor {
   width: 212px; 
