@@ -495,7 +495,7 @@ Crafty.c('Wall', {
 
 Crafty.c('Exit', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('white');
+		this.requires('Actor, Solid, spr_exit');
 	},
 });
 
@@ -516,6 +516,7 @@ Crafty.c('Yummy', {
 	
 	yummy : function(yummyType) {
 		this.yummyType = yummyType;
+		return this;
 	}
 });
 
@@ -534,8 +535,14 @@ Crafty.c('Water', {
 });
 
 Crafty.c('Bug', {
+	animation_speed: 16,
 	init : function() {
-		this.requires('Yummy, Actor, Solid, spr_bug');
-		this.yummy('Bug');
+		this.requires('Yummy, Actor, Solid, SpriteAnimation, spr_bug')
+			.animate('MovingUp',    0, 0, 7)
+			.animate('MovingDown',  0, 1, 7)
+			.animate('MovingLeft',  0, 2, 7)
+			.animate('MovingRight', 0, 3, 7)
+			.yummy('Bug')
+			.animate('MovingRight', this.animation_speed, -1);
 	},
 });

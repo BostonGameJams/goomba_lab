@@ -12,6 +12,7 @@ Game = {
   background: 'url("assets/background.jpeg") no-repeat 0 0',
 
   assets: [
+    'assets/t_env_bugA.png',
     'assets/t_env_bugB.png',
     'assets/t_env_fireB.png',
     'assets/t_env_waterB.png',
@@ -117,7 +118,7 @@ Game = {
   },
 
   loadSprites: function() {
-    _.each('bug fire water'.split(' '), function(unit) {
+    _.each('fire water'.split(' '), function(unit) {
       var sprite_name = 'spr_' + unit
       var sprite_map_obj = {}
       sprite_map_obj[sprite_name] = [0, 0];
@@ -138,6 +139,14 @@ Game = {
 
     Crafty.sprite(64, 'assets/t_chr_redA_walk.png', {
       spr_goomba_red: [0, 3]
+    });
+
+    Crafty.sprite(64, 'assets/t_env_bugB.png', {
+      spr_bug: [0, 0]
+    });
+
+    Crafty.sprite(64, 'assets/t_env_exitA.png', {
+      spr_exit: [0, 0]
     });
   },
 
@@ -167,10 +176,8 @@ Game = {
       console.log('Looking up level');
       level = Game.getLevel(level);
       level_data = level.data;
-    } else {
-      level_data = level.data;
     }
-    console.log('level_data', level_data);
+    level_data = level.data;
 
     // Return if for whatever reason we have not located level data
     if (!level_data) {

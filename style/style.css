@@ -125,14 +125,14 @@ body {
         }
         
         #editorPanel #tileList li:hover {
-          background-color:yellow;
+          background-color: rgba(256, 256, 256, 0.8);
         }
         
         #editorPanel #tileList li img,
 		#editorPanel #tileListLocked li img{
           width:64px;
           height:64px;
-          padding-top:8px;
+          padding-top: 15px;
         }
 
 .live_map_editor {

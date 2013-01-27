@@ -74,11 +74,11 @@ Editor = {
 		$('#editorPanel').html('');
 		
 		var out = '';
-		if (this.placeables.length > 4) {
-			out += '<img id="upArrow" src="assets/upArrow.png"/>';
-		} else {
-			out += '<img id="upArrow" src="assets/upArrow.png" class="hiddenArrow"/>';
-		}
+		// if (this.placeables.length > 4) {
+		// 	out += '<img id="upArrow" src="assets/upArrow.png"/>';
+		// } else {
+		// 	out += '<img id="upArrow" src="assets/upArrow.png" class="hiddenArrow"/>';
+		// }
 		if (Editor.simulationStarted) {
 			out += '<ul id="tileListLocked">';
 		} else {
@@ -93,7 +93,6 @@ Editor = {
 				}
 					out += '<img id="' + this.placeables[i].id + '" ';
 					out += 'src="' + this.placeables[i].img + '" class="icon"/>';
-				    out += '<span>' + this.placeables[i].id + '</span>';
 				out += '</li>';
 			}
 			while (i < this.placeableIndex + 4) {
