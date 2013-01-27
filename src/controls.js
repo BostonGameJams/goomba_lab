@@ -19,6 +19,8 @@ Controls = {
 
       if (e.key == Crafty.keys['R']) {
         Game.loadLevel(1);
+      } else if (e.key == Crafty.keys['M']) {
+        Crafty.audio.toggleMute();
       }
     });
   }
