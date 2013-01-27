@@ -202,15 +202,22 @@ var enableDragNDrop = function(){
       var x = e.originalEvent.clientX - stageX;
       var y = e.originalEvent.clientY - stageY + $(window).scrollTop();
 
-      //If there is a drag ID then we can drop
+      //If there is a drag ID, and we're not out, then we can drop
       if(dragId){
-        Editor.selectedId = dragId;
-        Crafty.trigger('placeTile', {
-          x:x,
-          y:y,
-          id:dragId,
-          editorMode: Editor.editorMode
-        });
+		for (var i = 0; i < Editor.placeables.length; i++) {
+			if (dragId == Editor.placeables[i].id) {
+				if (Editor.placeables[i].numberRemaining > 0) {
+					Editor.selectedId = dragId;
+			        Crafty.trigger('placeTile', {
+			          x:x,
+			          y:y,
+			          id:dragId,
+			          editorMode: Editor.editorMode
+			        });
+					break;
+				}
+			}
+		}
       }
     }
   });
@@ -252,11 +259,10 @@ $(document).ready(function() {
 	Crafty.bind('InventoryUpdated', function(inventory) {
 		var inventory = Game.getRemainingInventory();
 		for (var i = 0; i < Editor.placeables.length; i++) {
-			if (inventory[Editor.placeables[i].id]) {
-				var remaining = inventory[Editor.placeables[i].id];
-				Editor.placeables[i].numberRemaining = remaining;
-			}
+			var remaining = inventory[Editor.placeables[i].id];
+			Editor.placeables[i].numberRemaining = remaining;
 		}
+		Editor.render();
 	});
 	
 	Editor.render();
