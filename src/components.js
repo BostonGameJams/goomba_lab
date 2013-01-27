@@ -63,14 +63,14 @@ Crafty.c('Goomba', {
 			if(this.startedOnce) {
 				this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
 			} else {
-				this.tweenStart = new Date().getTime();
 				this.moveDir = DIR_RIGHT;
 				this.currentGridX = this.startPosition.x;
 				this.currentGridY = this.startPosition.y;
 				this.x = Game.map_grid.tile.width * this.currentGridX;
 				this.y = Game.map_grid.tile.width * this.currentGridY;
-				this.nextGridX = at.x + 1;
-				this.nextGridY = at.y;
+				this.nextGridX = this.startPosition.x;
+				this.nextGridY = this.startPosition.y;
+				this.tweenStart = new Date().getTime() - this.msPerTile;
 			}
 			this.startedOnce = true;
 			this.bind("EnterFrame", this.enterFrame);
