@@ -86,11 +86,14 @@ Crafty.c('Goomba', {
 			}
 			// we'll be moving to another tile, so set it up
 			this.moveDir = this.getNextDir();
+
 			// we trust getNextDir implicitly to give us a valid direction
+			var animation_speed = 4;
 			switch(this.moveDir) {
 				case DIR_RIGHT:
 					this.nextGridX = this.currentGridX + 1;
 					this.nextGridY = this.currentGridY;
+					this.animate('MovingRight', animation_speed, -1);
 					break;
 				case DIR_UP:
 					this.nextGridX = this.currentGridX;
@@ -173,7 +176,11 @@ Crafty.c('Goomba', {
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('Goomba, Color').color('yellow');
+		this.requires('Goomba, Color, spr_goomba_yellow, SpriteAnimation')
+			.animate('MovingUp',    0, 0, 2)
+			.animate('MovingRight', 0, 1, 2)
+			.animate('MovingDown',  0, 2, 2)
+			.animate('MovingLeft',  0, 3, 2);
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -430,7 +437,7 @@ Crafty.c('RedGoomba', {
 
 Crafty.c('Wall', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('gray');
+		this.requires('Actor, Solid, spr_wall');
 	},
 });
 
@@ -442,18 +449,18 @@ Crafty.c('Exit', {
 
 Crafty.c('Fire', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('orange');
+		this.requires('Actor, Solid, spr_fire');
 	},
 });
 
 Crafty.c('Water', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('blue');
+		this.requires('Actor, Solid, spr_water');
 	},
 });
 
 Crafty.c('Bug', {
 	init : function() {
-		this.requires('Actor, Solid, Color').color('brown');
+		this.requires('Actor, Solid, spr_bug');
 	},
 });

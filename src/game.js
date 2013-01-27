@@ -12,7 +12,9 @@ Game = {
   background: 'url("assets/background.jpeg") no-repeat 0 0',
 
   assets: [
-    'assets/16x16_sample.gif'
+    'assets/t_env_bugB.png',
+    'assets/t_env_fireB.png',
+    'assets/t_env_waterB.png',
   ],
 
   state_machine: StateMachine.create({
@@ -84,16 +86,19 @@ Game = {
   },
 
   loadSprites: function() {
-    // Define the individual sprites in the image
-    // Each one (spr_tree, etc.) becomes a component
-    // These components' names are prefixed with "spr_"
-    //  to remind us that they simply cause the entity
-    //  to be drawn with a certain sprite
-    Crafty.sprite(16, 'assets/16x16_sample.gif', {
-      spr_tree:    [0, 0],
-      spr_bush:    [1, 0],
-      spr_village: [0, 1],
-      spr_rock:    [1, 1]
+    _.each('bug fire water'.split(' '), function(unit) {
+      var sprite_name = 'spr_' + unit
+      var sprite_map_obj = {}
+      sprite_map_obj[sprite_name] = [0, 0];
+      Crafty.sprite(64, 'assets/t_env_' + unit + 'B.png', sprite_map_obj);
+    });
+
+    Crafty.sprite(64, 'assets/env_wallA.png', {
+      spr_wall: [0, 0]
+    });
+
+    Crafty.sprite(64, 'assets/t_chr_yellowA_walk.png', {
+      spr_goomba_yellow: [0, 1]
     });
   },
 

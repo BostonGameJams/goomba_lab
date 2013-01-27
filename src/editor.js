@@ -23,19 +23,19 @@ Editor = {
 	placeables : [
 		{
 			id: 'Fire',
-			img: 'assets/Fire.png'
+			img: 'assets/t_env_fireA.png'
 		},
 		{
 			id: 'Water',
-			img: 'assets/Water.png'
+			img: 'assets/t_env_waterA.png'
 		},
 		{
 			id: 'Bug',
-			img: 'assets/Bug.png'
+			img: 'assets/t_env_bugA.png'
 		},
 		{
 			id: 'Wall',
-			img: 'assets/Wall.png'
+			img: 'assets/env_wallA.png'
 		}
 	],
 	selectedId : null,
@@ -179,11 +179,11 @@ $(document).ready(function() {
 	});
 	
 	Crafty.bind('placeTile', function(params) {
-		console.log('placeTile: ' + params.id);
+		console.log('[Editor] placeTile: ' + params.id);
 	})
 	
 	Crafty.bind('gameClick', function(params) {
-		console.log('gameClick: x:' + params.x + ' y:' + params.y);
+		console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
 	});
 	
 	Editor.render();
