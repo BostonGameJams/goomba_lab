@@ -159,64 +159,74 @@ Crafty.c('Goomba', {
 			this.tweenStart = new Date().getTime();
 		}
 	},
-	checkAttractor : function(attractor) {
+	eatDeliciousAttractor : function(attractor) {
+		if(!Crafty(attractor).at) {
+			return;
+		}
 		var at = Crafty(attractor).at();
-		// we need to first check for collision, then if it's in the same column or row as us, then check for line of sight.
 		if(this.currentGridX == at.x && this.currentGridY == at.y) {
 			// collision, so eat the entity and continue looking for additional attractors
 			Crafty(attractor).eat();
-		} else if(this.currentGridX == at.x) {
-			// same column, check for pathing
-			var reachable = true;
-			if(this.currentGridY > at.y)// attractor is above goomba
-			{
-				attractionDir = DIR_UP;
-				for(var i = at.y; i <= this.currentGridY; i++) {
-					if(!this.pathingGrid[at.x][i]) {
-						reachable = false;
-						break;
-					}
-				}
-			} else// attractor is below goomba
-			{
-				attractionDir = DIR_DOWN;
-				for(var i = this.currentGridY; i <= at.y; i++) {
-					if(!this.pathingGrid[at.x][i]) {
-						reachable = false;
-						break;
-					}
-				}
+		}
+	},
+	getYummyTarget : function(attractors) {
+		var cgx = this.currentGridX;
+		var cgy = this.currentGridY;
+		var attractor_objects = _.map(attractors, function(a) {
+			return Crafty(a);
+		});
+		var attractors_in_line = _.filter(attractor_objects, function(a) {
+			if(!a.at) {
+				return false;
 			}
-			if(reachable) {
-				this.moveDir = attractionDir;
-				return true;
+			return a.at().x == cgx || a.at().y == cgy;
+		});
+		var attractors_by_dist = _.sortBy(attractors_in_line, function(a) {
+			return Math.abs(a.at().x - cgx) + Math.abs(a.at().y - cgy);
+		});
+		if(attractors_by_dist.length == 0) {
+			return false;
+		}
+		var min_dist = Math.abs(attractors_by_dist[0].at().x - cgx) + Math.abs(attractors_by_dist[0].at().y - cgy);
+		var closest_attractors = _.filter(attractors_by_dist, function(a) {
+			return (Math.abs(a.at().x - cgx) + Math.abs(a.at().y - cgy)) == min_dist;
+		});
+		var closest_attractors_with_dir = _.map(closest_attractors, function(a) {
+			if(a.at().x > cgx)
+				return {
+					dir : DIR_RIGHT,
+					a : a
+				};
+			else if(a.at().x < cgx)
+				return {
+					dir : DIR_LEFT,
+					a : a
+				};
+			else if(a.at().y > cgy)
+				return {
+					dir : DIR_DOWN,
+					a : a
+				};
+			else if(a.at().y < cgy)
+				return {
+					dir : DIR_UP,
+					a : a
+				};
+		});
+		var chosen_attractor;
+		if(closest_attractors_with_dir.length > 1) {
+			if(!( chosen_attractor = _.find(closest_attractors_with_dir, function(a) {
+				return a.dir == this.moveDir;
+			}.bind(this)))) {
+				chosen_attractor = _.sortBy(closest_attractors_with_dir, "dir")[0];
 			}
-		} else if(this.currentGridY == at.y) {
-			// same row, check for pathing
-			var reachable = true;
-			if(this.currentGridX > at.x)// attractor is left of goomba
-			{
-				attractionDir = DIR_LEFT;
-				for(var i = at.x; i <= this.currentGridX; i++) {
-					if(!this.pathingGrid[i][at.y]) {
-						reachable = false;
-						break;
-					}
-				}
-			} else// attractor is right of goomba
-			{
-				attractionDir = DIR_RIGHT;
-				for(var i = this.currentGridX; i <= at.x; i++) {
-					if(!this.pathingGrid[i][at.y]) {
-						reachable = false;
-						break;
-					}
-				}
-			}
-			if(reachable) {
-				this.moveDir = attractionDir;
-				return true;
-			}
+		} else {
+			chosen_attractor = closest_attractors_with_dir[0];
+		}
+
+		if(chosen_attractor) {
+			this.moveDir = chosen_attractor.dir;
+			return true;
 		}
 		return false;
 	},
@@ -258,16 +268,11 @@ Crafty.c('YellowGoomba', {
 				}
 			}
 		}.bind(this));
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// WATER
-		if(_.find(waters, this.checkAttractor.bind(this))) {
-			// attract towards attractor!
-			return this.moveDir;
-		}
-		// BUGS
-		if(_.find(bugs, this.checkAttractor.bind(this))) {
+
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = _.union(waters,bugs);
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if((this.getYummyTarget.bind(this))(attractors)) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -341,11 +346,10 @@ Crafty.c('BlueGoomba', {
 			this.pathingGrid[at.x][at.y] = false;
 		}.bind(this));
 
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// BUGS
-		if(_.find(bugs, this.checkAttractor.bind(this))) {
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = bugs;
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if(this.getYummyTarget(attractors.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
@@ -436,11 +440,10 @@ Crafty.c('RedGoomba', {
 			}
 		}.bind(this));
 
-		// check for attractions overriding normal movement
-		var attractor;
-		var attractionDir;
-		// FIRE
-		if(_.find(fires, this.checkAttractor.bind(this))) {
+		// eat delicious attractors if we're standing on one, then check for attractors to move to
+		var attractors = fires;
+		_.each(attractors, this.eatDeliciousAttractor.bind(this));
+		if(this.getYummyTarget(attractors.bind(this))) {
 			// attract towards attractor!
 			return this.moveDir;
 		}
