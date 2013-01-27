@@ -29,7 +29,7 @@ body {
     }
     
     #editorFrame ul {
-      list-style-type: none;
+      list-style: none;
     }
 
     #editorFrame > ul {
@@ -135,18 +135,40 @@ body {
           padding-top:8px;
         }
 
+.live_map_editor {
+  width: 212px; 
+  margin: 0 auto;
+}
+
 .live_map_editor textarea {
-  /*width: 400px;*/
   font-size: 28px;
   font-family: monospace;
-  width: 8em;
+  /*width: 8em;*/
+  width: 212px;
+  display: block;
   height: 260px;
+  margin: 0 auto;
 }
 
-.level_editor_legend ul {
-  list-style-type: none;
+.live_map_editor button {
+  width: 12em;
+  margin: 10px auto;
+  display: block;
+  font-size: 16px;
 }
 
-.level_editor_legend ul li {
-  list-style-type: none;
+.level_editor_legend {
+  list-style: none;
+  width: 300px;
+  margin: 10px auto 0;
+}
+
+.level_editor_legend > li {
+  text-align: left;
+  text-indent: 24px;
+}
+
+.level_editor_legend > li label {
+  font-weight: bold;
+  margin-right: 0.6em;
 }
