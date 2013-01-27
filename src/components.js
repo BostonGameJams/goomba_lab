@@ -51,22 +51,26 @@ Crafty.c('Goomba', {
 			console.log("startSim");
 			var at = this.at();
 			if(this.startedOnce) {
-				;
-			} else// first start
-			{
+				this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
+			} else {
+				this.tweenStart = new Date().getTime();
 				this.moveDir = DIR_RIGHT;
 				this.currentGridX = this.startPosition.x;
 				this.currentGridY = this.startPosition.y;
+				this.x = Game.map_grid.tile.width * this.currentGridX;
+				this.y = Game.map_grid.tile.width * this.currentGridY;
 				this.nextGridX = at.x + 1;
 				this.nextGridY = at.y;
 			}
-			//this.currentGridX = at.x;
-			//this.currentGridY = at.y;
-			this.tweenStart = new Date().getTime() - this.tweenPausedIncrement;
 			this.startedOnce = true;
 			this.bind("EnterFrame", this.enterFrame);
 		}).bind("resetSimulation", function() {
 			console.log("resetSim");
+			this.unbind("EnterFrame");
+			this.currentGridX = this.startPosition.x;
+			this.currentGridY = this.startPosition.y;
+			this.x = Game.map_grid.tile.width * this.currentGridX;
+			this.y = Game.map_grid.tile.width * this.currentGridY;
 			this.startedOnce = false;
 		});
 	},
@@ -118,7 +122,7 @@ Crafty.c('Goomba', {
 				case DIR_RIGHT:
 					this.nextGridX = this.currentGridX + 1;
 					this.nextGridY = this.currentGridY;
-					this.animate('MovingRight', animation_speed, -1);
+					// this.animate('MovingRight', animation_speed, -1);
 					break;
 				case DIR_UP:
 					this.nextGridX = this.currentGridX;
