@@ -245,6 +245,9 @@ $(document).ready(function() {
 			Editor.placeables[i].numberInitial = initial;
 			Editor.placeables[i].numberRemaining = initial;
 		}
+		
+		Editor.simulationStarted=false;
+		Editor.pauseEnabled=true;
 		Editor.render();
 	};
 	
