@@ -26,14 +26,14 @@ Game = {
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
-      { name: 'game_scene_loaded', from: ['victory', 'loading', 'loaded', 'ready'], to: 'loaded' },
-      { name: 'becomeReady',       from: 'loaded',                                  to: 'ready' },
-      { name: 'run',               from: ['loaded', 'paused', 'ready'],             to: 'running' },
-      { name: 'reset',             from: ['running', 'paused'],                     to: 'ready' },
-      { name: 'reload',            from: ['ready'],                                 to: 'loaded' },
-      { name: 'loading',           from: '*',                                       to: 'loading' },
-      { name: 'pause',             from: 'running',                                 to: 'paused' },
-      { name: 'win',               from: 'running',                                 to: 'victory' }
+      { name: 'game_scene_loaded', from: '*',                           to: 'loaded' },
+      { name: 'becomeReady',       from: 'loaded',                      to: 'ready' },
+      { name: 'run',               from: ['loaded', 'paused', 'ready'], to: 'running' },
+      { name: 'reset',             from: ['running', 'paused'],         to: 'ready' },
+      { name: 'reload',            from: ['ready'],                     to: 'loaded' },
+      { name: 'loading',           from: '*',                           to: 'loading' },
+      { name: 'pause',             from: 'running',                     to: 'paused' },
+      { name: 'win',               from: 'running',                     to: 'victory' }
     ],
     callbacks: {
       onloaded:  function(event, from, to, msg) {
