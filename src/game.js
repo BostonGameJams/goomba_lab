@@ -54,6 +54,7 @@ Game = {
     callbacks: {
       onloaded:  function(event, from, to, msg) {
         Crafty.trigger('LevelLoaded', Game.current_level.inventory);
+		Game.yummiesEaten = [];	//Reset eaten yummies
         Game.state_machine.becomeReady();
       },
       onbecomeReady: function() {

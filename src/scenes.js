@@ -245,13 +245,13 @@ Crafty.scene('Victory', function(){
 
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
-  Helpers.centeredText("You did it! Congratulations!");
-  Helpers.centeredText("Now try the next level!", { y_offset: 30 });
+  Helpers.centeredText("Congratulations!");
+  Helpers.centeredText("Click to go to the next Goomba habitat!", { y_offset: 30 });
 
   // After a short delay, watch for the player to press a key, then restart
   // the game when a key is pressed
   var delay = true;
-  setTimeout(function() { delay = false; }, 1000);
+  setTimeout(function() { delay = false; }, 500);
   this.watch_for_next_level_click = Crafty.bind('gameClick', function(params) {
     // console.log('[Editor] gameClick: x:' + params.x + ' y:' + params.y);
     if (!delay) {
