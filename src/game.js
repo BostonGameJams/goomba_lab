@@ -35,8 +35,7 @@ Game = {
     ],
     callbacks: {
       onloaded:  function(event, from, to, msg) {
-        console.log('Loaded!', Game.current_level);
-        Crafty.trigger('LevelLoaded', Game.current_level);
+        Crafty.trigger('LevelLoaded', Game.current_level.inventory);
         Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
       }
     }
