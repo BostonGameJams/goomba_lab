@@ -194,6 +194,8 @@ var enableDragNDrop = function(){
   var stage = $('#cr-stage');
   //Add the drop event
   stage.bind('drop', function (e) {
+    e.preventDefault();
+
     //If we can drop
     if($('#tileList').length){
       //Find drop location
