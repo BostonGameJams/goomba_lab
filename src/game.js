@@ -9,8 +9,6 @@ Game = {
     }
   },
 
-  background: 'url("assets/background.png") no-repeat 0 0',
-
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
@@ -26,7 +24,7 @@ Game = {
     callbacks: {
       onloaded:  function(event, from, to, msg) {
         Crafty.trigger('LevelLoaded', Game.current_level.inventory);
-		Game.yummiesEaten = [];	//Reset eaten yummies
+    Game.yummiesEaten = []; //Reset eaten yummies
         Game.state_machine.becomeReady();
       },
       onbecomeReady: function() {
@@ -53,9 +51,9 @@ Game = {
   start: function() {
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(this.width(), this.height());
-    Crafty.background(this.background);
+    Crafty.background('url("assets/background.png") no-repeat 0 0');
 
-	//Crafty.e('Overlay').image('assets/overlay.png').at(1,1).z(100);
+  //Crafty.e('Overlay').image('assets/overlay.png').at(1,1).z(100);
 
     Game.current_level = Game.levels[0];
 
@@ -193,25 +191,25 @@ Game = {
           case 'Y':
             Crafty.e('YellowGoomba').at(x, y).addComponent('FromEditor');
             break;
-    case 'B':
-           Crafty.e('BlueGoomba').at(x, y).addComponent('FromEditor');
-           break;
-    case 'R':
+          case 'B':
+            Crafty.e('BlueGoomba').at(x, y).addComponent('FromEditor');
+            break;
+          case 'R':
             Crafty.e('RedGoomba').at(x, y).addComponent('FromEditor')
             break;
-        case 'W':
+          case 'W':
             Crafty.e('Wall').at(x, y).addComponent('FromEditor')
             break;
-    case 'F':
-      Crafty.e('Fire').at(x, y).addComponent('FromEditor')
-      break;
-    case 'T':
-      Crafty.e('Water').at(x, y).addComponent('FromEditor')
-      break;
-    case 'U':
-      Crafty.e('Bug').at(x, y).addComponent('FromEditor')
-      break;
-        case 'E':
+          case 'F':
+            Crafty.e('Fire').at(x, y).addComponent('FromEditor')
+            break;
+          case 'T':
+            Crafty.e('Water').at(x, y).addComponent('FromEditor')
+            break;
+          case 'U':
+            Crafty.e('Bug').at(x, y).addComponent('FromEditor')
+            break;
+          case 'E':
             Crafty.e('Exit').at(x, y).addComponent('FromEditor')
             break;
           default:
@@ -220,7 +218,7 @@ Game = {
       })
     });
 
-    // Init metadata for Goombas, etc.
+    // Init metadata for Goombas
     Crafty('Goomba').each(function() {
       this.startPosition = { x: this.at().x, y: this.at().y };
     });
@@ -229,36 +227,35 @@ Game = {
   },
 
   reloadLevel: function() {
-    Game.state_machine.reload();
     console.log('Game [reloading level]');
+    Game.state_machine.reload();
     Game.yummiesEaten = [];
     Game.loadLevel();
   },
 
   resetSimulation: function() {
+    console.log('Game [reseting simulation]');
     Game.state_machine.reset();
 
-  //replace eaten yummies
-  for (var i = 0; i < Game.yummiesEaten.length; i++) {
-    var state = Game.yummiesEaten[i];
-    var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
-    if (state.fromEditor) {
-      yummy.addComponent('FromEditor');
+    // Replace eaten yummies
+    for (var i = 0; i < Game.yummiesEaten.length; i++) {
+      var state = Game.yummiesEaten[i];
+      var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
+      if (state.fromEditor) {
+        yummy.addComponent('FromEditor');
+      }
     }
-  }
-  Game.yummiesEaten = [];
-  
-    console.log('Game [reseting simulation]');
+    Game.yummiesEaten = [];
   },
 
   runSimulation: function() {
-    Game.state_machine.run();
     console.log('Game [running]');
+    Game.state_machine.run();
   },
 
   pauseSimulation: function() {
-    Game.state_machine.pause();
     console.log('Game [pausing]');
+    Game.state_machine.pause();
   },
 
   // Move on to the next level
