@@ -128,7 +128,6 @@ Crafty.c('Goomba', {
 
 	enterFrame : function() {
 		var tweenDiff = new Date().getTime() - this.tweenStart;
-		this.animation_speed = 32;
 		// if we're doing a squeal, handle that
 		if(this.squealState != SQUEAL_WALKING) {
 			if(tweenDiff < this.msPerSqueal) {
@@ -354,7 +353,7 @@ Crafty.c('Goomba', {
 
 Crafty.c('YellowGoomba', {
 	init : function() {
-		this.requires('spr_goomba_yellow, spr_goomba_yellow_eat, spr_goomba_yellow_scare, Goomba');
+		this.requires('spr_goomba_yellow_walk, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -443,7 +442,7 @@ Crafty.c('YellowGoomba', {
 
 Crafty.c('BlueGoomba', {
 	init : function() {
-		this.requires('spr_goomba_blue, spr_goomba_blue_eat, spr_goomba_blue_scare, Goomba');
+		this.requires('spr_goomba_blue_walk, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
@@ -527,7 +526,7 @@ Crafty.c('BlueGoomba', {
 
 Crafty.c('RedGoomba', {
 	init : function() {
-		this.requires('spr_goomba_red, spr_goomba_red_eat, spr_goomba_red_scare, Goomba');
+		this.requires('spr_goomba_red_walk, Goomba');
 	},
 	getNextDir : function() {
 		var walls = Crafty("Wall");
