@@ -1,0 +1,887 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"happ",
+				"happy_2"
+			],
+			[
+				"sp",
+				"sprite"
+			],
+			[
+				"spr",
+				"sprite_64"
+			],
+			[
+				"an",
+				"animation_speed"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"stat",
+				"state_machine"
+			],
+			[
+				"ani",
+				"animation_speed"
+			],
+			[
+				"get",
+				"getRemainingInventory"
+			],
+			[
+				"cur",
+				"current_level"
+			],
+			[
+				"ma",
+				"state_machine"
+			],
+			[
+				"load",
+				"loadLevel"
+			],
+			[
+				"nextLev",
+				"next_level"
+			],
+			[
+				"curr",
+				"current_level"
+			],
+			[
+				"loa",
+				"loadLevel"
+			],
+			[
+				"r",
+				"rgba()"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"lev",
+				"level_data"
+			],
+			[
+				"reset",
+				"resetSimulation"
+			],
+			[
+				"tile_",
+				"tile_x"
+			],
+			[
+				"til",
+				"tile_y"
+			],
+			[
+				"ti",
+				"tile_x"
+			],
+			[
+				"even",
+				"event_data"
+			],
+			[
+				"pau",
+				"pauseSim"
+			],
+			[
+				"res",
+				"resetLevel"
+			],
+			[
+				"run",
+				"runSim"
+			],
+			[
+				"ru",
+				"run"
+			],
+			[
+				"st",
+				"state_machine"
+			],
+			[
+				"leve",
+				"level_one"
+			],
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"writ",
+				"writableFileEntry"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"vert",
+				"verticalPadding"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"tool",
+				"toolPanel"
+			],
+			[
+				"initGri",
+				"initGridWidth"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2169,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/scenes.js",
+			"settings":
+			{
+				"buffer_size": 2164,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/components.js",
+			"settings":
+			{
+				"buffer_size": 18032,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/game.js",
+			"settings":
+			{
+				"buffer_size": 8450,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nZenCoding:\n---------\n\n  This Zen Coding plugin is outdated and will never receive\n  any updates in future. In two weeks the repo will be unpublished.\n  \n  Consider switching to Emmet -- a re-branded Zen Coding project \n  packed with new awesome features:\n  \n  * Dynamic CSS abbreviations, automatic vendor prefixes and gradient generator.\n  * Better Tab key handler.\n  * \"Lorem Ipsum\" generator.\n  * Implicit tag names.\n  * JavaScript extensions support.\n  * New ^ operator.\n  * Various fixes and improvements.\n  \n  The new plugin is available in Package Control: just run \n  \"Install Package\" command and install \"Emmet\" plugin. Please remove \n  or disable current Zen Coding plugin in order to make things work right. \n  \n  Extensive documentation about all Emmet features is available at http://docs.emmet.io\n  \n\n\nEmmet:\n-----\n\n  Thank you for installing Emmet -- a toolkit that can greatly improve your workflow. Note that this plugin automatically downloads and installs PyV8 binary (see status bar message). \n  \n  ******************************\n  Please restart editor \n  to finish installation process \n  after PyV8 was downloaded.\n  ******************************\n  \n  Tab key handler\n  ==========================\n  \n  By default, Emmet allows you to expand abbreviations with Tab key in HTML, XML, HAML and CSS/SASS/LESS/Stylus documents. As a side effect, you can’t use some of your ST2 snippets.\n  \n  Please read https://github.com/sergeche/emmet-sublime#tab-key-handler about how Tab handler works and how to tweak its behavior to match your needs.\n  \n  Enter key\n  ==========================\n  \n  In HTML and XML documents, Emmet overrides Enter key to insert formatted line breaks between opening and closing tags. In some cases it will break character input (for example, in Japanese language).\n  \n  To disable Enter key handler, simply add the following option in your user's Preferences file:\n  \n  \"disable_formatted_linebreak\": true\n  \n  Actions shortcuts\n  ==========================\n  \n  Emmet has a number of actions with keyboard shortcuts that may override ones you're using commonly (for example, Ctrl-E or Ctrl-Down). Please read the project main page to get list of available actions and keyboard shortcuts and how to disable them:\n  https://github.com/sergeche/emmet-sublime\n  \n  Documentation and examples:\n  http://docs.emmet.io\n  \n  ------------------------------\n  Follow me on Twitter: @emmetio\n  ------------------------------\n  \n",
+			"settings":
+			{
+				"buffer_size": 2514,
+				"line_ending": "Unix",
+				"name": "Package Control Messages",
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"save as",
+				"Project: Save As"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"line",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"cnsp",
+				"Indentation: Convert to Spaces"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/punchbowldeveloper/Work/goomba_lab/lib/crafty.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/game.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/style/style.css",
+		"/Users/punchbowldeveloper/Work/goomba_lab/node_modules/send/History.md",
+		"/Users/punchbowldeveloper/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/punchbowldeveloper/Work/goomba_lab/assets/GGJ13-GoombaLab-SFX-Colliding.mp3",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/assets.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/lib/underscore.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/controls.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/data/levels.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/.git/MERGE_MSG",
+		"/Users/punchbowldeveloper/Work/goomba_lab/index.html",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/editor.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/components.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/scenes.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/lib/state-machine.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/src/helpers.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/.git/COMMIT_EDITMSG",
+		"/Users/punchbowldeveloper/Work/goomba_lab/demo_server.js",
+		"/Users/punchbowldeveloper/Work/goomba_lab/.gitignore",
+		"/Users/punchbowldeveloper/Work/crafty_basis/src/demo_server.js",
+		"/Users/punchbowldeveloper/Work/crafty_play/tut_bng/src/game.js",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/manifest.json",
+		"/Users/punchbowldeveloper/Work/tiny-jquery/test/index.html",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/js/main.js",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/numbers.txt",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/js/chrome_helpers.js",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/new.map",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/js/letterbrush.js",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/test.txt",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/test/test",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/hi.txt",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/package.json",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/main.html",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/letterbrush.css",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/css/main.css",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/sample_map.txt",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/node_modules/grunt/node_modules/js-yaml/node_modules/argparse/node_modules/underscore/index.html",
+		"/Users/punchbowldeveloper/Work/letterbrush_gpa/node_modules/grunt/node_modules/async/index.js",
+		"/Users/punchbowldeveloper/Work/CELES/README.md",
+		"/Users/punchbowldeveloper/Work/crafty_forest/lib/underscore.js",
+		"/Users/punchbowldeveloper/Work/crafty_forest/lib/crafty.js",
+		"/Users/punchbowldeveloper/Dropbox/Money/Triangle Statements/Triangle_Statement_2011-05.cgi",
+		"/Users/punchbowldeveloper/Library/Application Support/Sublime Text 2/Packages/User/Global.sublime-settings",
+		"/Users/punchbowldeveloper/Projects/mocha-rails/app/assets/javascripts/spec/entity_set.js.coffee",
+		"/Users/punchbowldeveloper/Projects/mocha-rails/app/assets/javascripts/mocha/common/util/entity_set.js.coffee"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"",
+			"selection",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"e.key = e.keyCode || e.which",
+			"controls",
+			"4",
+			"Level",
+			"level",
+			"the",
+			"t",
+			"level",
+			"Level",
+			"level",
+			"_eat",
+			"this.animation_speed = 32;",
+			"spr_goomba_yellow_talk",
+			".background",
+			"spr_goomba_yellow_talk",
+			".background",
+			"spr_goomba_yellow_walk",
+			"Overlay",
+			".background",
+			"Game.background",
+			"background",
+			"assets/",
+			"scare",
+			"spr_goomba_yellow_scare",
+			"loadSprites",
+			"png",
+			" ['",
+			"kit",
+			"toggle",
+			"this.animation_speed = 32;",
+			"this.animate(",
+			"animation",
+			"this.destroy",
+			"placeTile",
+			"placeTiel",
+			"Crafty.audio.play('background')",
+			"Crafty.audio.play",
+			"'background'",
+			".play(",
+			"'background'",
+			"background",
+			"obstacles",
+			"collision",
+			"collide",
+			"wall",
+			"eatDeliciousAttractor",
+			"eating",
+			"squealState",
+			"squeal",
+			"squealState",
+			"31",
+			"'drop'",
+			"contains",
+			"console.log('loadLevel');",
+			"loaded()",
+			"Crafty.scene('Game')",
+			"Crafty.scene('Game'",
+			"loaded()",
+			"loaded",
+			"'new'",
+			"gameClick",
+			"spr_bug",
+			"bug",
+			"t_env_bugA",
+			"spr_wall",
+			"wall",
+			"Inventory",
+			"var enable",
+			"loadLevel",
+			"placeTile",
+			".bind",
+			"placeTile",
+			"Game.current_level",
+			"current_level",
+			"on",
+			"Crafty.c",
+			"scene('Vi",
+			"currentGridX",
+			"ReachedExit",
+			"gameClick",
+			"KeyDown",
+			"ReachedExit",
+			"Exit",
+			"Crafty.bind('reloadLevel',",
+			"Exit",
+			"Victory",
+			"level_data",
+			".id",
+			"Fire",
+			"#editorPanel #tileList",
+			"A.png",
+			"yummy",
+			".anim",
+			"SpriteAnimation",
+			"spr_bug",
+			"upArrow",
+			"A.png",
+			"t_env_bugB",
+			"spr_bug",
+			"live_map_editor",
+			"button",
+			"level_editor_legend",
+			"RedGoomba",
+			"Exit",
+			"editorFrame",
+			"startPosition",
+			"spite",
+			"startSim",
+			"animation_speed",
+			".animat",
+			"spr_goomba_",
+			"MovingRight",
+			"moveDir",
+			"spr_goomba_",
+			"t_chr_yellowA_walk",
+			"t_chr_redA_yellow",
+			"t_chr_redA_walk",
+			"Goomba",
+			"// .animate('PlayerRunning', 0, 0, 3)",
+			"goomba",
+			"animation",
+			"MoveRight",
+			"animate(",
+			"animate",
+			"downArrow",
+			"animate",
+			"animate(",
+			"switch"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"walk",
+			"    'spr_goomba_red_scare':    't_chr_redA_scare.png',\n    'spr_goomba_blue_scare':   't_chr_blueA_scare.png',\n    'spr_goomba_yellow_scare': 't_chr_blueA_scare.png',",
+			"walk"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 2169,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2037,
+								2037
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"zen_abbrev_cache":
+							[
+								"ul>.hi*3",
+								"<ul>\n	<div class=\"hi\">${1001}</div>\n	<div class=\"hi\">${1002}</div>\n	<div class=\"hi\">${1003:$SELECTION}</div>\n</ul>"
+							]
+						},
+						"translation.x": 0.0,
+						"translation.y": 778.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/scenes.js",
+					"settings":
+					{
+						"buffer_size": 2164,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								430,
+								430
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/components.js",
+					"settings":
+					{
+						"buffer_size": 18032,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14383,
+								14383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/game.js",
+					"settings":
+					{
+						"buffer_size": 8450,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4775,
+								4775
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2454.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"settings":
+					{
+						"buffer_size": 2514,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2514,
+								2514
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"craf",
+				"lib/crafty.js"
+			],
+			[
+				"game.js",
+				"src/game.js"
+			],
+			[
+				".css",
+				"style/style.css"
+			],
+			[
+				"assetsjs",
+				"assets/GGJ13-GoombaLab-SFX-Colliding.mp3"
+			],
+			[
+				"compon",
+				"src/components.js"
+			],
+			[
+				"craft",
+				"lib/crafty.js"
+			],
+			[
+				"under",
+				"lib/underscore.js"
+			],
+			[
+				"lev",
+				"data/levels.js"
+			],
+			[
+				"gam",
+				"src/game.js"
+			],
+			[
+				"inde",
+				"index.html"
+			],
+			[
+				"cont",
+				"src/controls.js"
+			],
+			[
+				"style",
+				"style/style.css"
+			],
+			[
+				"index",
+				"index.html"
+			],
+			[
+				"sce",
+				"src/scenes.js"
+			],
+			[
+				"comp",
+				"src/components.js"
+			],
+			[
+				"game",
+				"src/game.js"
+			],
+			[
+				"",
+				"src/editor.js"
+			],
+			[
+				"compo",
+				"src/components.js"
+			],
+			[
+				"edt",
+				"src/editor.js"
+			],
+			[
+				"state",
+				"lib/state-machine.js"
+			],
+			[
+				"contr",
+				"src/controls.js"
+			],
+			[
+				"ss",
+				"src/scenes.js"
+			],
+			[
+				"un",
+				"lib/underscore.js"
+			],
+			[
+				"cp",
+				"src/components.js"
+			],
+			[
+				"styl",
+				"style/style.css"
+			],
+			[
+				"crafy",
+				"lib/crafty.js"
+			],
+			[
+				"con",
+				"src/controls.js"
+			],
+			[
+				"edit",
+				"src/editor.js"
+			],
+			[
+				"como",
+				"src/components.js"
+			],
+			[
+				"demo",
+				"demo_server.js"
+			],
+			[
+				"help",
+				"js/chrome_helpers.js"
+			],
+			[
+				"manif",
+				"manifest.json"
+			],
+			[
+				"tin",
+				"src/tiny-jquery.js"
+			],
+			[
+				"mani",
+				"manifest.json"
+			],
+			[
+				"new",
+				"new_new_map.map"
+			],
+			[
+				"for",
+				"css/forest2_a.map"
+			],
+			[
+				"fores",
+				"forest2.map"
+			],
+			[
+				"newmap",
+				"new.map"
+			],
+			[
+				"number",
+				"numbers.txt"
+			],
+			[
+				"sample",
+				"sample_map.txt"
+			],
+			[
+				"tes",
+				"test/test"
+			],
+			[
+				"te",
+				"test.txt"
+			],
+			[
+				"numbe",
+				"numbers.txt"
+			],
+			[
+				"hi",
+				"hi.txt"
+			],
+			[
+				"test",
+				"test.txt"
+			],
+			[
+				"mainhtm",
+				"main.html"
+			],
+			[
+				"mainjs",
+				"js/main.js"
+			],
+			[
+				"lettercss",
+				"letterbrush.css"
+			],
+			[
+				"letterjs",
+				"js/letterbrush.js"
+			],
+			[
+				"css",
+				"css/main.css"
+			],
+			[
+				"indexhm",
+				"node_modules/grunt/node_modules/js-yaml/node_modules/argparse/node_modules/underscore/index.html"
+			],
+			[
+				"le",
+				"src/letterbrush.css"
+			],
+			[
+				"letterbrush",
+				"src/letterbrush.js"
+			],
+			[
+				"ind",
+				"index.html"
+			],
+			[
+				"even",
+				"mantra/mantra/events/event_manager.coffee"
+			],
+			[
+				"entity",
+				"app/assets/javascripts/mocha/common/util/entity_set.js.coffee"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 171.0,
+	"status_bar_visible": true
+}
