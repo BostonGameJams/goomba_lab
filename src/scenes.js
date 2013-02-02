@@ -28,7 +28,7 @@ Crafty.scene('Loading', function(){
 
     // Now that our sprites are ready to draw, start the game
     Game.loadLevel();
-  })
+  });
 });
 
 // Victory scene

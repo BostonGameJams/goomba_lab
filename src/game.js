@@ -195,27 +195,27 @@ Game = {
             Crafty.e('BlueGoomba').at(x, y).addComponent('FromEditor');
             break;
           case 'R':
-            Crafty.e('RedGoomba').at(x, y).addComponent('FromEditor')
+            Crafty.e('RedGoomba').at(x, y).addComponent('FromEditor');
             break;
           case 'W':
-            Crafty.e('Wall').at(x, y).addComponent('FromEditor')
+            Crafty.e('Wall').at(x, y).addComponent('FromEditor');
             break;
           case 'F':
-            Crafty.e('Fire').at(x, y).addComponent('FromEditor')
+            Crafty.e('Fire').at(x, y).addComponent('FromEditor');
             break;
           case 'T':
-            Crafty.e('Water').at(x, y).addComponent('FromEditor')
+            Crafty.e('Water').at(x, y).addComponent('FromEditor');
             break;
           case 'U':
-            Crafty.e('Bug').at(x, y).addComponent('FromEditor')
+            Crafty.e('Bug').at(x, y).addComponent('FromEditor');
             break;
           case 'E':
-            Crafty.e('Exit').at(x, y).addComponent('FromEditor')
+            Crafty.e('Exit').at(x, y).addComponent('FromEditor');
             break;
           default:
             break;
         }
-      })
+      });
     });
 
     // Init metadata for Goombas
@@ -223,7 +223,7 @@ Game = {
       this.startPosition = { x: this.at().x, y: this.at().y };
     });
 
-    console.log('Loaded level ' + level.id)
+    console.log('Loaded level ' + level.id);
   },
 
   reloadLevel: function() {
@@ -288,7 +288,7 @@ Game = {
     });
     return remaining;
   }
-}
+};
 Game.start = Game.start.bind(Game);
 
-$text_css = { 'font-size': '24px', 'font-family': 'Arial', 'color': 'white', 'text-align': 'center' }
+$text_css = { 'font-size': '24px', 'font-family': 'Arial', 'color': 'white', 'text-align': 'center' };
