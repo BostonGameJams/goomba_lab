@@ -1,19 +1,18 @@
 Game = {
-  // This defines our grid's size and the size of each of its tiles
-  map_grid: {
+  game_board: new GameBoard({
     width:  12,
     height: 8,
     tile: {
       width:  64,
       height: 64
     }
-  },
+  }),
 
   state_machine: StateMachine.create({
     initial: 'loading',
     events: [
       { name: 'game_scene_loaded', from: '*',                           to: 'loaded' },
-      { name: 'becomeReady',       from: 'loaded',                      to: 'ready' },
+      { name: 'become_ready',      from: 'loaded',                      to: 'ready' },
       { name: 'run',               from: ['loaded', 'paused', 'ready'], to: 'running' },
       { name: 'reset',             from: ['running', 'paused'],         to: 'ready' },
       { name: 'reload',            from: ['ready'],                     to: 'loaded' },
@@ -24,36 +23,50 @@ Game = {
     callbacks: {
       onloaded:  function(event, from, to, msg) {
         Crafty.trigger('LevelLoaded', Game.current_level.inventory);
-    Game.yummiesEaten = []; //Reset eaten yummies
-        Game.state_machine.becomeReady();
+        Game.yummiesEaten = []; //Reset eaten yummies
+        Game.state_machine.become_ready();
       },
-      onbecomeReady: function() {
+      onbecome_ready: function() {
         Crafty.trigger('InventoryUpdated', Game.getRemainingInventory());
+      },
+      onwin: function() {
+        Crafty.scene('Victory');
+      },
+      onreload: function() {
+        console.log('Game [reloading level]');
+        Game.yummiesEaten = [];
+        Game.loadLevel();
+      },
+      onreset: function() {
+        console.log('Game [reseting simulation]');
+
+        // Replace eaten yummies
+        for (var i = 0; i < Game.yummiesEaten.length; i++) {
+          var state = Game.yummiesEaten[i];
+          var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
+          if (state.fromEditor) {
+            yummy.addComponent('FromEditor');
+          }
+        }
+        Game.yummiesEaten = [];
+      },
+      ongame_scene_loaded: function() {
       }
     }
   }),
 
   yummiesEaten : [],
 
-  // The total width of the game screen. Since our grid takes up the entire screen
-  //  this is just the width of a tile times the width of the grid
-  width: function() {
-    return this.map_grid.width * this.map_grid.tile.width;
-  },
+  // The total width of the game screen.
+  width: function() { return this.game_board.width(); },
 
-  // The total height of the game screen. Since our grid takes up the entire screen
-  //  this is just the height of a tile times the height of the grid
-  height: function() {
-    return this.map_grid.height * this.map_grid.tile.height;
-  },
+  // The total height of the game screen.
+  height: function() { return this.game_board.height(); },
 
   // Initialize and start our game
   start: function() {
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(this.width(), this.height());
-    Crafty.background('url("assets/background.png") no-repeat 0 0');
-
-  //Crafty.e('Overlay').image('assets/overlay.png').at(1,1).z(100);
 
     Game.current_level = Game.levels[0];
 
@@ -67,29 +80,34 @@ Game = {
 
   watchEvents: function() {
     Crafty.bind('startSimulation', function() {
-      Game.runSimulation();
+      console.log('Game [running]');
+      Game.state_machine.run();
     });
 
     Crafty.bind('pauseSimulation', function() {
-      Game.pauseSimulation();
+      console.log('Game [pausing]');
+      Game.state_machine.pause();
     });
 
     Crafty.bind('reloadLevel', function() {
-      Game.reloadLevel();
+      Game.state_machine.reload();
+    });
+
+    Crafty.bind('reloadLevel', function() {
+      Game.state_machine.reload();
     });
 
     Crafty.bind('resetSimulation', function() {
-      Game.resetSimulation();
+      Game.state_machine.reset();
     });
 
     Crafty.bind('ReachedExit', function() {
       Game.state_machine.win();
-      Crafty.scene('Victory');
     });
 
     Crafty.bind('placeTile', function(event_data) {
-      var tile_x = Math.floor(event_data.x / Game.map_grid.tile.width),
-          tile_y = Math.floor(event_data.y / Game.map_grid.tile.height);
+      var tile_x = Math.floor(event_data.x / Game.game_board.grid.tile.width),
+          tile_y = Math.floor(event_data.y / Game.game_board.grid.tile.height);
 
       var foundSomething = false;
       var tiles = Crafty('Actor');
@@ -224,38 +242,6 @@ Game = {
     });
 
     console.log('Loaded level ' + level.id);
-  },
-
-  reloadLevel: function() {
-    console.log('Game [reloading level]');
-    Game.state_machine.reload();
-    Game.yummiesEaten = [];
-    Game.loadLevel();
-  },
-
-  resetSimulation: function() {
-    console.log('Game [reseting simulation]');
-    Game.state_machine.reset();
-
-    // Replace eaten yummies
-    for (var i = 0; i < Game.yummiesEaten.length; i++) {
-      var state = Game.yummiesEaten[i];
-      var yummy = Crafty.e(state.yummyType).at(state.x, state.y);
-      if (state.fromEditor) {
-        yummy.addComponent('FromEditor');
-      }
-    }
-    Game.yummiesEaten = [];
-  },
-
-  runSimulation: function() {
-    console.log('Game [running]');
-    Game.state_machine.run();
-  },
-
-  pauseSimulation: function() {
-    console.log('Game [pausing]');
-    Game.state_machine.pause();
   },
 
   // Move on to the next level

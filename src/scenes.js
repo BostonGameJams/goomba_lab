@@ -3,6 +3,9 @@
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   // Put your game code here...
+  Crafty.background('url("assets/background.png") no-repeat 0 0');
+
+  Crafty.e('2D, DOM, Image').image('assets/overlay.png');
   Game.state_machine.game_scene_loaded();
 });
 
@@ -24,10 +27,7 @@ Crafty.scene('Loading', function(){
     Game.loadSprites();
     Game.loadAudio();
 
-    Crafty.audio.play('background', -1, 0.8);
-
-    // Now that our sprites are ready to draw, start the game
-    Game.loadLevel();
+    Crafty.scene('Start');
   });
 });
 
@@ -64,4 +64,25 @@ Crafty.scene('Final', function(){
   //  takes a noticeable amount of time to load
   Helpers.centeredText("You finished all the levels!");
   Helpers.centeredText("Now try to go back and find a better solution for all the levels!", { y_offset: 30 });
+});
+
+// Start scene
+// -------------
+// Show the intro screen
+Crafty.scene('Start', function() {
+  Crafty.e('2D, DOM, Image').image('assets/goomba_lab_splash.png');
+
+  $('.editor-panel').css({ visibility: 'hidden', width: '48px' });
+  Helpers.simpleText('Click to start', { x: 450, y: 310, width: 200, css: { color: 'black' } });
+
+  this.watch_for_start_click = Crafty.bind('gameClick', function(params) {
+    Crafty.audio.play('background', -1, 0.8);
+
+    $('.editor-panel').css({ visibility: 'visible', width: '128px' });
+
+    // Now that our sprites are ready to draw, start the game
+    Game.loadLevel();
+  });
+}, function() {
+  this.unbind('gameClick', this.watch_for_start_click);
 });

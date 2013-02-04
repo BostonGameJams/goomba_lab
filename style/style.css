@@ -39,7 +39,7 @@ body {
       width: 896px;
     }
     
-      #editorPanel {
+      .editor-panel {
         background: url('../assets/sidebar.png') no-repeat 0 0;
         float: left;
         width : 128px;
@@ -54,64 +54,64 @@ body {
         user-select: none;
       }
 
-		#editorPanel #noteButton {
+		.editor-panel .note-button {
 			width: 128px;
 			height: 64px;
 		}
         
-        #editorPanel #goButton,
- 		#editorPanel #pauseButton,
-		#editorPanel #resetSimulationButton,
-		#editorPanel #reloadLevelButton {
+        .editor-panel #goButton,
+ 		.editor-panel #pauseButton,
+		.editor-panel #resetSimulationButton,
+		.editor-panel #reloadLevelButton {
           width:64px;
           height:64px;
 		  float:left;
         }
 
-		#editorPanel #goButton {
+		.editor-panel #goButton {
 			background:url('../assets/t_gui_goA_normal.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #goButton:hover {
+		.editor-panel #goButton:hover {
 			background:url('../assets/t_gui_goA_hover.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #pauseButton {
+		.editor-panel #pauseButton {
 			background:url('../assets/t_gui_pauseA_normal.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #pauseButton:hover {
+		.editor-panel #pauseButton:hover {
 			background:url('../assets/t_gui_pauseA_hover.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #resetSimulationButton {
+		.editor-panel #resetSimulationButton {
 			background:url('../assets/t_gui_rewindA_normal.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #resetSimulationButton:hover {
+		.editor-panel #resetSimulationButton:hover {
 			background:url('../assets/t_gui_rewindA_hover.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #reloadLevelButton {
+		.editor-panel #reloadLevelButton {
 			background:url('../assets/t_gui_restartA_normal.png') no-repeat 0 0 ;
 		}
 		
-		#editorPanel #reloadLevelButton:hover {
+		.editor-panel #reloadLevelButton:hover {
 			background:url('../assets/t_gui_restartA_hover.png') no-repeat 0 0 ;
 		}
     
-        #editorPanel .hiddenArrow {
+        .editor-panel .hiddenArrow {
           visibility: hidden;
           /*background-color:white;*/
         }
         
-        #editorPanel #tileList,
- 		#editorPanel #tileListLocked {
+        .editor-panel #tileList,
+ 		.editor-panel #tileListLocked {
           padding: 0px;
         }
         
-        #editorPanel #tileList .tile,
- 		#editorPanel #tileListLocked .tile {
+        .editor-panel #tileList .tile,
+ 		.editor-panel #tileListLocked .tile {
           width:64px;
           height:96px;
           color: black;
@@ -120,24 +120,24 @@ body {
 		  font-size: 12px;
         }
 
-		#editorPanel #tileList .emptyTile,
-		#editorPanel #tileListLocked .emptyTile {
+		.editor-panel #tileList .emptyTile,
+		.editor-panel #tileListLocked .emptyTile {
 			padding: 0 16px;
 			margin: 0 auto;
 			width:64px; 
 	        height:96px;
 		}
 
-		#editorPanel #tileList .selected {
+		.editor-panel #tileList .selected {
           /*background: url('../assets/border.png') no-repeat 0 0;*/
         }
         
-        #editorPanel #tileList li:hover {
+        .editor-panel #tileList li:hover {
           /*background: url('../assets/border.png') no-repeat 0 0;*/
         }
         
-        #editorPanel #tileList li .icon,
-		#editorPanel #tileListLocked li .icon{
+        .editor-panel #tileList li .icon,
+		.editor-panel #tileListLocked li .icon{
           width:64px;
           height:64px;
           padding-top: 15px;

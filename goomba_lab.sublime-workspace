@@ -393,7 +393,7 @@
 			"level_data",
 			".id",
 			"Fire",
-			"#editorPanel #tileList",
+			".editor-panel #tileList",
 			"A.png",
 			"yummy",
 			".anim",

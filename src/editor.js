@@ -80,10 +80,10 @@ Editor = {
   },
 
   render : function() {
-    $('#editorPanel').html('');
+    $('.editor-panel').html('');
 
     var out = '';
-    out += '<div id ="noteButton"></div>';
+    out += '<div class="note-button"></div>';
 
     if (Editor.simulationStarted) {
       out += '<ul id="tileListLocked">';
@@ -132,10 +132,10 @@ Editor = {
       out += '<div id="pauseButton"/>';
     }
 
-    $('#editorPanel').append(out);
+    $('.editor-panel').append(out);
 
     //Register the listeners for the buttons
-    $('#editorPanel #tileList li').click(function(event) {
+    $('.editor-panel #tileList li').click(function(event) {
       var li = $(this);
       var child = li.children()[0];
       if (child) {
@@ -147,7 +147,7 @@ Editor = {
       }
     });
 
-    $('#noteButton').click(function(event) {
+    $('.note-button').click(function(event) {
       console.log('noteButton');
       if($('#notePanel').is(':visible')) {
         console.log('visible');
@@ -195,7 +195,7 @@ Editor = {
 
 var enableDragNDrop = function(){
   var tiles = $('.tile img');
-  var editorPanel = $('#editorPanel');
+  var editorPanel = $('.editor-panel');
   var dragId = null;
 
   //On drag start we should set the dragID

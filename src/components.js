@@ -15,21 +15,21 @@ var Const = {
 Crafty.c('Grid', {
   init : function() {
     this.attr({
-      w : Game.map_grid.tile.width,
-      h : Game.map_grid.tile.height
+      w : Game.game_board.grid.tile.width,
+      h : Game.game_board.grid.tile.height
     });
   },
   // Locate this entity at the given position on the grid
   at : function(x, y) {
     if(x === undefined && y === undefined) {
       return {
-        x : this.x / Game.map_grid.tile.width,
-        y : this.y / Game.map_grid.tile.height
+        x : this.x / Game.game_board.grid.tile.width,
+        y : this.y / Game.game_board.grid.tile.height
       };
     } else {
       this.attr({
-        x : x * Game.map_grid.tile.width,
-        y : y * Game.map_grid.tile.height
+        x : x * Game.game_board.grid.tile.width,
+        y : y * Game.game_board.grid.tile.height
       });
       return this;
     }
@@ -59,12 +59,6 @@ Crafty.c('Actor', {
   }
 });
 
-Crafty.c('Overlay', {
-  init : function() {
-    this.requires('2D', 'Image');
-  }
-});
-
 Crafty.c('FromEditor', {
   //Just a trait
 });
@@ -87,8 +81,8 @@ Crafty.c('Goomba', {
         this.moveDir = Const.DIR_RIGHT;
         this.currentGridX = this.startPosition.x;
         this.currentGridY = this.startPosition.y;
-        this.x = Game.map_grid.tile.width * this.currentGridX;
-        this.y = Game.map_grid.tile.width * this.currentGridY;
+        this.x = Game.game_board.grid.tile.width * this.currentGridX;
+        this.y = Game.game_board.grid.tile.width * this.currentGridY;
         this.nextGridX = this.startPosition.x;
         this.nextGridY = this.startPosition.y;
         this.tweenStart = new Date().getTime() - this.msPerTile;
@@ -100,8 +94,8 @@ Crafty.c('Goomba', {
       this.unbind("EnterFrame");
       this.currentGridX = this.startPosition.x;
       this.currentGridY = this.startPosition.y;
-      this.x = Game.map_grid.tile.width * this.currentGridX;
-      this.y = Game.map_grid.tile.width * this.currentGridY;
+      this.x = Game.game_board.grid.tile.width * this.currentGridX;
+      this.y = Game.game_board.grid.tile.width * this.currentGridY;
 
       this.startedOnce = false;
     });
@@ -143,14 +137,14 @@ Crafty.c('Goomba', {
     if(this.squealState == Const.SQUEAL_WALKING) {
       if(tweenDiff < this.msPerTile) {
         // update tweening
-        this.x = Game.map_grid.tile.width * ((this.nextGridX - this.currentGridX) * tweenDiff / this.msPerTile + this.currentGridX);
-        this.y = Game.map_grid.tile.height * ((this.nextGridY - this.currentGridY) * tweenDiff / this.msPerTile + this.currentGridY);
+        this.x = Game.game_board.grid.tile.width * ((this.nextGridX - this.currentGridX) * tweenDiff / this.msPerTile + this.currentGridX);
+        this.y = Game.game_board.grid.tile.height * ((this.nextGridY - this.currentGridY) * tweenDiff / this.msPerTile + this.currentGridY);
       } else {
         // finalize destination, process game logic, and set new one
         this.currentGridX = this.nextGridX;
         this.currentGridY = this.nextGridY;
-        this.x = Game.map_grid.tile.width * this.nextGridX;
-        this.y = Game.map_grid.tile.height * this.nextGridY;
+        this.x = Game.game_board.grid.tile.width * this.nextGridX;
+        this.y = Game.game_board.grid.tile.height * this.nextGridY;
         // check for win
         var exits = Crafty("Exit");
         var self = this;
@@ -267,7 +261,7 @@ Crafty.c('Goomba', {
     var dist_right, dist_left, dist_down, dist_up;
     var count = 1;
     var i;
-    for(i = cgx + 1; i < Game.map_grid.width; i++) {
+    for(i = cgx + 1; i < Game.game_board.grid.width; i++) {
       if(!this.pathingGrid[i][cgy]) {
         dist_right = count;
         break;
@@ -283,7 +277,7 @@ Crafty.c('Goomba', {
       count++;
     }
     count = 1;
-    for(i = cgy + 1; i < Game.map_grid.height; i++) {
+    for(i = cgy + 1; i < Game.game_board.grid.height; i++) {
       if(!this.pathingGrid[cgx][i]) {
         dist_down = count;
         break;
@@ -367,9 +361,9 @@ Crafty.c('YellowGoomba', {
     this.pathingGrid = [];
 
     // grid is walkable by default
-    for(var x = 0; x < Game.map_grid.width; x++) {
+    for(var x = 0; x < Game.game_board.grid.width; x++) {
       this.pathingGrid[x] = [];
-      for(var y = 0; y < Game.map_grid.width; y++) {
+      for(var y = 0; y < Game.game_board.grid.width; y++) {
         this.pathingGrid[x][y] = true;
       }
     }
@@ -423,7 +417,7 @@ Crafty.c('YellowGoomba', {
       }
 
       // check bounds of grid
-      if(testNextX >= Game.map_grid.width || testNextX < 0 || testNextY >= Game.map_grid.height || testNextY < 0) {
+      if(testNextX >= Game.game_board.grid.width || testNextX < 0 || testNextY >= Game.game_board.grid.height || testNextY < 0) {
         // fail because of bounds
       }
       // OBSTACLES
@@ -456,9 +450,9 @@ Crafty.c('BlueGoomba', {
     this.pathingGrid = [];
 
     // grid is walkable by default
-    for(var x = 0; x < Game.map_grid.width; x++) {
+    for(var x = 0; x < Game.game_board.grid.width; x++) {
       this.pathingGrid[x] = [];
-      for(var y = 0; y < Game.map_grid.width; y++) {
+      for(var y = 0; y < Game.game_board.grid.width; y++) {
         this.pathingGrid[x][y] = true;
       }
     }
@@ -508,7 +502,7 @@ Crafty.c('BlueGoomba', {
       }
 
       // check bounds of grid
-      if(testNextX >= Game.map_grid.width || testNextX < 0 || testNextY >= Game.map_grid.height || testNextY < 0) {
+      if(testNextX >= Game.game_board.grid.width || testNextX < 0 || testNextY >= Game.game_board.grid.height || testNextY < 0) {
         // fail because of bounds
       }
       // OBSTACLES
@@ -540,9 +534,9 @@ Crafty.c('RedGoomba', {
     this.pathingGrid = [];
 
     // grid is walkable by default
-    for(var x = 0; x < Game.map_grid.width; x++) {
+    for(var x = 0; x < Game.game_board.grid.width; x++) {
       this.pathingGrid[x] = [];
-      for(var y = 0; y < Game.map_grid.width; y++) {
+      for(var y = 0; y < Game.game_board.grid.width; y++) {
         this.pathingGrid[x][y] = true;
       }
     }
@@ -602,7 +596,7 @@ Crafty.c('RedGoomba', {
       }
 
       // check bounds of grid
-      if(testNextX >= Game.map_grid.width || testNextX < 0 || testNextY >= Game.map_grid.height || testNextY < 0) {
+      if(testNextX >= Game.game_board.grid.width || testNextX < 0 || testNextY >= Game.game_board.grid.height || testNextY < 0) {
         // fail because of bounds
       }
       // OBSTACLES
