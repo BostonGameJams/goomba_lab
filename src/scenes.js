@@ -22,6 +22,9 @@ Crafty.scene('Loading', function(){
     .attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
     .css($text_css);
 
+  // Hide the lab kit until the game is loaded
+  $('.editor-panel').css({ visibility: 'hidden', width: '48px' });
+
   // Load our assets then initialize the game
   Crafty.load(Game.assets, function(){
     Game.loadSprites();
@@ -72,7 +75,6 @@ Crafty.scene('Final', function(){
 Crafty.scene('Start', function() {
   Crafty.e('2D, DOM, Image').image('assets/goomba_lab_splash.png');
 
-  $('.editor-panel').css({ visibility: 'hidden', width: '48px' });
   Helpers.simpleText('Click to start', { x: 450, y: 310, width: 200, css: { color: 'black' } });
 
   this.watch_for_start_click = Crafty.bind('gameClick', function(params) {

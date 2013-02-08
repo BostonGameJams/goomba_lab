@@ -2,9 +2,8 @@ _.extend(Game, {
 
 assets: [
   'assets/t_env_bugA.png',
-  'assets/t_env_bugB.png',
-  'assets/t_env_fireB.png',
-  'assets/t_env_waterB.png',
+  'assets/t_env_pitA.png',
+  'assets/t_env_fireA.png',
   'assets/t_env_waterA.png',
   'assets/t_chr_redA_walk.png',
   'assets/t_chr_yellowA_walk.png',
@@ -24,7 +23,10 @@ assets: [
   'assets/GGJ13-GoombaLab-SFX-HappyNoise1.mp3',
   'assets/GGJ13-GoombaLab-SFX-HappyNoise1.ogg',
   'assets/GGJ13-GoombaLab-SFX-HappyNoise2.mp3',
-  'assets/GGJ13-GoombaLab-SFX-HappyNoise2.ogg'
+  'assets/GGJ13-GoombaLab-SFX-HappyNoise2.ogg',
+  'assets/background.png',
+  'assets/overlay.png',
+  'assets/goomba_lab_splash.png'
 ],
 
 loadSprites: function() {
@@ -35,8 +37,8 @@ loadSprites: function() {
   };
 
   _.each('fire water'.split(' '), function(unit) {
-    var sprite_name = 'spr_' + unit
-    var sprite_map_obj = {}
+    var sprite_name = 'spr_' + unit;
+    var sprite_map_obj = {};
     sprite_map_obj[sprite_name] = [0, 0];
     Crafty.sprite(64, 'assets/t_env_' + unit + 'A.png', sprite_map_obj);
   });
@@ -45,8 +47,8 @@ loadSprites: function() {
     'spr_wall': 't_env_pitA.png',
     'spr_bug':  't_env_bugA.png',
     'spr_exit': 't_env_exitA.png'
-  }
-  for (sprite in plain_sprites) {
+  };
+  for (var sprite in plain_sprites) {
     sprite_64(sprite, plain_sprites[sprite]);
   }
 
@@ -60,7 +62,7 @@ loadSprites: function() {
     'spr_goomba_red_walk':     't_chr_redA_walk.png',
     'spr_goomba_blue_walk':    't_chr_blueA_walk.png',
     'spr_goomba_yellow_walk':  't_chr_yellowA_walk.png'
-  }
+  };
   for (sprite in animated_sprites) {
     sprite_64(sprite, animated_sprites[sprite], [0, 3]);
   }
@@ -72,7 +74,7 @@ loadAudio: function() {
       'assets/' + file_name_base + '.mp3',
       'assets/' + file_name_base + '.ogg'
     ];
-  }
+  };
   Crafty.audio.add({
     background: audioGroup('GGJ13-GoombaLab-BGM'),
     colliding:  audioGroup('GGJ13-GoombaLab-SFX-Colliding'),

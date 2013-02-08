@@ -1,9 +1,10 @@
 {
   "url": "http://127.0.0.1:8340/",
-	"folders":
-	[
-		{
-			"path": "/Users/punchbowldeveloper/Work/goomba_lab"
-		}
-	]
+  "folders":
+  [
+    {
+      "path": "/Users/punchbowldeveloper/Work/goomba_lab",
+      "file_exclude_patterns": ["*.min.js"]
+    }
+  ]
 }
