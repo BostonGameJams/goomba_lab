@@ -3,9 +3,9 @@
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   // Put your game code here...
-  Crafty.background('url("assets/background.png") no-repeat 0 0');
+  Crafty.background('url("assets/t_env_bgA.png") no-repeat 0 0');
 
-  Crafty.e('2D, DOM, Image').image('assets/overlay.png');
+  Crafty.e('2D, DOM, Image').image('assets/t_env_bgB.png');
   Game.state_machine.game_scene_loaded();
 });
 

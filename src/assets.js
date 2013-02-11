@@ -25,7 +25,7 @@ assets: [
   'assets/GGJ13-GoombaLab-SFX-HappyNoise2.mp3',
   'assets/GGJ13-GoombaLab-SFX-HappyNoise2.ogg',
   'assets/background.png',
-  'assets/overlay.png',
+  'assets/t_env_bgB.png',
   'assets/goomba_lab_splash.png'
 ],
 
